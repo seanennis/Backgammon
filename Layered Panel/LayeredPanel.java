@@ -47,6 +47,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			BOARD_LABEL.setBounds(0, 0, 1400, 750);
 
 			for(int i = 0;i < WHITE_CHECKER_LABEL.length;i++) {
+				WHITE_CHECKER_LABEL[i] = new Checker();
 				WHITE_CHECKER_LABEL[i].setImage(new JLabel(new ImageIcon(WHITE_CHECKER)));
 				WHITE_CHECKER_LABEL[i].setType(1);
 				WHITE_CHECKER_LABEL[i].setId(i);
@@ -78,6 +79,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				}
 			}
 			for(int i = 0;i < BLACK_CHECKER_LABEL.length;i++) {
+				BLACK_CHECKER_LABEL[i] = new Checker();
 				BLACK_CHECKER_LABEL[i].setImage(new JLabel(new ImageIcon(BLACK_CHECKER)));
 				BLACK_CHECKER_LABEL[i].setType(1);
 				BLACK_CHECKER_LABEL[i].setId(i);
@@ -118,9 +120,11 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 
 		for(int i = 0;i < 15;i++) {
-			lp.add(WHITE_CHECKER_LABEL[i].getImage(), new Integer(1));
-			lp.add(BLACK_CHECKER_LABEL[i].getImage(), new Integer(1));
+			lp.add(WHITE_CHECKER_LABEL[i].getImage(), 1);
+			lp.add(BLACK_CHECKER_LABEL[i].getImage(), 1);
 		}
+
+		lp.add(BOARD_LABEL,0);
 
 		add(lp);
 
@@ -129,7 +133,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public void initialiseBoard() {
 
 		positions = new CheckerLayout();
-
 
 	}
 	public void updateBoard() {
