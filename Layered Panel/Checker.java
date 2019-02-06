@@ -6,12 +6,15 @@ public class Checker{
 	private int type;
 	private int position;
 	private int id;
-	private JLabel image;
+	private boolean selected;
+	public JLabel label;
 
-	public Checker(int type, int position, int id) {
+	public Checker() {
 		this.type = type;
 		this.position = position;
 		this.id = id;
+		this.selected = false;
+		this.label = null;
 	}
 
 	public void setType(int type) {
@@ -23,8 +26,8 @@ public class Checker{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public void setImage(JLabel image) {
-		this.image = image;
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 	public int getType() {
@@ -36,9 +39,7 @@ public class Checker{
 	public int getId() {
 		return id;
 	}
-	public JLabel getImage() {
-		return image;
+	public boolean getSelected() {
+		return selected;
 	}
-
-
 }
