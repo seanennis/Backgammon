@@ -11,6 +11,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 	private JLayeredPane lp;
 	private CheckerLayout positions;
+	private Pips clearPips;
 	private Checker[] white_Checker = new Checker[15];
 	private Checker[] black_Checker = new Checker[15];
 
@@ -18,7 +19,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	private BufferedImage whiteChecker;
 	private BufferedImage blackChecker;
 	private JLabel BOARD_LABEL;
-	private JLabel clearPip;
+//	private JLabel clearPip;
 	private int numOfPips = 24;
 	private int checkerWidth = 50;
 	private int checkerHeight = 50;
@@ -34,9 +35,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		lp.setMaximumSize(new Dimension(1120, 600));
 
 		try {
-			BOARD = ImageIO.read(getClass().getResource("board.png"));
-			whiteChecker = ImageIO.read(getClass().getResource("WhiteChecker.png"));
-			blackChecker = ImageIO.read(getClass().getResource("BlackChecker.png"));
+			BOARD = ImageIO.read(getClass().getResource("/SprintOne/src/board.png"));
+			whiteChecker = ImageIO.read(getClass().getResource("/SprintOne/src/WhiteChecker.png"));
+			blackChecker = ImageIO.read(getClass().getResource("/SprintOne/src/BlackChecker.png"));
 
 			BOARD_LABEL = new JLabel(new ImageIcon(BOARD));
 			BOARD_LABEL.setBounds(0, 0, 1120, 600);
@@ -123,6 +124,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		for(int i = 0;i < 24;i++) {
+			lp.add(clearPips.label[i], (Integer) 1);
+		}
 
 		for(int i = 0;i < 15;i++) {
 
@@ -139,6 +144,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public void initialiseBoard() {
 
 		positions = new CheckerLayout();
+		clearPips = new Pips();
 
 		for(int i = 0;i < 15;i++) {
 
