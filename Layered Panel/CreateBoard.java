@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class CreateBoard extends JFrame {
 	
-	private static int WIDTH = 1400;
-	private static int HEIGHT = 775;
+	private static int WIDTH = 1120;
+	private static int HEIGHT = 630;
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
