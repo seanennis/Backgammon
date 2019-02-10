@@ -1,3 +1,5 @@
+package frame;
+
 import java.awt.Color;
 import java.awt.Point;
 
@@ -11,6 +13,7 @@ public class Pips {
 	private int pipHeight = 250;
 	
 	public Pips() {
+		offset = new Point[24];
 		this.numOfPips = 24;
 		for(int i = 0; i < numOfPips; i++) {
 			if(i < 6)
@@ -24,6 +27,7 @@ public class Pips {
 		}
 		
 		for(int i = 0; i < numOfPips; i++) {
+			label = new JLabel[24];
 			label[i] = new JLabel();
 			label[i].setName(String.valueOf(i));
 			label[i].setBounds((int) offset[i].getX(), (int) offset[i].getY(), pipWidth, pipHeight);
