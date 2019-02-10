@@ -57,7 +57,7 @@ public class Frame_creator extends JFrame
 	    panel_2.add(Lbl2);
 	    panel_2.add(Area1);
 	    panel_2.add(Pane1);
-	    panel_2.setPreferredSize(new Dimension(200, 1080));
+	    panel_2.setPreferredSize(new Dimension(200, 980));
 	    add(panel_2);
 	}
 	
@@ -86,7 +86,7 @@ public class Frame_creator extends JFrame
 	    panel_1.add(Lbl1);
 	    panel_1.add(Fld1);
 	    panel_1.add(button1);  
-	    panel_2.setPreferredSize(new Dimension(1920, 200));
+	    panel_1.setPreferredSize(new Dimension(1720, 100));
 	    add(panel_1);
 	}
 	   
@@ -95,7 +95,7 @@ public class Frame_creator extends JFrame
         public void actionPerformed(ActionEvent event)
         {
         	 String inputString = Fld1.getText();
-        	 if(inputString.equals("Quit"))
+        	 if(inputString.equals("Quit") || inputString.equals("QUIT")|| inputString.equals("quit"))
         	 {
         		 System.exit(0);
         	 }
