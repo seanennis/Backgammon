@@ -6,19 +6,20 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import javax.imageio.*;
+import java.lang.*;
 
 public class LayeredPanel extends JPanel implements MouseListener {
 
 	private JLayeredPane lp;
 	private CheckerLayout positions;
-	private Checker[] white_Checker = new Checker[15];
-	private Checker[] black_Checker = new Checker[15];
-
+	private Pips clearPips;
+	private int numOfCheckers = 15;
+	private Checker[] white_Checker = new Checker[numOfCheckers];
+	private Checker[] black_Checker = new Checker[numOfCheckers];
 	private BufferedImage BOARD;
 	private BufferedImage whiteChecker;
 	private BufferedImage blackChecker;
 	private JLabel BOARD_LABEL;
-	private JLabel clearPip;
 	private int numOfPips = 24;
 	private int checkerWidth = 50;
 	private int checkerHeight = 50;
@@ -34,7 +35,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		lp.setMaximumSize(new Dimension(1120, 600));
 
 		try {
-			BOARD = ImageIO.read(getClass().getResource("board.jpg"));
+			BOARD = ImageIO.read(getClass().getResource("board.png"));
 			whiteChecker = ImageIO.read(getClass().getResource("WhiteChecker.png"));
 			blackChecker = ImageIO.read(getClass().getResource("BlackChecker.png"));
 
@@ -46,7 +47,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				white_Checker[i].label = new JLabel(new ImageIcon(whiteChecker));
 				white_Checker[i].label.addMouseListener(this);
 
-				white_Checker[i].label.setName(String.valueOf(i));
+				white_Checker[i].label.setName("white" + String.valueOf(i));
 
 				white_Checker[i].setType(1);
 				white_Checker[i].setId(i);
@@ -84,7 +85,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				black_Checker[i].label = new JLabel(new ImageIcon(blackChecker));
 				black_Checker[i].label.addMouseListener(this);
 
-				black_Checker[i].label.setName(String.valueOf(i));
+				black_Checker[i].label.setName("black" + String.valueOf(i));
 
 				black_Checker[i].setType(1);
 				black_Checker[i].setId(i);
@@ -123,8 +124,12 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+		
+		for(int i = 0;i < 24;i++) {
+			lp.add(clearPips.label[i], (Integer) 1);
+		}
 
-		for(int i = 0;i < 15;i++) {
+		for(int i = 0;i < numOfCheckers;i++) {
 
 			lp.add(white_Checker[i].label, (Integer) 2);
 			lp.add(black_Checker[i].label, (Integer) 2);
@@ -139,8 +144,13 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public void initialiseBoard() {
 
 		positions = new CheckerLayout();
+		clearPips = new Pips();
 
-		for(int i = 0;i < 15;i++) {
+		for(int i = 0;i < numOfPips;i++) {
+			clearPips.label[i].addMouseListener(this);
+		}
+
+		for(int i = 0;i < numOfCheckers;i++) {
 
 			if(i < 5)
 				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() - (i * checkerWidth), checkerWidth, checkerHeight);	
@@ -164,16 +174,36 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 
 	}
-
-	public void printSelected() {
-		System.out.println("List of Selected values from White Checkers");
-		for(int i = 0;i < 15;i++) {
-			System.out.println("\t" + white_Checker[i].getSelected());
-		}
-		System.out.println("");
-	}
 	public void updateBoard() {
 
+		int newPosition = -1;
+		boolean pipSelected = false;
+
+		for(int i = 0;i < numOfPips;i++) {
+			if(clearPips.getSelected(i)) {
+				newPosition = i;
+				pipSelected = true;
+			}
+		}
+		if(pipSelected) {
+			for(int i = 0;i < numOfCheckers;i++) {
+				if(white_Checker[i].getSelected()) {
+					white_Checker[i].setPosition(newPosition);
+					white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY(), checkerWidth, checkerHeight);
+				} else if(black_Checker[i].getSelected()) {
+					black_Checker[i].setPosition(newPosition);
+					black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY(), checkerWidth, checkerHeight);
+				}
+			}
+		}
+
+	}
+	public void printSelected() {
+		System.out.println("List of Selected values from Pips");
+		for(int i = 0;i < numOfPips;i++) {
+			System.out.println("\t" + clearPips.getSelected(i));
+		}
+		System.out.println("");
 	}
 
 	public void mouseMoved(MouseEvent e){}
@@ -187,22 +217,52 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
     public void mousePressed(MouseEvent e) {
 
-    	JLabel temp = (JLabel)e.getSource();
+		JLabel temp = (JLabel)e.getSource();
+		String labelName = temp.getName();
+    	int t; 
 
-    	int t = Integer.valueOf(temp.getName());
+    	if(temp.getName().length() == 6)
+    		t = Integer.valueOf(temp.getName().substring(5, 6)); 
+    	else
+    		t = Integer.valueOf(temp.getName());
 
-    	for(Checker i : white_Checker) {
-    		if(i.getSelected())
-    		i.setSelected(false);
+    	if(t < 0) {
+
+    		int parsedInt = -1 * (t + 1);
+
+    		for(int i = 0;i < numOfPips;i++) {
+    			if( clearPips.getSelected(i))
+    				clearPips.setSelected(i, false); 	
+    		}
+    		clearPips.setSelected(parsedInt, true);
+    		updateBoard();
+
+    	} else {
+    		if(labelName.substring(0, 5).equals("white")) {
+
+    			for(Checker i : white_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
+		    	}
+		    	for(Checker i : black_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
+		    	}
+		    	white_Checker[t].setSelected(true);
+
+    		} else if(labelName.substring(0, 5).equals("black")){
+
+    			for(Checker i : black_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
+		    	}
+		    	for(Checker i : white_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
+		    	}
+		    	black_Checker[t].setSelected(true);
+
+    		}
     	}
-    	white_Checker[t].setSelected(true);
-
-    	printSelected();
-
-    	System.out.println(temp.getName());
-
-// will eventually be called but hvent written it yet
-
-//    	updateBoard();
     }
 }
