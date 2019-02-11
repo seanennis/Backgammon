@@ -1,3 +1,11 @@
+/*
+*	Written by 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
+
 import java.awt.Color;
 import java.awt.Point;
 import javax.swing.*;
@@ -18,6 +26,10 @@ public class Pips {
 		selected = new boolean[numOfPips];
 		offset = new Point[numOfPips];
 
+		/*
+		assigns an initial offset point by whhich the pip labels will be placed
+		*/
+
 		for(int i = 0; i < numOfPips; i++) {
 			if(i < 6)
 				offset[i] = new Point(1012 - (i*xOffset), 300);
@@ -32,6 +44,11 @@ public class Pips {
 		}
 
 		label = new JLabel[numOfPips];
+
+		/*
+		assigns an unique identity
+		and assigns it to an X,Y coordinate on the board based off the position it was assigned above 
+		*/
 		
 		for(int i = 0; i < numOfPips; i++) {
 			label[i] = new JLabel();
