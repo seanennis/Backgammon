@@ -17,6 +17,10 @@ public class CreateBoard extends JFrame {
 
 	private JTextArea Area1;
 	private JScrollPane Pane1;
+	
+
+	Players p1 = new Players();
+	Players p2 = new Players();
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -45,8 +49,10 @@ public class CreateBoard extends JFrame {
 	private void createTextArea()
 	{
 		//Lbl2 = new JLabel("Information Entered:");
-		Area1 = new JTextArea(47, 20);
+		Area1 = new JTextArea("Welcome to Backgammon\nPlease enter player names:\n",48,14);
 		Pane1 = new JScrollPane(Area1);
+		//Pane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		//Pane1.setPreferredSize(new Dimension(450, 110));
 		Area1.setEditable(false);
 	    
 	}
@@ -56,7 +62,7 @@ public class CreateBoard extends JFrame {
 		panel_2.setBackground(Color.black);
 	    //panel_2.add(Lbl2);
 	    panel_2.add(Area1);
-	    panel_2.add(Pane1);
+	    //panel_2.add(Pane1,BorderLayout.CENTER);
 	}
 	private void createTextField()
 	{
@@ -68,8 +74,9 @@ public class CreateBoard extends JFrame {
 	
 	private void createButton()
 	{
-		button1 = new JButton("Click to Continue");      
-	      
+		
+		button1 = new JButton("Click to Continue"); 
+		
 	    button1.addActionListener((ActionListener) new TextListener());
 	}
 	private void createCommandPanel()
@@ -82,19 +89,66 @@ public class CreateBoard extends JFrame {
 
 	private class TextListener implements ActionListener 
 	{
+		int c = 0; 
+		int n = 1; 
+		int p = 0; 
+		
         public void actionPerformed(ActionEvent event)
         {
-        	 String inputString = Fld1.getText();
-        	 if(inputString.equals("Quit") || inputString.equals("QUIT")|| inputString.equals("quit"))
-        	 {
-        		 System.exit(0);
-        	 }
-        	 else
-        	 {
-        	 Area1.append(inputString + "\n");
-        	 Fld1.setText("");
-        	 }
+        	if(c<2)
+        	{
+        		String nameString = Fld1.getText();
+        		if(p == 0)
+        		{
+        			p1.name = nameString;
+        			if(nameString.equals("Quit") || nameString.equals("QUIT")|| nameString.equals("quit"))
+            	 	{
+         				System.exit(0);
+            	 	}
+        			else
+        			{
+        				Area1.append("Player " + n + ":\n");
+        				Area1.append(nameString + "\n");
+       	 				Fld1.setText("");
+        			}
+        			p++;
+        		}
+        	
+        		else if(p == 1)
+        		{
+        			 p2.name = nameString ;
+        			
+        			if(nameString.equals("Quit") || nameString.equals("QUIT")|| nameString.equals("quit"))
+           	 		{
+        				System.exit(0);
+           	 		}
+        			else
+        			{	
+           	 			Area1.append("Player " + n + ":\n");
+           	 			Area1.append(nameString + "\n");
+           	 			Fld1.setText("");
+        			}
+        		}
+    			c++;
+    			n++;
+    			
         }
+        	
+        	
+        	else if(c >= 2)
+        	{
+        		String inputString = Fld1.getText();
+        		if(inputString.equals("Quit") || inputString.equals("QUIT")|| inputString.equals("quit"))
+        		{
+        			System.exit(0);
+        		}
+        		else
+        		{
+        			Area1.append(inputString + "\n");
+        			Fld1.setText("");
+        		}
+        	}	
+		}
 	}
 
 }
