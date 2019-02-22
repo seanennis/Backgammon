@@ -1,12 +1,12 @@
 import javax.swing.*;
-import javax.accessibility.*;
+//import javax.accessibility.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.*;
+//import java.util.*;
 import javax.imageio.*;
-import java.lang.*;
+//import java.lang.*;
 
 public class LayeredPanel extends JPanel implements MouseListener {
 

@@ -16,7 +16,8 @@ public class CreateBoard extends JFrame {
 	private JButton button1;
 
 	private JTextArea Area1;
-	private JScrollPane Pane1;
+	//private JScrollPane Pane1;
+	private JLabel Lbl2;
 	
 
 	Players p1 = new Players();
@@ -48,9 +49,12 @@ public class CreateBoard extends JFrame {
 
 	private void createTextArea()
 	{
-		//Lbl2 = new JLabel("Information Entered:");
-		Area1 = new JTextArea("Welcome to Backgammon\nPlease enter player names:\n",48,14);
-		Pane1 = new JScrollPane(Area1);
+		Font f = new Font("TimesRoman",Font.BOLD,14);
+		Lbl2 = new JLabel("Welcome to BackGammon:");
+		Lbl2.setFont(f);
+		Lbl2.setForeground(Color.WHITE);
+		Area1 = new JTextArea("Please enter player names:\n",37,14);
+		//Pane1 = new JScrollPane(Area1);
 		//Pane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		//Pane1.setPreferredSize(new Dimension(450, 110));
 		Area1.setEditable(false);
@@ -60,7 +64,7 @@ public class CreateBoard extends JFrame {
 	private void createInfoPanel()
 	{
 		panel_2.setBackground(Color.black);
-	    //panel_2.add(Lbl2);
+	    panel_2.add(Lbl2,BorderLayout.NORTH);
 	    panel_2.add(Area1);
 	    //panel_2.add(Pane1,BorderLayout.CENTER);
 	}
@@ -116,7 +120,7 @@ public class CreateBoard extends JFrame {
         	
         		else if(p == 1)
         		{
-        			 p2.name = nameString ;
+        			 p2.name = nameString;
         			
         			if(nameString.equals("Quit") || nameString.equals("QUIT")|| nameString.equals("quit"))
            	 		{
