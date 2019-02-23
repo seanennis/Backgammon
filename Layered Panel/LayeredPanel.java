@@ -1,13 +1,3 @@
-/*
-*	Written by 
-*	Luke - 17426404
-* 	Adam - 17364606 
-*	Sean - 17469914
-*/
-
-
-
-
 import javax.swing.*;
 import javax.accessibility.*;
 import java.awt.*;
@@ -51,13 +41,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 			BOARD_LABEL = new JLabel(new ImageIcon(BOARD));
 			BOARD_LABEL.setBounds(0, 0, 1236, 645);
-
-			/*
-			Createing the labels that will be the checkers 
-			adding isteners to them for the mouse clicks that allow them to move
-			their names are their identifiers, <white/balck> + <number>
-			assigning them a postiion on the bored
-			*/
 
 			for(int i = 0;i < white_Checker.length;i++) {
 				white_Checker[i] = new Checker();
@@ -134,15 +117,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				}
 			}
 
-			/*
-			initialiseBoard() will set the checker labels to a X,Y on the board basedd off the positions assigned to them when they were created
-			*/
-
 			initialiseBoard();
-
-			/*
-			updateBoard() moves checkers once theyve been clicked on
-			*/
 
 			updateBoard();
 
@@ -175,10 +150,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			clearPips.label[i].addMouseListener(this);
 		}
 
-		/*
-		sets the positions of the checkers on the Board using the coordinates stored in the CheckerLayout class;
-		*/
-
 		for(int i = 0;i < numOfCheckers;i++) {
 
 			if(i < 5)
@@ -201,13 +172,12 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
 		}
-
+		
+		// TODO remove this function call
+		RollDice player1 = new RollDice();
 	}
 	public void updateBoard() {
 
-		/*
-		checks that a pip have been clicked on
-		*/
 		int newPosition = -1;
 		boolean pipSelected = false;
 
@@ -217,12 +187,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				pipSelected = true;
 			}
 		}
-
-		/*
-		igf a pip have been clicked on then it will check if a checker was clicked on
-		if a checker has also be clicked it'll check which pip it was and sets the position of the selected checker to that of the selected pip
-		*/
-
 		if(pipSelected) {
 			for(int i = 0;i < numOfCheckers;i++) {
 				if(white_Checker[i].getSelected()) {
@@ -236,10 +200,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 
 	}
-
-	/*
-	test for the selected checkers
-	*/
 	public void printSelected() {
 		System.out.println("List of Selected values from Pips");
 		for(int i = 0;i < numOfPips;i++) {
@@ -263,22 +223,12 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		String labelName = temp.getName();
     	int t; 
 
-    	/*
-		identitfues the slected label based off the label name 
-    	*/
-
     	if(temp.getName().length() == 6)
     		t = Integer.valueOf(temp.getName().substring(5, 6)); 
     	else if(temp.getName().length() == 7)
     		t = Integer.valueOf(temp.getName().substring(5, 7));
     	else
     		t = Integer.valueOf(temp.getName());
-
-    	/*
-		pips have a negatuve id 
-		if a pip was clicked them it will identify which one and call update function
-		if a checker is clicked itll identify if it is black or white and then deselect any other checker and select the checker that was just clicked
-    	*/
 
     	if(t < 0) {
 
