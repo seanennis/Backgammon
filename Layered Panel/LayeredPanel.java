@@ -173,8 +173,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
 		}
 		
-		// TODO remove this function call
-		RollDice player1 = new RollDice();
+		//TODO remove this call when turns are implemented
+		Dice roll = new Dice();
+		roll.rollDice();
 	}
 	public void updateBoard() {
 
