@@ -63,7 +63,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		Lbl2 = new JLabel("Welcome to BackGammon:");
 		Lbl2.setFont(f);
 		Lbl2.setForeground(Color.WHITE);
-		Area1 = new JTextArea("Please enter player names:\n",37,24);
+		Area1 = new JTextArea("Please enter player names:\n",37,18);
 		//Pane1 = new JScrollPane(Area1);
 		//Pane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		//Pane1.setPreferredSize(new Dimension(450, 110));
