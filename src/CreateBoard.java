@@ -63,7 +63,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		Lbl2 = new JLabel("Welcome to BackGammon:");
 		Lbl2.setFont(f);
 		Lbl2.setForeground(Color.WHITE);
-		Area1 = new JTextArea("Please enter player names:\n",37,14);
+		Area1 = new JTextArea("Please enter player names:\n",37,24);
 		//Pane1 = new JScrollPane(Area1);
 		//Pane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		//Pane1.setPreferredSize(new Dimension(450, 110));
@@ -76,7 +76,6 @@ public class CreateBoard extends JFrame implements MouseListener {
 		panel_2.setBackground(Color.black);
 	    panel_2.add(Lbl2,BorderLayout.NORTH);
 	    panel_2.add(Area1);
-	    //panel_2.add(new TimeLabel());
 	    //panel_2.add(Pane1,BorderLayout.CENTER);
 	}
 	private void createTextField()
@@ -115,24 +114,24 @@ public class CreateBoard extends JFrame implements MouseListener {
 		}
 		
 		for(int i = 0;i < 2;i++)
-			Area1.append(player[i].getName() + " rolled " + dice[i].getLastRoll() + "\n");
+			Area1.append(player[i].getName() + " : " + dice[i].getLastRoll() + "\n");
 		
 		if(dice[0].getLastRoll() > dice[1].getLastRoll()) {
 			playerTurn = 1;
-			Area1.append(player[0].getName() + " goes first" + "\n");
+			Area1.append(player[0].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[0].getName()+"'s turn:");
 		}
 		else {
 			playerTurn = 2;
-			Area1.append(player[1].getName() + " goes first" + "\n");
+			Area1.append(player[1].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[1].getName()+"'s turn:");
 		}
-		Area1.append("\n"+DateUtils.time("HH:mm:a")+" Dice: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
+		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 	}
 	
 	public void roll() {
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
 		
-		Area1.append(DateUtils.time("HH:mm:")+" "+player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll());
+		Area1.append(dice[0].getLastRoll() + ", " + dice[1].getLastRoll()+"\n");
 	}
 	
 	private static class DateUtils
@@ -140,8 +139,8 @@ public class CreateBoard extends JFrame implements MouseListener {
 		public static String time(String dateFormat)
 		{
 			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-			return sdf.format(cal.getTime());
+			SimpleDateFormat dateForm = new SimpleDateFormat(dateFormat);
+			return dateForm.format(cal.getTime());
 		}
 	} 
 	
@@ -160,7 +159,7 @@ public class CreateBoard extends JFrame implements MouseListener {
      				System.exit(0);
     			else
     			{
-    				Area1.append(DateUtils.time("HH:mm:")+" Player " + (p + 1) + ": " + inputString +" : Black Checkers\n");
+    				Area1.append(DateUtils.time("[HH:mm]")+" Player " + (p + 1) + ": " + inputString +" : Black Checkers\n");
    	 				Fld1.setText("");
     			}
     			p++;
@@ -172,7 +171,7 @@ public class CreateBoard extends JFrame implements MouseListener {
     				System.exit(0);
     			else
     			{	
-       	 			Area1.append(DateUtils.time("HH:mm")+ " Player " + (p + 1) + ": " + inputString + " : White Checkers\n\n");
+       	 			Area1.append(DateUtils.time("[HH:mm]")+ " Player " + (p + 1) + ": " + inputString + " : White Checkers\n\n");
        	 			Fld1.setText("");
     			}
     			p++;
@@ -181,18 +180,17 @@ public class CreateBoard extends JFrame implements MouseListener {
     		else {
 	    		if(inputString.toLowerCase().equals("quit"))
 	    			System.exit(0);
-	    		else if(inputString.equals("next")) { 
+	    		else if(inputString.toLowerCase().equals("next")) { 
 	    			Area1.append("");
 	    			playerTurn = -1 * playerTurn + 3;
-	    			Area1.append(DateUtils.time("HH:mm:")+" "+player[playerTurn - 1].getName() + "'s turn\n");
+	    			Area1.append(DateUtils.time("[HH:mm]")+" "+player[playerTurn - 1].getName() + "'s turn: ");
 					Fld1.setText("");
 					roll();
 	    		}
 	    		else
 	    		{
-	    			Area1.append(DateUtils.time("HH:mm:")+" Not a valid command\n");
+	    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 	    			Fld1.setText("");
-	    			
 	    		}
     		}
 		}
