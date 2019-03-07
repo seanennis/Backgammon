@@ -1,10 +1,6 @@
-/* 
-*	Luke - 17426404
-* 	Adam - 17364606 
-*	Sean - 17469914
-*/
-
 import javax.swing.*;
+import java.util.*;
+import java.text.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -26,7 +22,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 	private JTextArea Area1;
 	//private JScrollPane Pane1;
 	private JLabel Lbl2;
-	
+
 	public Players[] player = new Players[2];
 	public int playerTurn = 1;
 
@@ -47,8 +43,6 @@ public class CreateBoard extends JFrame implements MouseListener {
 			p.white_Checker[i].label.addMouseListener(this);
 			p.black_Checker[i].label.addMouseListener(this);
 		}
-		for(int i = 0;i < p.numOfPips;i++)
-			p.clearPips.label[i].addMouseListener(this);
 
 		createTextField();
     	createButton();
@@ -82,6 +76,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		panel_2.setBackground(Color.black);
 	    panel_2.add(Lbl2,BorderLayout.NORTH);
 	    panel_2.add(Area1);
+	    //panel_2.add(new TimeLabel());
 	    //panel_2.add(Pane1,BorderLayout.CENTER);
 	}
 	private void createTextField()
@@ -90,6 +85,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 	    Fld1 = new JTextField(40);
 	    Fld1.setText("");
+	 
 	}
 	
 	private void createButton()
@@ -129,15 +125,25 @@ public class CreateBoard extends JFrame implements MouseListener {
 			playerTurn = 2;
 			Area1.append(player[1].getName() + " goes first" + "\n");
 		}
-		Area1.append("Dice: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
+		Area1.append("\n"+DateUtils.time("HH:mm:a")+" Dice: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 	}
 	
 	public void roll() {
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
 		
-		Area1.append(player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll());
+		Area1.append(DateUtils.time("HH:mm:")+" "+player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll());
 	}
+	
+	private static class DateUtils
+	{
+		public static String time(String dateFormat)
+		{
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+			return sdf.format(cal.getTime());
+		}
+	} 
 	
 	private class TextListener implements ActionListener 
 	{
@@ -154,7 +160,7 @@ public class CreateBoard extends JFrame implements MouseListener {
      				System.exit(0);
     			else
     			{
-    				Area1.append("Player " + (p + 1) + ": " + inputString +" : Black Checkers\n");
+    				Area1.append(DateUtils.time("HH:mm:")+" Player " + (p + 1) + ": " + inputString +" : Black Checkers\n");
    	 				Fld1.setText("");
     			}
     			p++;
@@ -166,7 +172,7 @@ public class CreateBoard extends JFrame implements MouseListener {
     				System.exit(0);
     			else
     			{	
-       	 			Area1.append("Player " + (p + 1) + ": " + inputString + " : White Checkers\n");
+       	 			Area1.append(DateUtils.time("HH:mm")+ " Player " + (p + 1) + ": " + inputString + " : White Checkers\n\n");
        	 			Fld1.setText("");
     			}
     			p++;
@@ -175,16 +181,18 @@ public class CreateBoard extends JFrame implements MouseListener {
     		else {
 	    		if(inputString.toLowerCase().equals("quit"))
 	    			System.exit(0);
-	    		else if(inputString.equals("next")) {    			
+	    		else if(inputString.equals("next")) { 
+	    			Area1.append("");
 	    			playerTurn = -1 * playerTurn + 3;
-	    			Area1.append(player[playerTurn - 1].getName() + "'s turn\n");
+	    			Area1.append(DateUtils.time("HH:mm:")+" "+player[playerTurn - 1].getName() + "'s turn\n");
 					Fld1.setText("");
 					roll();
 	    		}
 	    		else
 	    		{
-	    			Area1.append(inputString + "\n");
+	    			Area1.append(DateUtils.time("HH:mm:")+" Not a valid command\n");
 	    			Fld1.setText("");
+	    			
 	    		}
     		}
 		}
@@ -195,7 +203,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 		JLabel temp = (JLabel)e.getSource();
 		String labelName = temp.getName();
-    	int t, i; 
+    	int t; 
 
     	if(temp.getName().length() == 6)
     		t = Integer.valueOf(temp.getName().substring(5, 6)); 
@@ -208,48 +216,35 @@ public class CreateBoard extends JFrame implements MouseListener {
 
     		int parsedInt = -1 * (t + 1);
 
-    		for(i = 0;i < p.numOfPips;i++) {
-    			if(p.clearPips.getSelected(i)) {
+    		for(int i = 0;i < p.numOfPips;i++) {
+    			if(p.clearPips.getSelected(i))
     				p.clearPips.setSelected(i, false); 	
-    				break;
-    			}
     		}
     		p.clearPips.setSelected(parsedInt, true);
-  
-    		int m;
-    		for(m = 0;m < p.numOfCheckers;m++) {
-    			if(p.white_Checker[m].getSelected()) {
-    				System.out.println("Checker position: " + p.white_Checker[m].getPosition());
-    				System.out.println(parsedInt);
-    			}
-    			else if(p.black_Checker[m].getSelected()) {
-    				System.out.println("Checker position: " + p.black_Checker[m].getPosition());
-    				System.out.println(parsedInt);
-    			}
-    		}
     		p.updateBoard();
+
     	} else {
     		if(labelName.substring(0, 5).equals("white")) {
 
-    			for(Checker j : p.white_Checker) {
-		    		if(j.getSelected())
-		    		j.setSelected(false);
+    			for(Checker i : p.white_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
 		    	}
-		    	for(Checker j : p.black_Checker) {
-		    		if(j.getSelected())
-		    		j.setSelected(false);
+		    	for(Checker i : p.black_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
 		    	}
 		    	p.white_Checker[t].setSelected(true);
 
     		} else if(labelName.substring(0, 5).equals("black")){
 
-    			for(Checker j : p.black_Checker) {
-		    		if(j.getSelected())
-		    		j.setSelected(false);
+    			for(Checker i : p.black_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
 		    	}
-		    	for(Checker j : p.white_Checker) {
-		    		if(j.getSelected())
-		    		j.setSelected(false);
+		    	for(Checker i : p.white_Checker) {
+		    		if(i.getSelected())
+		    		i.setSelected(false);
 		    	}
 		    	p.black_Checker[t].setSelected(true);
 
