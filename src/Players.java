@@ -1,3 +1,9 @@
+/* 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
 public class Players
 {
 	String name;

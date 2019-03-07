@@ -1,3 +1,9 @@
+/* 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
 import javax.swing.*;
 //import javax.accessibility.*;
 import java.awt.*;
@@ -20,7 +26,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public BufferedImage whiteChecker;
 	public BufferedImage blackChecker;
 	public JLabel BOARD_LABEL;
-	public int numOfPips = 25;
+	public int numOfPips = 26;
 	public int checkerWidth = 50;
 	public int checkerHeight = 50;
 	public int whiteCheckerOffset;
@@ -161,9 +167,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		positions = new CheckerLayout();
 		clearPips = new Pips();
 
-		for(int i = 0;i < numOfPips;i++) {
+		/*for(int i = 0;i < numOfPips;i++) {
 			clearPips.label[i].addMouseListener(this);
-		}
+		}*/
 		
 		/*
 		sets the positions of the checkers on the Board using the coordinates stored in the CheckerLayout class;
@@ -253,10 +259,8 @@ public class LayeredPanel extends JPanel implements MouseListener {
 					numOfCheckersOnPip = positions.pips.get(black_Checker[i].getPosition()).size();
 					
 					if(numOfCheckersOnPip < 5) {
-						if(newPosition < 12) {
-							System.out.println("pipNum < 12");
+						if(newPosition < 12)
 							additionalOffset = -1 * numOfCheckersOnPip * 50;
-						}
 						else
 							additionalOffset = numOfCheckersOnPip * 50;
 						lp.setLayer(black_Checker[i].label, (Integer) 2);

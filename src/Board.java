@@ -1,3 +1,9 @@
+/* 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
 import javax.swing.*;
 //import java.awt.*;
 

@@ -1,4 +1,9 @@
-import java.awt.*;
+/* 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
 import javax.swing.*;
 
 public class Checker{
@@ -10,9 +15,6 @@ public class Checker{
 	public JLabel label;
 
 	public Checker() {
-		this.type = type;
-		this.position = position;
-		this.id = id;
 		this.selected = false;
 		this.label = null;
 	}

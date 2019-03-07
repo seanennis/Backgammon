@@ -1,10 +1,16 @@
+/* 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
 import java.awt.Color;
 import java.awt.Point;
 import javax.swing.*;
 
 public class Pips {
 	public JLabel[] label;
-	private int numOfPips;
+	private int numOfPips = 26;
 	private boolean[] selected;
 	private Point[] offset;
 	private int xOffset = 80;
@@ -12,8 +18,6 @@ public class Pips {
 	private int pipHeight = 300;
 	
 	public Pips() {
-
-		this.numOfPips = 25;
 
 		selected = new boolean[numOfPips];
 		offset = new Point[numOfPips];
@@ -31,8 +35,10 @@ public class Pips {
 				offset[i] = new Point(60 + ((i-12)*xOffset), 0);
 			else if(i >= 18 && i < 24)
 				offset[i] = new Point(618 + ((i-18)*xOffset), 0);
-			else
+			else if(i == 24)
 				offset[i] = new Point(1120, 0);
+			else
+				offset[i] = new Point(518, 52);	
 		}
 
 		label = new JLabel[numOfPips];
@@ -48,10 +54,17 @@ public class Pips {
 /*			label[i].setOpaque(true);
 			label[i].setForeground(Color.BLACK);
 			label[i].setBackground(Color.BLACK);*/
-			if(i == 24)
+			
+			if(i == 24) {
 				label[i].setBounds((int) offset[i].getX(), (int) offset[i].getY(), 116, 645);
-			else
+			}
+			else if(i == 25) {
+				label[i].setBounds((int) offset[i].getX(), (int) offset[i].getY(), 80, 538);
+			}
+			else {
 				label[i].setBounds((int) offset[i].getX(), (int) offset[i].getY(), pipWidth, pipHeight);
+			}
+			System.out.println(label[i].toString());
 		}
 	}
 	public void setSelected(int i, boolean p) {

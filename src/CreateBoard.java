@@ -1,3 +1,9 @@
+/* 
+*	Luke - 17426404
+* 	Adam - 17364606 
+*	Sean - 17469914
+*/
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -41,6 +47,8 @@ public class CreateBoard extends JFrame implements MouseListener {
 			p.white_Checker[i].label.addMouseListener(this);
 			p.black_Checker[i].label.addMouseListener(this);
 		}
+		for(int i = 0;i < p.numOfPips;i++)
+			p.clearPips.label[i].addMouseListener(this);
 
 		createTextField();
     	createButton();
@@ -187,7 +195,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 		JLabel temp = (JLabel)e.getSource();
 		String labelName = temp.getName();
-    	int t; 
+    	int t, i; 
 
     	if(temp.getName().length() == 6)
     		t = Integer.valueOf(temp.getName().substring(5, 6)); 
@@ -200,35 +208,48 @@ public class CreateBoard extends JFrame implements MouseListener {
 
     		int parsedInt = -1 * (t + 1);
 
-    		for(int i = 0;i < p.numOfPips;i++) {
-    			if(p.clearPips.getSelected(i))
+    		for(i = 0;i < p.numOfPips;i++) {
+    			if(p.clearPips.getSelected(i)) {
     				p.clearPips.setSelected(i, false); 	
+    				break;
+    			}
     		}
     		p.clearPips.setSelected(parsedInt, true);
+  
+    		int m;
+    		for(m = 0;m < p.numOfCheckers;m++) {
+    			if(p.white_Checker[m].getSelected()) {
+    				System.out.println("Checker position: " + p.white_Checker[m].getPosition());
+    				System.out.println(parsedInt);
+    			}
+    			else if(p.black_Checker[m].getSelected()) {
+    				System.out.println("Checker position: " + p.black_Checker[m].getPosition());
+    				System.out.println(parsedInt);
+    			}
+    		}
     		p.updateBoard();
-
     	} else {
     		if(labelName.substring(0, 5).equals("white")) {
 
-    			for(Checker i : p.white_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
+    			for(Checker j : p.white_Checker) {
+		    		if(j.getSelected())
+		    		j.setSelected(false);
 		    	}
-		    	for(Checker i : p.black_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
+		    	for(Checker j : p.black_Checker) {
+		    		if(j.getSelected())
+		    		j.setSelected(false);
 		    	}
 		    	p.white_Checker[t].setSelected(true);
 
     		} else if(labelName.substring(0, 5).equals("black")){
 
-    			for(Checker i : p.black_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
+    			for(Checker j : p.black_Checker) {
+		    		if(j.getSelected())
+		    		j.setSelected(false);
 		    	}
-		    	for(Checker i : p.white_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
+		    	for(Checker j : p.white_Checker) {
+		    		if(j.getSelected())
+		    		j.setSelected(false);
 		    	}
 		    	p.black_Checker[t].setSelected(true);
 
