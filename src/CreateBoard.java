@@ -197,7 +197,9 @@ public class CreateBoard extends JFrame implements MouseListener {
 	    		else if(inputString.toLowerCase().equals("cheat"))
 	    		{
 	    			p.cheatCommand();
+	    			Fld1.setText("");
 	    		}
+	    		else
 	    		{
 	    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 	    			Fld1.setText("");
