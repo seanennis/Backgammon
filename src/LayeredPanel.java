@@ -212,6 +212,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
 					break;
 			}
+			
 		}
 		for(int i = 0;i < black_Checker.length;i++) {
 			black_Checker[i] = new Checker();
@@ -250,7 +251,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				default:
 					break;
 			}
+			
 		}
+		updateBoard();
 	}
 	
 	public void addPipNums() {
@@ -269,10 +272,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				pipNum[i].setBounds(475 - ((i-6)*xOffset), 600, 40, 40);
 			}
 			else if(i >= 12 && i < 18) {
-				pipNum[i].setBounds(70 + ((i-12)*xOffset), 5, 40, 40);
+				pipNum[i].setBounds(75 + ((i-12)*xOffset), 5, 40, 40);
 			}
 			else {
-				pipNum[i].setBounds(630 + ((i-18)*xOffset), 5, 40, 40);
+				pipNum[i].setBounds(635 + ((i-18)*xOffset), 5, 40, 40);
 			}
 		}
 	}
