@@ -125,6 +125,9 @@ public class CreateBoard extends JFrame implements MouseListener {
 			Area1.append(player[1].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[1].getName()+"'s turn:");
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
+		
+		p.getPlayerTurn(playerTurn);
+		p.changePipNums();
 	}
 	
 	public void roll() {
@@ -132,6 +135,9 @@ public class CreateBoard extends JFrame implements MouseListener {
 			dice[i].roll();
 		
 		Area1.append(dice[0].getLastRoll() + ", " + dice[1].getLastRoll()+"\n");
+		
+		p.getPlayerTurn(playerTurn);
+		p.changePipNums();
 	}
 	
 	private static class DateUtils
