@@ -170,14 +170,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public void cheatCommand()
 	{
 		for(int i = 0;i < white_Checker.length;i++) {
-			white_Checker[i] = new Checker();
-			white_Checker[i].label = new JLabel(new ImageIcon(whiteChecker));
-//			white_Checker[i].label.addMouseListener(this);
-
-			white_Checker[i].label.setName("white" + String.valueOf(i));
-
-			white_Checker[i].setType(1);
-			white_Checker[i].setId(i);
+	
 			switch(i) {
 				case 0:
 				case 1:
@@ -215,14 +208,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			
 		}
 		for(int i = 0;i < black_Checker.length;i++) {
-			black_Checker[i] = new Checker();
-			black_Checker[i].label = new JLabel(new ImageIcon(blackChecker));
 //			black_Checker[i].label.addMouseListener(this);
-
-			black_Checker[i].label.setName("black" + String.valueOf(i));
-
-			black_Checker[i].setType(1);
-			black_Checker[i].setId(i);
 			switch(i) {
 				case 0:
 				case 1:
@@ -249,9 +235,41 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				case 14:
 					black_Checker[i].setPosition(25);
 				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
 					break;
 			}
 			
+		}
+		for(int i = 0;i < numOfCheckers;i++) {
+
+			if(i < 2)
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() - (i * checkerWidth), checkerWidth, checkerHeight);	
+			else if(i >= 2 && i < 4)
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() - ((i - 2) * checkerWidth), checkerWidth, checkerHeight);
+			else if(i >= 4 && i < 6)
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + ((i - 5) * checkerWidth), checkerWidth, checkerHeight);
+			else if(i >= 6 && i < 8)
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + ((i - 7) * checkerWidth), checkerWidth, checkerHeight);
+			else if(i >= 8 && i < 10)
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + ((i - 9) * checkerWidth), checkerWidth, checkerHeight);
+			else if(i >= 10 && i < 13)
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + ((i - 11) * checkerWidth), checkerWidth, checkerHeight);
+			else
+				white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + ((i - 13) * checkerWidth), checkerWidth, checkerHeight);
+
+			if(i < 3)
+				black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY() - ((i-2) * checkerWidth), checkerWidth, checkerHeight);	
+			else if(i >= 3 && i < 6)
+				black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY() - ((i - 5) * checkerWidth), checkerWidth, checkerHeight);
+			else if(i >= 6 && i < 9)
+				black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY() + ((i - 6) * checkerWidth), checkerWidth, checkerHeight);
+			else if(i >= 9 && i < 12)
+				black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY() + ((i - 10) * checkerWidth), checkerWidth, checkerHeight);
+			else
+				black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY() + ((i - 15) * checkerWidth), checkerWidth, checkerHeight);
+
+			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
+			positions.pips.get(black_Checker[i].getPosition()).add(black_Checker[i]);
 		}
 		updateBoard();
 	}
