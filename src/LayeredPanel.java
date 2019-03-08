@@ -253,11 +253,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 	}
 	
-		
-	public void getPlayerTurn(int playerTurn) {
-		this.playerTurn = playerTurn;
-	}
-	
 	public void addPipNums() {
 		pipNum = new JLabel[24];
 		

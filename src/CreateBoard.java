@@ -126,7 +126,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
-		p.getPlayerTurn(playerTurn);
+		//p.getPlayerTurn(playerTurn);
 		p.changePipNums();
 	}
 	
@@ -136,7 +136,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		
 		Area1.append(dice[0].getLastRoll() + ", " + dice[1].getLastRoll()+"\n");
 		
-		p.getPlayerTurn(playerTurn);
+		//p.getPlayerTurn(playerTurn);
 		p.changePipNums();
 	}
 	
@@ -152,35 +152,36 @@ public class CreateBoard extends JFrame implements MouseListener {
 	
 	private class TextListener implements ActionListener 
 	{
-		int p = 0; 
+		int pN = 0; 
 		String inputString;
 		
         public void actionPerformed(ActionEvent event)
         {
     		inputString = Fld1.getText();
-    		if(p == 0)
+    		if(pN == 0)
     		{
-    			player[p] = new Players(inputString, p);
+    			player[pN] = new Players(inputString, pN);
     			if(inputString.toLowerCase().equals("quit"))
      				System.exit(0);
     			else
     			{
-    				Area1.append(DateUtils.time("[HH:mm]")+" Player " + (p + 1) + ": " + inputString +" : Black Checkers\n");
+    				Area1.append(DateUtils.time("[HH:mm]")+" Player " + (pN + 1) + ": " + inputString +" : Black Checkers\n");
    	 				Fld1.setText("");
     			}
-    			p++;
+    			pN++;
     		}
-    		else if(p == 1)
+    		
+    		else if(pN == 1)
     		{
-    			player[p] = new Players(inputString, p);
+    			player[pN] = new Players(inputString, pN);
     			if(inputString.toLowerCase().equals("quit"))
     				System.exit(0);
     			else
     			{	
-       	 			Area1.append(DateUtils.time("[HH:mm]")+ " Player " + (p + 1) + ": " + inputString + " : White Checkers\n\n");
+       	 			Area1.append(DateUtils.time("[HH:mm]")+ " Player " + (pN + 1) + ": " + inputString + " : White Checkers\n\n");
        	 			Fld1.setText("");
     			}
-    			p++;
+    			pN++;
     			initialRoll();
     		}
     		else {
@@ -193,7 +194,10 @@ public class CreateBoard extends JFrame implements MouseListener {
 					Fld1.setText("");
 					roll();
 	    		}
-	    		else
+	    		else if(inputString.toLowerCase().equals("cheat"))
+	    		{
+	    			p.cheatCommand();
+	    		}
 	    		{
 	    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 	    			Fld1.setText("");
