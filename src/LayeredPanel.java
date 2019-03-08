@@ -166,6 +166,93 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 	}
 	
+
+	public void cheatCommand()
+	{
+		for(int i = 0;i < white_Checker.length;i++) {
+			white_Checker[i] = new Checker();
+			white_Checker[i].label = new JLabel(new ImageIcon(whiteChecker));
+//			white_Checker[i].label.addMouseListener(this);
+
+			white_Checker[i].label.setName("white" + String.valueOf(i));
+
+			white_Checker[i].setType(1);
+			white_Checker[i].setId(i);
+			switch(i) {
+				case 0:
+				case 1:
+					white_Checker[i].setPosition(0);
+					break;
+				case 2:
+				case 3:
+					white_Checker[i].setPosition(1);
+					break;
+				case 4:
+				case 5:
+					white_Checker[i].setPosition(2);
+					break;
+				case 6:
+				case 7:
+					white_Checker[i].setPosition(3);
+					break;
+				case 8:
+				case 9:
+					white_Checker[i].setPosition(4);
+					break;
+				case 10:
+				case 11:
+					white_Checker[i].setPosition(24);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					white_Checker[i].setPosition(25);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
+					break;
+			}
+		}
+		for(int i = 0;i < black_Checker.length;i++) {
+			black_Checker[i] = new Checker();
+			black_Checker[i].label = new JLabel(new ImageIcon(blackChecker));
+//			black_Checker[i].label.addMouseListener(this);
+
+			black_Checker[i].label.setName("black" + String.valueOf(i));
+
+			black_Checker[i].setType(1);
+			black_Checker[i].setId(i);
+			switch(i) {
+				case 0:
+				case 1:
+				case 2:
+					black_Checker[i].setPosition(20);
+					break;
+				case 3:
+				case 4:
+				case 5:
+					black_Checker[i].setPosition(21);
+					break;
+				case 6:				
+				case 7:
+				case 8:
+					black_Checker[i].setPosition(23);
+					break;
+				case 9:		
+				case 10:
+				case 11:
+					black_Checker[i].setPosition(24);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					black_Checker[i].setPosition(25);
+				default:
+					break;
+			}
+		}
+	}
+	
 	public void addPipNums() {
 		pipNum = new JLabel[24];
 		
