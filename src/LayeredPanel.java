@@ -31,6 +31,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public int checkerHeight = 50;
 	public int whiteCheckerOffset;
 	public int blackCheckerOffset;
+	public JLabel[] pipNum;
+	public JPanel numPanel;
+	public int xOffset = 80;
+	private int playerTurn;
 
 	public LayeredPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -161,11 +165,51 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		add(lp);
 
 	}
+	
+	public void addPipNums() {
+		pipNum = new JLabel[24];
+		
+		for(int i = 0; i < 24; i++) {
+			pipNum[i] = new JLabel(String.valueOf(i+1));
+			lp.add(pipNum[i]);
+			pipNum[i].setFont(new Font("Serif", Font.PLAIN, 20));
+			pipNum[i].setForeground(Color.black);
+			
+			if(i < 6) {
+				pipNum[i].setBounds(1035 - (i*xOffset), 600, 40, 40);
+			}
+			else if(i >= 6 && i < 12) {
+				pipNum[i].setBounds(475 - ((i-6)*xOffset), 600, 40, 40);
+			}
+			else if(i >= 12 && i < 18) {
+				pipNum[i].setBounds(75 + ((i-12)*xOffset), 5, 40, 40);
+			}
+			else {
+				pipNum[i].setBounds(635 + ((i-18)*xOffset), 5, 40, 40);
+			}
+		}
+	}
+	
+	public void changePipNums() {
+		for(int i = 0; i < 24; i++) {
+			if(playerTurn == 1)
+				pipNum[i].setText(String.valueOf(i+1));
+			else
+				pipNum[i].setText(String.valueOf(24-i));
+		}
+		System.out.println(playerTurn);
+	}
+	
+	// called when a pip is a legal moving position to highlight pip
+	public void changePipColour(int pip) {
+		pipNum[pip].setForeground(Color.red);
+	}
 
 	public void initialiseBoard() {
 
 		positions = new CheckerLayout();
 		clearPips = new Pips();
+		addPipNums();
 
 		/*for(int i = 0;i < numOfPips;i++) {
 			clearPips.label[i].addMouseListener(this);
