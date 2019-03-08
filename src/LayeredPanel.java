@@ -197,7 +197,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			else
 				pipNum[i].setText(String.valueOf(24-i));
 		}
-		System.out.println(playerTurn);
 	}
 	
 	// called when a pip is a legal moving position to highlight pip
