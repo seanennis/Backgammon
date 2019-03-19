@@ -134,7 +134,10 @@ public class CreateBoard extends JFrame implements MouseListener {
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
 		
-		Area1.append(dice[0].getLastRoll() + ", " + dice[1].getLastRoll()+"\n");
+		if(dice[0].getLastRoll() == dice[1].getLastRoll())
+			Area1.append(player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll());
+		else
+			Area1.append(player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll());
 		
 		//p.getPlayerTurn(playerTurn);
 		p.changePipNums();
