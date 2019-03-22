@@ -216,7 +216,8 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 		JLabel temp = (JLabel)e.getSource();
 		String labelName = temp.getName();
-    	int t; 
+    	int t;
+    	int moveAmount = 0;
 
     	if(temp.getName().length() == 6)
     		t = Integer.valueOf(temp.getName().substring(5, 6)); 
@@ -230,35 +231,52 @@ public class CreateBoard extends JFrame implements MouseListener {
     		int parsedInt = -1 * (t + 1);
 
     		for(int i = 0;i < p.numOfPips;i++) {
-    			if(p.clearPips.getSelected(i))
+    			if(p.clearPips.getSelected(i)) {
     				p.clearPips.setSelected(i, false); 	
+    				break;
+    			}
     		}
     		p.clearPips.setSelected(parsedInt, true);
-    		p.updateBoard();
+
+    		int m;
+    		for(m = 0;m < p.numOfCheckers;m++) {
+    			if(p.white_Checker[m].getSelected() && p.getPlayerTurn() == 2) {
+    				moveAmount = Math.abs(p.white_Checker[m].getPosition() - parsedInt); 
+//    				System.out.println("Checker position: " + p.white_Checker[m].getPosition());
+//    				System.out.println(parsedInt);
+    			}
+    			else if(p.black_Checker[m].getSelected() && p.getPlayerTurn() == 1) {
+    				moveAmount = Math.abs(p.black_Checker[m].getPosition() - parsedInt);
+//    				System.out.println("Checker position: " + p.black_Checker[m].getPosition());
+//    				System.out.println(parsedInt);
+    			}
+    		}
+    		
+    		if(moveAmount == dice[0].getLastRoll()) {
+    			System.out.println("Dice 0 Last Roll: " + dice[0].getLastRoll());
+    			dice[0].setLastRoll(0);
+    			p.updateBoard();
+    		} 
+    		else if(moveAmount == dice[1].getLastRoll()) {
+    			System.out.println("Dice 1 Last Roll: " + dice[1].getLastRoll());
+    			dice[1].setLastRoll(0);
+    			p.updateBoard();
+    		}
+    		else if(moveAmount == (dice[0].getLastRoll() + dice[1].getLastRoll()) ){
+    			dice[0].setLastRoll(0);
+    			dice[1].setLastRoll(0);
+    			p.updateBoard();
+    		}
 
     	} else {
     		if(labelName.substring(0, 5).equals("white")) {
 
-    			for(Checker i : p.white_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
-		    	}
-		    	for(Checker i : p.black_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
-		    	}
+    			p.deSelectCheckers();
 		    	p.white_Checker[t].setSelected(true);
 
     		} else if(labelName.substring(0, 5).equals("black")){
-
-    			for(Checker i : p.black_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
-		    	}
-		    	for(Checker i : p.white_Checker) {
-		    		if(i.getSelected())
-		    		i.setSelected(false);
-		    	}
+    			
+    			p.deSelectCheckers();
 		    	p.black_Checker[t].setSelected(true);
 
     		}
