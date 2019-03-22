@@ -133,6 +133,8 @@ public class LayeredPanel extends JPanel implements MouseListener {
 						break;
 				}
 			}
+			
+			
 
 			/*
 			initialiseBoard() will set the checker labels to a X,Y on the board basedd off the positions assigned to them when they were created
@@ -164,6 +166,83 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 		add(lp);
 
+	}
+	
+	public void cheatCommand()
+	{
+		for(int i = 0;i < white_Checker.length;i++) {
+	
+			switch(i) {
+				case 0:
+				case 1:
+					white_Checker[i].setPosition(0);
+					break;
+				case 2:
+				case 3:
+					white_Checker[i].setPosition(1);
+					break;
+				case 4:
+				case 5:
+					white_Checker[i].setPosition(2);
+					break;
+				case 6:
+				case 7:
+					white_Checker[i].setPosition(3);
+					break;
+				case 8:
+				case 9:
+					white_Checker[i].setPosition(4);
+					break;
+				case 10:
+				case 11:
+					white_Checker[i].setPosition(24);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					white_Checker[i].setPosition(25);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
+					break;
+			}
+			
+		}
+		for(int i = 0;i < black_Checker.length;i++) {
+//			black_Checker[i].label.addMouseListener(this);
+			switch(i) {
+				case 0:
+				case 1:
+				case 2:
+					black_Checker[i].setPosition(20);
+					break;
+				case 3:
+				case 4:
+				case 5:
+					black_Checker[i].setPosition(21);
+					break;
+				case 6:				
+				case 7:
+				case 8:
+					black_Checker[i].setPosition(23);
+					break;
+				case 9:		
+				case 10:
+				case 11:
+					black_Checker[i].setPosition(24);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					black_Checker[i].setPosition(25);
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
+					break;
+			}
+			
+		}
+		
+		updateBoard(true);
 	}
 	
 	public void addPipNums() {
