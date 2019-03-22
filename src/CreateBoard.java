@@ -43,6 +43,9 @@ public class CreateBoard extends JFrame implements MouseListener {
 			p.white_Checker[i].label.addMouseListener(this);
 			p.black_Checker[i].label.addMouseListener(this);
 		}
+		
+		for(int i = 0;i < p.numOfPips;i++)
+			p.clearPips.label[i].addMouseListener(this);
 
 		createTextField();
     	createButton();
@@ -117,11 +120,11 @@ public class CreateBoard extends JFrame implements MouseListener {
 			Area1.append(player[i].getName() + " : " + dice[i].getLastRoll() + "\n");
 		
 		if(dice[0].getLastRoll() > dice[1].getLastRoll()) {
-			playerTurn = 1;
+			p.setPlayerTurn(1);
 			Area1.append(player[0].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[0].getName()+"'s turn:");
 		}
 		else {
-			playerTurn = 2;
+			p.setPlayerTurn(2);
 			Area1.append(player[1].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[1].getName()+"'s turn:");
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
@@ -135,9 +138,9 @@ public class CreateBoard extends JFrame implements MouseListener {
 			dice[i].roll();
 		
 		if(dice[0].getLastRoll() == dice[1].getLastRoll())
-			Area1.append(player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll());
+			Area1.append(player[p.getPlayerTurn() - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll() + "\n");
 		else
-			Area1.append(player[playerTurn - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll());
+			Area1.append(player[p.getPlayerTurn()- 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
 		//p.getPlayerTurn(playerTurn);
 		p.changePipNums();
@@ -192,8 +195,8 @@ public class CreateBoard extends JFrame implements MouseListener {
 	    			System.exit(0);
 	    		else if(inputString.toLowerCase().equals("next")) { 
 	    			Area1.append("");
-	    			playerTurn = -1 * playerTurn + 3;
-	    			Area1.append(DateUtils.time("[HH:mm]")+" "+player[playerTurn - 1].getName() + "'s turn: ");
+	    			p.setPlayerTurn(-1 * p.getPlayerTurn() + 3);
+	    			Area1.append(DateUtils.time("[HH:mm]")+" "+player[p.getPlayerTurn() - 1].getName() + "'s turn: ");
 					Fld1.setText("");
 					roll();
 	    		}
@@ -213,6 +216,8 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
+		System.out.println("CLicked");
 
 		JLabel temp = (JLabel)e.getSource();
 		String labelName = temp.getName();
@@ -239,13 +244,18 @@ public class CreateBoard extends JFrame implements MouseListener {
     		p.clearPips.setSelected(parsedInt, true);
 
     		int m;
+    		
+    		System.out.println("PlayerTurn: " + p.getPlayerTurn() );
+    		
     		for(m = 0;m < p.numOfCheckers;m++) {
     			if(p.white_Checker[m].getSelected() && p.getPlayerTurn() == 2) {
+    				System.out.println("white checker clicked");
     				moveAmount = Math.abs(p.white_Checker[m].getPosition() - parsedInt); 
 //    				System.out.println("Checker position: " + p.white_Checker[m].getPosition());
 //    				System.out.println(parsedInt);
     			}
     			else if(p.black_Checker[m].getSelected() && p.getPlayerTurn() == 1) {
+    				System.out.println("white checker clicked");
     				moveAmount = Math.abs(p.black_Checker[m].getPosition() - parsedInt);
 //    				System.out.println("Checker position: " + p.black_Checker[m].getPosition());
 //    				System.out.println(parsedInt);
