@@ -36,6 +36,9 @@ public class Dice {
 	public int getLastRoll() {
 		return this.lastRoll + 1;
 	}
+	public void setLastRoll(int i) {
+		this.lastRoll = -1;
+	}
 		
 	public int roll() {	
 		this.lastRoll = random.nextInt(6);
