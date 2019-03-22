@@ -255,17 +255,17 @@ public class CreateBoard extends JFrame implements MouseListener {
     		if(moveAmount == dice[0].getLastRoll()) {
     			System.out.println("Dice 0 Last Roll: " + dice[0].getLastRoll());
     			dice[0].setLastRoll(0);
-    			p.updateBoard();
+    			p.updateBoard(false);
     		} 
     		else if(moveAmount == dice[1].getLastRoll()) {
     			System.out.println("Dice 1 Last Roll: " + dice[1].getLastRoll());
     			dice[1].setLastRoll(0);
-    			p.updateBoard();
+    			p.updateBoard(false);
     		}
     		else if(moveAmount == (dice[0].getLastRoll() + dice[1].getLastRoll()) ){
     			dice[0].setLastRoll(0);
     			dice[1].setLastRoll(0);
-    			p.updateBoard();
+    			p.updateBoard(false);
     		}
 
     	} else {

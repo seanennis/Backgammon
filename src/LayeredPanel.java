@@ -144,7 +144,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			updateBoard() moves checkers once theyve been clicked on
 			*/
 
-			updateBoard();
+			updateBoard(false);
 
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -251,7 +251,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 
 	}
-	public void updateBoard() {
+	public void updateBoard(boolean cheatCommand) {
 		
 		/*
 		checks that a pip have been clicked on
@@ -274,7 +274,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		if a checker has also be clicked it'll check which pip it was and sets the position of the selected checker to that of the selected pip
 		*/
 		
-		if(pipSelected) {	
+		if(pipSelected || cheatCommand) {	
 			for(int i = 0;i < numOfCheckers;i++) {
 				if(white_Checker[i].getSelected()) {
 					
@@ -387,7 +387,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
     				clearPips.setSelected(i, false); 	
     		}
     		clearPips.setSelected(parsedInt, true);
-    		updateBoard();
+    		updateBoard(false);
 
     	} else {
     		if(labelName.substring(0, 5).equals("white")) {
