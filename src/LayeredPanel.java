@@ -308,7 +308,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			pipNum[i] = new JLabel(String.valueOf(i+1));
 			lp.add(pipNum[i]);
 			pipNum[i].setFont(new Font("Serif", Font.PLAIN, 20));
-			pipNum[i].setForeground(Color.black);
+			pipNum[i].setForeground(Color.white);
 			
 			if(i < 6) {
 				pipNum[i].setBounds(1035 - (i*xOffset), 600, 40, 40);
@@ -317,10 +317,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				pipNum[i].setBounds(475 - ((i-6)*xOffset), 600, 40, 40);
 			}
 			else if(i >= 12 && i < 18) {
-				pipNum[i].setBounds(75 + ((i-12)*xOffset), 5, 40, 40);
+				pipNum[i].setBounds(70 + ((i-12)*xOffset), 5, 40, 40);
 			}
 			else {
-				pipNum[i].setBounds(635 + ((i-18)*xOffset), 5, 40, 40);
+				pipNum[i].setBounds(630 + ((i-18)*xOffset), 5, 40, 40);
 			}
 		}
 	}
