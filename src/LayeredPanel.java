@@ -104,7 +104,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 				black_Checker[i].label.setName("black" + String.valueOf(i));
 
-				black_Checker[i].setType(1);
+				black_Checker[i].setType(0);
 				black_Checker[i].setId(i);
 				switch(i) {
 					case 0:
@@ -146,7 +146,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			updateBoard() moves checkers once theyve been clicked on
 			*/
 
-			updateBoard(false);
+			updateChecker();
 
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -168,8 +168,25 @@ public class LayeredPanel extends JPanel implements MouseListener {
 
 	}
 	
-	public void cheatCommand()
-	{
+	public void updateHit() {
+		
+		for(int i = 0;i < numOfCheckers;i++) {
+			positions.pips.get(white_Checker[i].getPosition()).remove(white_Checker[i]);
+			positions.pips.get(black_Checker[i].getPosition()).remove(black_Checker[i]);
+		}
+		
+		for(int i = 0;i < numOfCheckers;i++) {
+			positions.pips.get(black_Checker[i].getPosition()).add(black_Checker[i]);
+			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
+			
+			black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY(), checkerWidth, checkerHeight);
+			white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY(), checkerWidth, checkerHeight);
+			
+		}
+		
+	}
+	
+	public void updateBoard() {
 		
 		int additionalOffset = 0;
 		int numOfCheckersOnPip = 0;
@@ -177,77 +194,6 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		for(int i = 0;i < numOfCheckers;i++) {
 			positions.pips.get(white_Checker[i].getPosition()).remove(white_Checker[i]);
 			positions.pips.get(black_Checker[i].getPosition()).remove(black_Checker[i]);
-		}
-		
-		for(int i = 0;i < white_Checker.length;i++) {
-	
-			switch(i) {
-				case 0:
-				case 1:
-					white_Checker[i].setPosition(0);
-					break;
-				case 2:
-				case 3:
-					white_Checker[i].setPosition(1);
-					break;
-				case 4:
-				case 5:
-					white_Checker[i].setPosition(2);
-					break;
-				case 6:
-				case 7:
-					white_Checker[i].setPosition(3);
-					break;
-				case 8:
-				case 9:
-					white_Checker[i].setPosition(4);
-					break;
-				case 10:
-				case 11:
-					white_Checker[i].setPosition(24);
-					break;
-				case 12:
-				case 13:
-				case 14:
-					white_Checker[i].setPosition(25);
-					break;
-				default:
-					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
-					break;
-			}
-			
-		}
-		for(int i = 0;i < black_Checker.length;i++) {
-			switch(i) {
-				case 0:
-				case 1:
-				case 2:
-					black_Checker[i].setPosition(20);
-					break;
-				case 3:
-				case 4:
-				case 5:
-					black_Checker[i].setPosition(21);
-					break;
-				case 6:				
-				case 7:
-				case 8:
-					black_Checker[i].setPosition(23);
-					break;
-				case 9:		
-				case 10:
-				case 11:
-					black_Checker[i].setPosition(24);
-					break;
-				case 12:
-				case 13:
-				case 14:
-					black_Checker[i].setPosition(25);
-				default:
-					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
-					break;
-			}
-			
 		}
 		
 		for(int i = 0;i < numOfCheckers;i++) {
@@ -301,6 +247,133 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 	}
 	
+	public void cheatCommand()
+	{
+		for(int i = 0;i < numOfCheckers;i++) {
+			positions.pips.get(white_Checker[i].getPosition()).remove(white_Checker[i]);
+			positions.pips.get(black_Checker[i].getPosition()).remove(black_Checker[i]);
+		}
+		
+		for(int i = 0;i < white_Checker.length;i++) {
+	
+			switch(i) {
+				case 0:
+				case 1:
+					white_Checker[i].setPosition(0);
+					break;
+				case 2:
+				case 3:
+					white_Checker[i].setPosition(1);
+					break;
+				case 4:
+				case 5:
+					white_Checker[i].setPosition(2);
+					break;
+				case 6:
+				case 7:
+					white_Checker[i].setPosition(3);
+					break;
+				case 8:
+				case 9:
+					white_Checker[i].setPosition(4);
+					break;
+				case 10:
+				case 11:
+					white_Checker[i].setPosition(24);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					white_Checker[i].setPosition(25);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached: white_Checker");
+					break;
+			}
+			
+		}
+		for(int i = 0;i < black_Checker.length;i++) {
+			switch(i) {
+				case 0:
+				case 1:
+				case 2:
+					black_Checker[i].setPosition(20);
+					break;
+				case 3:
+				case 4:
+				case 5:
+					black_Checker[i].setPosition(21);
+					break;
+				case 6:				
+				case 7:
+				case 8:
+					black_Checker[i].setPosition(23);
+					break;
+				case 9:		
+				case 10:
+				case 11:
+					black_Checker[i].setPosition(24);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					black_Checker[i].setPosition(25);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached: black_Checker: " + i);
+					break;
+			}	
+		}
+		
+		updateBoard();
+	}
+	
+	public String listLegalMoves(int diceValueOne, int diceValueTwo) {
+		
+		Checker temp = null;
+		
+		if(playerTurn == 1) {
+			for(int i = 0;i < (numOfPips - 2);i++) {
+				if(!positions.pips.get(i).isEmpty()) {
+					temp = positions.pips.get(i).get(positions.pips.get(i).size() - 1);
+					if(temp.getType() == (playerTurn - 1)) {
+						if(validPip(temp.getPosition() + diceValueOne, playerTurn)) {
+							System.out.println((temp.getPosition() + 1) + " - " + (temp.getPosition() + diceValueOne + 1));
+						}
+						if(validPip(temp.getPosition() + diceValueTwo, playerTurn)) {
+							System.out.println((temp.getPosition() + 1) + " - " + (temp.getPosition() + diceValueTwo + 1));
+						}
+						if(validPip(temp.getPosition() + diceValueOne + diceValueTwo, playerTurn)) {
+							System.out.println((temp.getPosition() + 1) + " - " + (temp.getPosition() + diceValueOne + diceValueTwo + 1));
+						}
+					}
+				}
+			}
+		}
+		else if(playerTurn == 2) {
+			
+			System.out.println("player Two");
+			
+			for(int i = 0;i < (numOfPips - 2);i++) {
+				if(!positions.pips.get(i).isEmpty()) {
+					temp = positions.pips.get(i).get(positions.pips.get(i).size() - 1);
+					if(temp.getType() == (playerTurn - 1)) {
+						if(validPip(temp.getPosition() - diceValueOne, playerTurn)) {
+							System.out.println((-1 * (temp.getPosition() + 1) + 25) + " - " + (-1 * (temp.getPosition() - diceValueOne + 1) + 25));
+						}
+						if(validPip(temp.getPosition() - diceValueTwo, playerTurn)) {
+							System.out.println((-1 * (temp.getPosition() + 1) + 25) + " - " + (-1 * (temp.getPosition() - diceValueTwo + 1) + 25));
+						}
+						if(validPip(temp.getPosition() - diceValueOne - diceValueTwo, playerTurn)) {
+							System.out.println((-1 * (temp.getPosition() + 1) + 25) + " - " + (-1 * (temp.getPosition() - diceValueOne - diceValueTwo + 1) + 25));
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void addPipNums() {
 		pipNum = new JLabel[24];
 		
@@ -308,7 +381,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			pipNum[i] = new JLabel(String.valueOf(i+1));
 			lp.add(pipNum[i]);
 			pipNum[i].setFont(new Font("Serif", Font.PLAIN, 20));
-			pipNum[i].setForeground(Color.white);
+			pipNum[i].setForeground(Color.black);
 			
 			if(i < 6) {
 				pipNum[i].setBounds(1035 - (i*xOffset), 600, 40, 40);
@@ -317,10 +390,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				pipNum[i].setBounds(475 - ((i-6)*xOffset), 600, 40, 40);
 			}
 			else if(i >= 12 && i < 18) {
-				pipNum[i].setBounds(70 + ((i-12)*xOffset), 5, 40, 40);
+				pipNum[i].setBounds(75 + ((i-12)*xOffset), 5, 40, 40);
 			}
 			else {
-				pipNum[i].setBounds(630 + ((i-18)*xOffset), 5, 40, 40);
+				pipNum[i].setBounds(635 + ((i-18)*xOffset), 5, 40, 40);
 			}
 		}
 	}
@@ -386,7 +459,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 
 	}
-	public void updateBoard(boolean cheatCommand) {
+	public void updateChecker() {
 		
 		/*
 		checks that a pip have been clicked on
@@ -473,6 +546,28 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 	}
 	
+	public boolean validPip(int pipPosition, int checkerType) {
+		
+		
+		if(pipPosition > 23 || pipPosition < 0) {
+			return false;
+		}
+		else if(positions.pips.get(pipPosition).isEmpty()) {
+			return true;
+		}
+		else if(positions.pips.get(pipPosition).size() == 1 && positions.pips.get(pipPosition).get(0).getType() != checkerType) {
+			positions.pips.get(pipPosition).get(0).setPosition(25);
+			positions.pips.get(pipPosition).remove(0);
+			updateBoard();
+			return true;
+		}
+		else if(positions.pips.get(pipPosition).get(0).getType() == checkerType) {
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public void printSelected() {
 		System.out.println("List of Selected values from Pips");
 		for(int i = 0;i < numOfPips;i++) {
@@ -522,7 +617,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
     				clearPips.setSelected(i, false); 	
     		}
     		clearPips.setSelected(parsedInt, true);
-    		updateBoard(false);
+    		updateChecker();
 
     	} else {
     		if(labelName.substring(0, 5).equals("white")) {
