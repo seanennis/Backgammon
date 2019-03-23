@@ -129,7 +129,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
-		//p.getPlayerTurn(playerTurn);
+		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		p.changePipNums();
 	}
 	
@@ -143,6 +143,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 			Area1.append(player[p.getPlayerTurn()- 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
 		//p.getPlayerTurn(playerTurn);
+		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		p.changePipNums();
 	}
 	
@@ -216,12 +217,10 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
-		System.out.println("CLicked");
 
 		JLabel temp = (JLabel)e.getSource();
 		String labelName = temp.getName();
-    	int t;
+    	int t,m;
     	int moveAmount = 0;
 
     	if(temp.getName().length() == 6)
@@ -243,41 +242,32 @@ public class CreateBoard extends JFrame implements MouseListener {
     		}
     		p.clearPips.setSelected(parsedInt, true);
 
-    		int m;
-    		
-    		System.out.println("PlayerTurn: " + p.getPlayerTurn() );
-    		
-    		for(m = 0;m < p.numOfCheckers;m++) {
-    			if(p.white_Checker[m].getSelected() && p.getPlayerTurn() == 2) {
-    				System.out.println("white checker clicked");
-    				moveAmount = Math.abs(p.white_Checker[m].getPosition() - parsedInt); 
-//    				System.out.println("Checker position: " + p.white_Checker[m].getPosition());
-//    				System.out.println(parsedInt);
-    			}
-    			else if(p.black_Checker[m].getSelected() && p.getPlayerTurn() == 1) {
-    				System.out.println("white checker clicked");
-    				moveAmount = Math.abs(p.black_Checker[m].getPosition() - parsedInt);
-//    				System.out.println("Checker position: " + p.black_Checker[m].getPosition());
-//    				System.out.println(parsedInt);
-    			}
+    		if(p.validPip(parsedInt, p.getPlayerTurn() - 1)) {
+    			for(m = 0;m < p.numOfCheckers;m++) {
+        			if(p.white_Checker[m].getSelected() && p.getPlayerTurn() == 2) {
+        				moveAmount = Math.abs(p.white_Checker[m].getPosition() - parsedInt); 
+        			}
+        			else if(p.black_Checker[m].getSelected() && p.getPlayerTurn() == 1) {
+        				moveAmount = Math.abs(p.black_Checker[m].getPosition() - parsedInt);
+        			}
+        		}
+        		
+        		if(moveAmount == dice[0].getLastRoll()) {
+        			dice[0].setLastRoll(0);
+        			p.updateChecker();
+        		} 
+        		else if(moveAmount == dice[1].getLastRoll()) {
+        			System.out.println("Dice 1 Last Roll: " + dice[1].getLastRoll());
+        			dice[1].setLastRoll(0);
+        			p.updateChecker();
+        		}
+        		else if(moveAmount == (dice[0].getLastRoll() + dice[1].getLastRoll()) ){
+        			dice[0].setLastRoll(0);
+        			dice[1].setLastRoll(0);
+        			p.updateChecker();
+        		}
     		}
     		
-    		if(moveAmount == dice[0].getLastRoll()) {
-    			System.out.println("Dice 0 Last Roll: " + dice[0].getLastRoll());
-    			dice[0].setLastRoll(0);
-    			p.updateBoard(false);
-    		} 
-    		else if(moveAmount == dice[1].getLastRoll()) {
-    			System.out.println("Dice 1 Last Roll: " + dice[1].getLastRoll());
-    			dice[1].setLastRoll(0);
-    			p.updateBoard(false);
-    		}
-    		else if(moveAmount == (dice[0].getLastRoll() + dice[1].getLastRoll()) ){
-    			dice[0].setLastRoll(0);
-    			dice[1].setLastRoll(0);
-    			p.updateBoard(false);
-    		}
-
     	} else {
     		if(labelName.substring(0, 5).equals("white")) {
 
