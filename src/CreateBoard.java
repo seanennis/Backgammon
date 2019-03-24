@@ -161,6 +161,11 @@ public class CreateBoard extends JFrame implements MouseListener {
 			}
 		}
 		
+		if(dice[0].getLastRoll() == dice[1].getLastRoll()) {  // when dice values equal double the dice
+			for(int i=0; i<2; i++)
+				dice[i].setEqualDice();
+		}
+		
 		p.changePipNums();
 	}
 	
@@ -237,7 +242,6 @@ public class CreateBoard extends JFrame implements MouseListener {
 		}
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 
 		JLabel temp = (JLabel)e.getSource();
@@ -275,13 +279,13 @@ public class CreateBoard extends JFrame implements MouseListener {
 	    				if(parsedInt <= 5)
 	    					p.clearPips.setSelected(parsedInt, true);
 	    				else
-	    					Area1.append("Player must select a pip in the oppsing home board\n");
+	    					Area1.append("Player must select a pip in the opposing home board\n");
 	    			}
 	    			else if(p.getPlayerTurn() == 2) {
 	    				if(parsedInt <= 23 && parsedInt >= 18)
 	    					p.clearPips.setSelected(parsedInt, true);
 	    				else
-	    					Area1.append("Player must select a pip in the oppsing home board\n");
+	    					Area1.append("Player must select a pip in the opposing home board\n");
 	    			}
 				}
     		}

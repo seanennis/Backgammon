@@ -9,6 +9,7 @@ public class Dice {
 	private JLabel[] diceLabel;
 	private Random random = new Random();
 	private int lastRoll;
+	private boolean equalDice = false; // set to true when dice values match, allowing you to use each dice twice
 
 	public Dice() {
 		
@@ -37,7 +38,14 @@ public class Dice {
 		return this.lastRoll + 1;
 	}
 	public void setLastRoll(int i) {
-		this.lastRoll = i - 1;
+		if(equalDice == true)
+			equalDice = false;
+		else
+			this.lastRoll = i - 1;
+	}
+	
+	public void setEqualDice() {
+		this.equalDice = true;
 	}
 		
 	public int roll() {	
