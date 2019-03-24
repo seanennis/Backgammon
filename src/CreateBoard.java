@@ -214,7 +214,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 	    		else if(inputString.toLowerCase().equals("next")) { 
 	    			Area1.append("");
 	    			p.setPlayerTurn(-1 * p.getPlayerTurn() + 3);
-	    			Area1.append(DateUtils.time("[HH:mm]")+" "+player[p.getPlayerTurn() - 1].getName() + "'s turn: ");
+	    			Area1.append(DateUtils.time("[HH:mm] "));
 					Fld1.setText("");
 					roll();
 	    		}
@@ -268,20 +268,20 @@ public class CreateBoard extends JFrame implements MouseListener {
 			if(p.enterCheckers(-1)) {
 				if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
 					System.out.println("dice 1: " + dice[0].getLastRoll() + ", dice 2: " + dice[1].getLastRoll());
-					Area1.append("\nUnable to enter checker!\nplease enter next\n");
+					Area1.append("\nUnable to enter checker! Please enter next\n");
 				}
 				else {
 					if(p.getPlayerTurn() == 1) {
 	    				if(parsedInt <= 5)
 	    					p.clearPips.setSelected(parsedInt, true);
 	    				else
-	    					Area1.append("Player must select a pip\nin the oppsing home board\n");
+	    					Area1.append("Player must select a pip in the oppsing home board\n");
 	    			}
 	    			else if(p.getPlayerTurn() == 2) {
 	    				if(parsedInt <= 23 && parsedInt >= 18)
 	    					p.clearPips.setSelected(parsedInt, true);
 	    				else
-	    					Area1.append("Player must select a pip\nin the oppsing home board\n");
+	    					Area1.append("Player must select a pip in the oppsing home board\n");
 	    			}
 				}
     		}
@@ -348,7 +348,7 @@ public class CreateBoard extends JFrame implements MouseListener {
         			p.updateChecker();
         		}
         		else if(moveAmount < dice[0].getLastRoll() && moveAmount > 0) {
-        			System.out.println("bear off dice conditions met");
+        			System.out.println("Bear off dice conditions met");
         			if(allCheckersInHomeBoard) {
         				if(p.getPlayerTurn() == 1) {
         					int lowestPosition = 24;
@@ -383,7 +383,7 @@ public class CreateBoard extends JFrame implements MouseListener {
         			}
         		}
         		else if(moveAmount < dice[1].getLastRoll() && moveAmount > 0) {
-        			System.out.println("bear off dice conditions met");
+        			System.out.println("Bear off dice conditions met");
         			if(allCheckersInHomeBoard) {
         				if(p.getPlayerTurn() == 1) {
         					int lowestPosition = 24;
@@ -421,7 +421,7 @@ public class CreateBoard extends JFrame implements MouseListener {
         		//re check if the player can enter a second checker after a first has been entered
         		if(p.enterCheckers(-1)) {
         			if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
-        				Area1.append("Unable to enter checker!\nplease enter next\n");
+        				Area1.append("Unable to enter checker! Please enter next\n");
         			}
         		}
     		}
@@ -448,7 +448,7 @@ public class CreateBoard extends JFrame implements MouseListener {
     			
     			p.deSelectCheckers();
     			if(p.enterCheckers(label_Id))
-    				Area1.append("\nPlayer has checkers on the bar that\nthey must enter\n");
+    				Area1.append("\nPlayer has checkers on the bar that they must enter\n");
     			else
     				p.white_Checker[label_Id].setSelected(true);
     				
@@ -457,7 +457,7 @@ public class CreateBoard extends JFrame implements MouseListener {
     			
     			p.deSelectCheckers();
     			if(p.enterCheckers(label_Id))
-    				Area1.append("\nPlayer has checkers on the bar that\nthey must enter\n");
+    				Area1.append("\nPlayer has checkers on the bar that they must enter\n");
     			else
     				p.black_Checker[label_Id].setSelected(true);
     		}
