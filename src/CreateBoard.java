@@ -20,7 +20,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 	private JButton button1;
 
 	private JTextArea Area1;
-	//private JScrollPane Pane1;
+	private JScrollPane Pane1;
 	private JLabel Lbl2;
 
 	public Players[] player = new Players[2];
@@ -67,7 +67,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		Lbl2.setFont(f);
 		Lbl2.setForeground(Color.WHITE);
 		Area1 = new JTextArea("Please enter player names:\n",37,21);
-		//Pane1 = new JScrollPane(Area1);
+		Pane1 = new JScrollPane(Area1);
 		//Pane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		//Pane1.setPreferredSize(new Dimension(450, 110));
 		Area1.setEditable(false);
@@ -80,7 +80,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 	{
 		panel_2.setBackground(Color.black);
 	    panel_2.add(Lbl2,BorderLayout.NORTH);
-	    panel_2.add(Area1);
+	    panel_2.add(Pane1);
 	    //panel_2.add(Pane1,BorderLayout.CENTER);
 	}
 	private void createTextField()
