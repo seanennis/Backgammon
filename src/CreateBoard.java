@@ -123,11 +123,11 @@ public class CreateBoard extends JFrame implements MouseListener {
 		
 		if(dice[0].getLastRoll() > dice[1].getLastRoll()) {
 			p.setPlayerTurn(1);
-			Area1.append(player[0].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[0].getName()+"'s turn:");
+			Area1.append(player[0].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[0].getName()+" : Black : " );
 		}
 		else {
 			p.setPlayerTurn(2);
-			Area1.append(player[1].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[1].getName()+"'s turn:");
+			Area1.append(player[1].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[1].getName()+" : White : ");
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
@@ -136,17 +136,23 @@ public class CreateBoard extends JFrame implements MouseListener {
 	}
 	
 	public void roll() {
-		
-		Area1.setText("");
-		
+			
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
-		
-		if(dice[0].getLastRoll() == dice[1].getLastRoll())
-			Area1.append(player[p.getPlayerTurn() - 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll() + "\n");
-		else
-			Area1.append(player[p.getPlayerTurn()- 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
-		
+		if(player[p.getPlayerTurn()-1].getcheckerID() == 0)
+		{
+			if(dice[0].getLastRoll() == dice[1].getLastRoll())
+				Area1.append(player[p.getPlayerTurn() - 1].getName() + " : Black : "+ dice[0].getLastRoll() + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll() + "\n");
+			else
+				Area1.append(player[p.getPlayerTurn()- 1].getName() + " : Black : " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
+		}
+		else if(player[p.getPlayerTurn()-1].getcheckerID() == 1)
+		{
+			if(dice[0].getLastRoll() == dice[1].getLastRoll())
+				Area1.append(player[p.getPlayerTurn() - 1].getName() + " : White : "+ dice[0].getLastRoll() + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll()  + ", " + dice[0].getLastRoll() + "\n");
+			else
+				Area1.append(player[p.getPlayerTurn()- 1].getName() + " : White : " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
+		}
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		
 		if(p.enterCheckers(-1)) {
