@@ -37,7 +37,7 @@ public class Dice {
 		return this.lastRoll + 1;
 	}
 	public void setLastRoll(int i) {
-		this.lastRoll = -1;
+		this.lastRoll = i - 1;
 	}
 		
 	public int roll() {	

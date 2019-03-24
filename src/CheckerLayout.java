@@ -10,7 +10,7 @@ import java.util.*;
 
 public class CheckerLayout {
 
-	private int numOfPips = 26;
+	private int numOfPips = 28;
 	private Point[] initialOffset = new Point[numOfPips];
 	private int gapOfPips = 80;
 	private int halfWidth = 25;
@@ -34,9 +34,13 @@ public class CheckerLayout {
 			else if(i >= 18 && i < 24)
 				initialOffset[i] = new Point(640 + ((i - 18) * gapOfPips) - halfWidth, 55);
 			else if(i == 24)
-				initialOffset[i] = new Point(1178 - halfWidth, 0);
-			else 
+				initialOffset[i] = new Point(1178 - halfWidth, 52);
+			else if(i == 25)
+				initialOffset[i] = new Point(1178 - halfWidth, 545);
+			else if(i == 26)
 				initialOffset[i] = new Point(560 - halfWidth, 52);
+			else if(i == 27)
+				initialOffset[i] = new Point(560 - halfWidth, 545);
 		}
 	}
 

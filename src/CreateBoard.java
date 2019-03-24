@@ -44,7 +44,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 			p.black_Checker[i].label.addMouseListener(this);
 		}
 		
-		for(int i = 0;i < p.numOfPips;i++)
+		for(int i = 0;i < (p.numOfPips - 2);i++)
 			p.clearPips.label[i].addMouseListener(this);
 
 		createTextField();
@@ -129,11 +129,14 @@ public class CreateBoard extends JFrame implements MouseListener {
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
-		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
+//		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		p.changePipNums();
 	}
 	
 	public void roll() {
+		
+		Area1.setText("");
+		
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
 		
@@ -142,8 +145,14 @@ public class CreateBoard extends JFrame implements MouseListener {
 		else
 			Area1.append(player[p.getPlayerTurn()- 1].getName() + " rolled: " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
-		//p.getPlayerTurn(playerTurn);
-		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
+//		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
+		
+		if(p.enterCheckers(-1)) {
+			if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
+				Area1.append("Unable to enter checker!\nplease enter next\n");
+			}
+		}
+		
 		p.changePipNums();
 	}
 	
@@ -206,6 +215,11 @@ public class CreateBoard extends JFrame implements MouseListener {
 	    			p.cheatCommand();
 	    			Fld1.setText("");
 	    		}
+	    		else if(inputString.toLowerCase().equals("end game"))
+	    		{
+	    			p.endGameCommand();
+	    			Fld1.setText("");
+	    		}
 	    		else
 	    		{
 	    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
@@ -220,19 +234,20 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 		JLabel temp = (JLabel)e.getSource();
 		String labelName = temp.getName();
-    	int t,m;
+    	int label_Id,m;
     	int moveAmount = 0;
+    	boolean allCheckersInHomeBoard = true;
 
     	if(temp.getName().length() == 6)
-    		t = Integer.valueOf(temp.getName().substring(5, 6)); 
+    		label_Id = Integer.valueOf(temp.getName().substring(5, 6)); 
     	else if(temp.getName().length() == 7)
-    		t = Integer.valueOf(temp.getName().substring(5, 7));
+    		label_Id = Integer.valueOf(temp.getName().substring(5, 7));
     	else
-    		t = Integer.valueOf(temp.getName());
+    		label_Id = Integer.valueOf(temp.getName());
 
-    	if(t < 0) {
+    	if(label_Id < 0) {
 
-    		int parsedInt = -1 * (t + 1);
+    		int parsedInt = -1 * (label_Id + 1);
 
     		for(int i = 0;i < p.numOfPips;i++) {
     			if(p.clearPips.getSelected(i)) {
@@ -240,24 +255,82 @@ public class CreateBoard extends JFrame implements MouseListener {
     				break;
     			}
     		}
-    		p.clearPips.setSelected(parsedInt, true);
+    		
+    		// checks if player has to enter checkers from bar
+			if(p.enterCheckers(-1)) {
+				if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
+					System.out.println("dice 1: " + dice[0].getLastRoll() + ", dice 2: " + dice[1].getLastRoll());
+					Area1.append("\nUnable to enter checker!\nplease enter next\n");
+				}
+				else {
+					if(p.getPlayerTurn() == 1) {
+	    				if(parsedInt <= 5)
+	    					p.clearPips.setSelected(parsedInt, true);
+	    				else
+	    					Area1.append("Player must select a pip\nin the oppsing home board\n");
+	    			}
+	    			else if(p.getPlayerTurn() == 2) {
+	    				if(parsedInt <= 23 && parsedInt >= 18)
+	    					p.clearPips.setSelected(parsedInt, true);
+	    				else
+	    					Area1.append("Player must select a pip\nin the oppsing home board\n");
+	    			}
+				}
+    		}
+			// code to check if all the players checkers are in the home board before being able to select the bear off label 
+			else if((parsedInt == 24 && p.getPlayerTurn() == 1) || (parsedInt == 25 && p.getPlayerTurn() == 2)) {
+    			if(p.getPlayerTurn() == 1) {
+    				for(int i = 0;i < p.numOfCheckers;i++) {
+    					if((p.black_Checker[i].getPosition() <= 17 || p.black_Checker[i].getPosition() >= 24) && p.black_Checker[i].getPosition() != 24) {
+    						allCheckersInHomeBoard = false;
+    					}
+    				}
+    			}
+    			else if(p.getPlayerTurn() == 2) {
+    				for(int i = 0;i < p.numOfCheckers;i++) {
+    					if(p.white_Checker[i].getPosition() >= 6 && p.white_Checker[i].getPosition() != 25) {
+    						allCheckersInHomeBoard = false;
+    					}
+    				}
+    			}
+    			if(allCheckersInHomeBoard)
+    				p.clearPips.setSelected(parsedInt, true);
+    			else
+    				Area1.append("\n All player checkers not in home board \n");
+    		}
+    		else
+    			p.clearPips.setSelected(parsedInt, true);
 
+			//if the above code allows a pip to be selected this code will check if the selected checker and pip make a valid move
     		if(p.validPip(parsedInt, p.getPlayerTurn() - 1)) {
     			for(m = 0;m < p.numOfCheckers;m++) {
         			if(p.white_Checker[m].getSelected() && p.getPlayerTurn() == 2) {
-        				moveAmount = Math.abs(p.white_Checker[m].getPosition() - parsedInt); 
+        				if(p.enterCheckers(-1))
+        					moveAmount = 24 - parsedInt;
+        				else if(allCheckersInHomeBoard)
+        					moveAmount = p.white_Checker[m].getPosition() + 1;
+        				else
+        					moveAmount = p.white_Checker[m].getPosition() - parsedInt;
+        				
+        				if(moveAmount < 0)
+        					moveAmount = -1;
         			}
         			else if(p.black_Checker[m].getSelected() && p.getPlayerTurn() == 1) {
-        				moveAmount = Math.abs(p.black_Checker[m].getPosition() - parsedInt);
+        				if(p.enterCheckers(-1))
+        					moveAmount = parsedInt - (-1);
+        				else
+        					moveAmount = parsedInt - p.black_Checker[m].getPosition();
+        				
+        				if(moveAmount < 0)
+        						moveAmount = -1;
         			}
         		}
-        		
-        		if(moveAmount == dice[0].getLastRoll()) {
+    			
+				if(moveAmount == dice[0].getLastRoll()) {
         			dice[0].setLastRoll(0);
         			p.updateChecker();
         		} 
         		else if(moveAmount == dice[1].getLastRoll()) {
-        			System.out.println("Dice 1 Last Roll: " + dice[1].getLastRoll());
         			dice[1].setLastRoll(0);
         			p.updateChecker();
         		}
@@ -266,19 +339,119 @@ public class CreateBoard extends JFrame implements MouseListener {
         			dice[1].setLastRoll(0);
         			p.updateChecker();
         		}
+        		else if(moveAmount < dice[0].getLastRoll() && moveAmount > 0) {
+        			System.out.println("bear off dice conditions met");
+        			if(allCheckersInHomeBoard) {
+        				if(p.getPlayerTurn() == 1) {
+        					int lowestPosition = 24;
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.black_Checker[i].getPosition() < lowestPosition) {
+        							lowestPosition = p.black_Checker[i].getPosition();
+        						}
+        					}
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.black_Checker[i].getPosition() == lowestPosition && p.black_Checker[i].getSelected()) {
+        							dice[0].setLastRoll(0);
+        							p.updateChecker();
+        							break;
+        						}
+        					}
+        				}
+        				else if(p.getPlayerTurn() == 2) {
+        					int highestPosition = 0;
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.white_Checker[i].getPosition() > highestPosition && p.white_Checker[i].getPosition() <= 5) {
+        							highestPosition = p.white_Checker[i].getPosition();
+        						}
+        					}
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.white_Checker[i].getPosition() == highestPosition && p.white_Checker[i].getSelected()) {
+        							dice[0].setLastRoll(0);
+        							p.updateChecker();
+        							break;
+        						}
+        					}
+        				}
+        			}
+        		}
+        		else if(moveAmount < dice[1].getLastRoll() && moveAmount > 0) {
+        			System.out.println("bear off dice conditions met");
+        			if(allCheckersInHomeBoard) {
+        				if(p.getPlayerTurn() == 1) {
+        					int lowestPosition = 24;
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.black_Checker[i].getPosition() < lowestPosition) {
+        							lowestPosition = p.black_Checker[i].getPosition();
+        						}
+        					}
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.black_Checker[i].getPosition() == lowestPosition && p.black_Checker[i].getSelected()) {
+        							dice[1].setLastRoll(0);
+        							p.updateChecker();
+        							break;
+        						}
+        					}
+        				}
+        				else if(p.getPlayerTurn() == 2) {
+        					int highestPosition = 0;
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.white_Checker[i].getPosition() > highestPosition && p.white_Checker[i].getPosition() <= 5) {
+        							highestPosition = p.white_Checker[i].getPosition();
+        						}
+        					}
+        					for(int i = 0;i < p.numOfCheckers;i++) {
+        						if(p.white_Checker[i].getPosition() == highestPosition && p.white_Checker[i].getSelected()) {
+        							dice[1].setLastRoll(0);
+        							p.updateChecker();
+        							break;
+        						}
+        					}
+        				}
+        			}
+        		}
+        		
+        		//re check if the player can enter a second checker after a first has been entered
+        		if(p.enterCheckers(-1)) {
+        			if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
+        				Area1.append("Unable to enter checker!\nplease enter next\n");
+        			}
+        		}
     		}
-    		
+    		int winningPlayer = 0;
+    		if((winningPlayer = p.gameOver()) != 0) {
+    			switch(winningPlayer) {
+    			case 1:
+    				Area1.setText("");
+    				Area1.setText("Congratulations " + player[winningPlayer - 1].getName() + " you won!!!!!");
+    				break;
+    			case 2:
+    				Area1.setText("");
+    				Area1.setText("Congratulations " + player[winningPlayer - 1].getName() + " you won!!!!!");
+    				break;
+    			default:
+    				System.out.println("ERROR default case reached in end of game switch statement");
+    				break;
+    			}
+    		}
     	} else {
+    		
+    		// code for if a checker is clicked
     		if(labelName.substring(0, 5).equals("white")) {
-
+    			
     			p.deSelectCheckers();
-		    	p.white_Checker[t].setSelected(true);
-
+    			if(p.enterCheckers(label_Id))
+    				Area1.append("\nPlayer has checkers on the bar that\nthey must enter\n");
+    			else
+    				p.white_Checker[label_Id].setSelected(true);
+    				
+    			
     		} else if(labelName.substring(0, 5).equals("black")){
     			
     			p.deSelectCheckers();
-		    	p.black_Checker[t].setSelected(true);
-
+    			if(p.enterCheckers(label_Id))
+    				Area1.append("\nPlayer has checkers on the bar that\nthey must enter\n");
+    			else
+    				p.black_Checker[label_Id].setSelected(true);
     		}
     	}
 		
