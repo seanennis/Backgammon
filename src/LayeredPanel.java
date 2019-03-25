@@ -938,9 +938,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		legalTurn temp;
 		legalTurn nestedTemp;
 		
-		for(int i=0; i<(list.size()-1); i++) {
+		for(int i=0; i<(list.size()); i++) {
 			temp = list.get(i);
-			for(int j=i+1; j<(list.size()-1); j++) {
+			for(int j=i+1; j<(list.size()); j++) {
 				nestedTemp = list.get(j);
 				
 				if(temp.getMove(0).getStart() == nestedTemp.getMove(0).getStart() && temp.getMove(1).getfinish() == nestedTemp.getMove(1).getfinish()) {
