@@ -10,6 +10,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
+
 //import java.util.*;
 import javax.imageio.*;
 //import java.lang.*;
@@ -462,19 +464,19 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		boolean legalToEnter = false;
 		
 		if(playerTurn == 1) {
-			if(validPip(diceValueOne - 1, 0) || validPip(diceValueTwo - 1, 0)) {
+			if(validPip(diceValueOne - 1, 0, true).getValid() || validPip(diceValueTwo - 1, 0, true).getValid()) {
 				legalToEnter = true;
 			}
-			else if(validPip((diceValueOne + diceValueTwo - 1), 0)) {
+			else if(validPip((diceValueOne + diceValueTwo - 1), 0, true).getValid()) {
 				if((diceValueOne + diceValueTwo - 1) < 6)
 					legalToEnter = true;
 			}
 		}
 		else if(playerTurn == 2) {
-			if( validPip(23 - (diceValueOne - 1), 1) || validPip(23 - (diceValueTwo - 1), 1)) {
+			if( validPip(23 - (diceValueOne - 1), 1, true).getValid() || validPip(23 - (diceValueTwo - 1), 1, true).getValid()) {
 				legalToEnter = true;
 			}
-			else if(validPip(23 - ((diceValueOne + diceValueTwo - 1)), 1)) {
+			else if(validPip(23 - ((diceValueOne + diceValueTwo - 1)), 1, true).getValid()) {
 					if((diceValueOne + diceValueTwo - 1) < 6)
 						legalToEnter = true;
 			}
@@ -483,50 +485,336 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		return legalToEnter;
 	}
 	
-	public String listLegalMoves(int diceValueOne, int diceValueTwo) {
+	public ArrayList<legalTurn> listLegalMoves(int diceValueOne, int diceValueTwo) {
 		
-		Checker temp = null;
+		Checker tempChecker = new Checker();
+		Checker nestedTempChecker = new Checker();
+		legalTurn tempLegalTurn = new legalTurn();
+		validPip tempValidPip = new validPip();
 		
+		boolean checkersToEnter = false;
+		
+		ArrayList<legalTurn> list = new ArrayList<legalTurn>();
+		
+//		for(int i = 0;i < (numOfPips - 4);i++) {
 		if(playerTurn == 1) {
-			for(int i = 0;i < (numOfPips - 2);i++) {
-				if(!positions.pips.get(i).isEmpty()) {
-					temp = positions.pips.get(i).get(positions.pips.get(i).size() - 1);
-					if(temp.getType() == (playerTurn - 1)) {
-						if(validPip(temp.getPosition() + diceValueOne, playerTurn)) {
-							System.out.println((temp.getPosition() + 1) + " - " + (temp.getPosition() + diceValueOne + 1));
+			tempLegalTurn.setCheckerId(0);
+			if(enterCheckers(-1)) {
+				for(int i = 0;i < positions.pips.get(27).size();i++) {
+					checkersToEnter = true;
+					if(i == 0) {
+						tempValidPip = validPip(diceValueOne, 0, true);
+						if(tempValidPip.getValid()) {
+							tempLegalTurn.setMove(0, new Move(27, diceValueOne));
+							tempLegalTurn.setType(0, tempValidPip.getType());
+							list.add(new legalTurn(tempLegalTurn));
 						}
-						if(validPip(temp.getPosition() + diceValueTwo, playerTurn)) {
-							System.out.println((temp.getPosition() + 1) + " - " + (temp.getPosition() + diceValueTwo + 1));
+					}
+					else if(i == 1) {
+						tempValidPip = validPip(diceValueTwo, 0, true);
+						if(tempValidPip.getValid()) {
+							if(tempLegalTurn.getMove(0).getStart() == -1) {
+								tempLegalTurn.setMove(0, new Move(27, diceValueTwo));
+								tempLegalTurn.setType(0, tempValidPip.getType());
+							}
+							else {
+								tempLegalTurn.setMove(1, new Move(27, diceValueTwo));
+								tempLegalTurn.setType(1, tempValidPip.getType());
+							}
+							list.add(new legalTurn(tempLegalTurn));
 						}
-						if(validPip(temp.getPosition() + diceValueOne + diceValueTwo, playerTurn)) {
-							System.out.println((temp.getPosition() + 1) + " - " + (temp.getPosition() + diceValueOne + diceValueTwo + 1));
+					}
+				}
+				if(enterCheckers(-1))
+					checkersToEnter = true;
+			}
+			if(!checkersToEnter) {
+				for(int i = 0;i < (numOfPips - 4);i++) {
+					
+					if(!positions.pips.get(i).isEmpty()) {
+						tempChecker = positions.pips.get(i).get(positions.pips.get(i).size() - 1);
+						if(tempChecker.getType() == 0) { // if pip contains checker that belongs to the current player
+							
+	//						System.out.println("This should print 3 times");
+								
+							tempValidPip = validPip(tempChecker.getPosition() + diceValueOne, 0, true);
+							
+							if(tempValidPip.getValid()) { // if the 
+															
+								tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() + diceValueOne));
+								tempLegalTurn.setType(0, tempValidPip.getType());
+								
+								tempValidPip = validPip(tempChecker.getPosition() + diceValueOne + diceValueTwo, 0, true);
+								if(tempValidPip.getValid()) {
+									
+									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() + diceValueOne, tempChecker.getPosition() + diceValueOne + diceValueTwo));
+									tempLegalTurn.setType(1, tempValidPip.getType());
+									
+									list.add(new legalTurn(tempLegalTurn));
+								}
+//								else {
+									for(int j = (i + 1);j < (numOfPips - 4);j++) {
+										if(!positions.pips.get(j).isEmpty()) {
+											nestedTempChecker = positions.pips.get(j).get(positions.pips.get(j).size() - 1);
+											if(nestedTempChecker.getType() == 0) {
+												
+												tempValidPip = validPip(nestedTempChecker.getPosition() + diceValueTwo, 0, true);
+												if(tempValidPip.getValid()) {
+													tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() + diceValueTwo));
+													tempLegalTurn.setType(1, tempValidPip.getType());
+													
+													list.add(new legalTurn(tempLegalTurn));
+												}
+											}
+										}
+									}
+//								}
+							}
+							// code for second dice value then the first 
+							
+							tempValidPip = validPip(tempChecker.getPosition() + diceValueTwo, 0, true);
+							
+							if(tempValidPip.getValid()) { // if the 
+								
+								tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() + diceValueTwo));
+								tempLegalTurn.setType(0, tempValidPip.getType());
+								
+								tempValidPip = validPip(tempChecker.getPosition() + diceValueTwo + diceValueOne, 0, true);
+								if(tempValidPip.getValid()) {
+									
+									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() + diceValueTwo, tempChecker.getPosition() + diceValueTwo + diceValueOne));
+									tempLegalTurn.setType(1, tempValidPip.getType());
+									
+									list.add(new legalTurn(tempLegalTurn));
+								}
+//								else {
+									for(int j = (i + 1);j < (numOfPips - 4);j++) {
+										if(!positions.pips.get(j).isEmpty()) {
+											nestedTempChecker = positions.pips.get(j).get(positions.pips.get(j).size() - 1);
+											if(nestedTempChecker.getType() == 0) {
+												
+												tempValidPip = validPip(nestedTempChecker.getPosition() + diceValueOne, 0, true);
+												if(tempValidPip.getValid()) {
+													tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() + diceValueOne));
+													tempLegalTurn.setType(1, tempValidPip.getType());
+													
+													list.add(new legalTurn(tempLegalTurn));
+												}
+											}
+										}
+									}
+//								}
+							}
 						}
 					}
 				}
 			}
 		}
-		else if(playerTurn == 2) {
-			
-			System.out.println("player Two");
-			
-			for(int i = 0;i < (numOfPips - 2);i++) {
-				if(!positions.pips.get(i).isEmpty()) {
-					temp = positions.pips.get(i).get(positions.pips.get(i).size() - 1);
-					if(temp.getType() == (playerTurn - 1)) {
-						if(validPip(temp.getPosition() - diceValueOne, playerTurn)) {
-							System.out.println((-1 * (temp.getPosition() + 1) + 25) + " - " + (-1 * (temp.getPosition() - diceValueOne + 1) + 25));
+			else if(playerTurn == 2) {
+				tempLegalTurn.setCheckerId(1);
+				if(enterCheckers(-1)) {
+					for(int i = 0;i < positions.pips.get(26).size();i++) {
+						checkersToEnter = true;
+						if(i == 0) {
+							tempValidPip = validPip(24 - diceValueOne, 1, true);
+							if(tempValidPip.getValid()) {
+								tempLegalTurn.setMove(0, new Move(26, 24- diceValueOne));
+								tempLegalTurn.setType(0, tempValidPip.getType());
+								list.add(new legalTurn(tempLegalTurn));
+							}
 						}
-						if(validPip(temp.getPosition() - diceValueTwo, playerTurn)) {
-							System.out.println((-1 * (temp.getPosition() + 1) + 25) + " - " + (-1 * (temp.getPosition() - diceValueTwo + 1) + 25));
-						}
-						if(validPip(temp.getPosition() - diceValueOne - diceValueTwo, playerTurn)) {
-							System.out.println((-1 * (temp.getPosition() + 1) + 25) + " - " + (-1 * (temp.getPosition() - diceValueOne - diceValueTwo + 1) + 25));
+						else if(i == 1) {
+							System.out.println("Test");
+							tempValidPip = validPip(24 - diceValueTwo, 1, true);
+							if(tempValidPip.getValid()) {
+								System.out.println("Test");
+								tempLegalTurn.setMove(1, new Move(26, 24 - diceValueTwo));
+								tempLegalTurn.setType(1, tempValidPip.getType());
+								list.add(new legalTurn(tempLegalTurn));
+							}
 						}
 					}
+					if(enterCheckers(-1))
+						checkersToEnter = true;
 				}
+				if(!checkersToEnter) {
+					for(int i = (numOfPips - 5);i >= 0;i--) {
+						
+						if(!positions.pips.get(i).isEmpty()) {
+							tempChecker = positions.pips.get(i).get(positions.pips.get(i).size() - 1);
+							if(tempChecker.getType() == 1) { // if pip contains checker that belongs to the current player
+								
+								//case for bearing off
+								if(tempChecker.getPosition() - diceValueOne == -1) {
+									tempValidPip = validPip(25, 1, true);
+								}
+								else {
+									tempValidPip = validPip(tempChecker.getPosition() - diceValueOne, 1, true);
+								}
+	//							tempValidPip = validPip(tempChecker.getPosition() - diceValueOne, 1);
+								
+								if(tempValidPip.getValid()) { // if the 
+														
+									//case for bearing off
+									if(tempChecker.getPosition() - diceValueOne == -1) {
+										tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), 25));
+									}
+									else {
+										tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() - diceValueOne));
+									}
+	//								tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() - diceValueOne));								
+									
+									tempLegalTurn.setType(0, tempValidPip.getType());
+									
+									//case for bearing off
+									if(tempChecker.getPosition() - diceValueOne - diceValueTwo == -1) {
+										tempValidPip = validPip(25, 1, true);
+									}
+									else {
+										tempValidPip = validPip(tempChecker.getPosition() - diceValueOne - diceValueTwo, 1, true);
+									}
+	//								tempValidPip = validPip(tempChecker.getPosition() - diceValueOne - diceValueTwo, 1);
+									
+									if(tempValidPip.getValid()) {
+										
+										//case for bearing off
+										if(tempChecker.getPosition() - diceValueOne - diceValueTwo == -1) {
+											tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() - diceValueOne, 25));
+										}
+										else {
+											tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() - diceValueOne, tempChecker.getPosition() - diceValueOne - diceValueTwo));
+										}
+	//									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() - diceValueOne, tempChecker.getPosition() - diceValueOne - diceValueTwo));
+										
+										tempLegalTurn.setType(1, tempValidPip.getType());
+										
+										list.add(new legalTurn(tempLegalTurn));
+									}
+	//								else {
+										for(int j = (i - 1);j >= 0;j--) {
+											if(!positions.pips.get(j).isEmpty()) {
+												nestedTempChecker = positions.pips.get(j).get(positions.pips.get(j).size() - 1);
+												if(nestedTempChecker.getType() == 1) {
+													
+													//case for bearing off
+													if(nestedTempChecker.getPosition() - diceValueTwo == -1) {
+														tempValidPip = validPip(25, 1, true);
+													}
+													else {
+														tempValidPip = validPip(nestedTempChecker.getPosition() - diceValueTwo, 1, true);
+													}
+	//												tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo, 1);
+													
+													if(tempValidPip.getValid()) {
+														
+														//case for bearing off
+														if(nestedTempChecker.getPosition() - diceValueTwo == -1) {
+															tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), 25));
+														}
+														else {
+															tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() - diceValueTwo));
+														}
+	//													tempLegalTurn.setMove(1, new Move(tempChecker.getPosition(), tempChecker.getPosition() - diceValueTwo));
+														
+														tempLegalTurn.setType(1, tempValidPip.getType());
+														
+														list.add(new legalTurn(tempLegalTurn));
+													}
+												}
+											}
+										}
+	//								}
+								}
+								// code for second dice value then the first 
+								
+								//case for bearing off
+								if(tempChecker.getPosition() - diceValueTwo == -1) {
+									tempValidPip = validPip(25, 1, true);
+								}
+								else {
+									tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo, 1, true);
+								}
+	//							tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo, 1);
+								
+								if(tempValidPip.getValid()) { // if the 
+									
+									//case for bearing off
+									if(tempChecker.getPosition() - diceValueTwo == -1) {
+										tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() - diceValueTwo));
+									}
+									else {
+										tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() - diceValueTwo));
+									}
+									
+	//								tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() - diceValueTwo));
+									
+									tempLegalTurn.setType(0, tempValidPip.getType());
+									
+									//case for bearing off
+									if(tempChecker.getPosition() - diceValueTwo - diceValueOne == -1) {
+										tempValidPip = validPip(25, 1, true);
+									}
+									else {
+										tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo - diceValueOne, 1, true);
+									}
+	//								tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo - diceValueOne, 1);
+									
+									if(tempValidPip.getValid()) {
+										
+										//case for bearing off
+										if(tempChecker.getPosition() - diceValueTwo - diceValueOne == -1) {
+											tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() - diceValueTwo, 25));
+										}
+										else {
+											tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() - diceValueTwo, tempChecker.getPosition() - diceValueTwo - diceValueOne));
+										}
+	//									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() - diceValueTwo, tempChecker.getPosition() - diceValueTwo - diceValueOne));
+										
+										tempLegalTurn.setType(1, tempValidPip.getType());
+										
+										list.add(new legalTurn(tempLegalTurn));
+									}
+	//								else {
+										for(int j = (i - 1);j >= 0 ;j--) {
+											if(!positions.pips.get(j).isEmpty()) {
+												nestedTempChecker = positions.pips.get(j).get(positions.pips.get(j).size() - 1);
+												if(nestedTempChecker.getType() == 1) {
+													
+													//case for bearing off
+													if(nestedTempChecker.getPosition() - diceValueOne == -1) {
+														tempValidPip = validPip(25, 1, true);
+													}
+													else {
+														tempValidPip = validPip(nestedTempChecker.getPosition() - diceValueOne, 1, true);
+													}
+	//												tempValidPip = validPip(tempChecker.getPosition() - diceValueOne, 1);
+													
+													if(tempValidPip.getValid()) {
+														
+														//case for bearing off
+														if(nestedTempChecker.getPosition() - diceValueOne == -1) {
+															tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), 25));
+														}
+														else {
+															tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() - diceValueOne));
+														}
+														tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() - diceValueOne));
+														tempLegalTurn.setType(1, tempValidPip.getType());
+														
+														list.add(new legalTurn(tempLegalTurn));
+													}
+												}
+											}
+										}
+	//								}
+								}
+							}
+						}
+					}
 			}
-		}
-		return null;
+			}
+		
+		return list;
 	}
 	
 	public void addPipNums() {
@@ -555,7 +843,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	
 	public void changePipNums() {
 		for(int i = 0; i < 24; i++) {
-			if(playerTurn == 1)
+			if(playerTurn == 2)
 				pipNum[i].setText(String.valueOf(i+1));
 			else
 				pipNum[i].setText(String.valueOf(24-i));
@@ -713,29 +1001,41 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 	}
 	
-	public boolean validPip(int pipPosition, int checkerType) {
+	public validPip validPip(int pipPosition, int checkerType, boolean legalListMoves) {
 		
+		validPip temp = new validPip();
 		
 		if(pipPosition > 25 || pipPosition < 0) {
-			return false;
+			temp.setValid(false);
+			return temp;
 		}
 		else if(positions.pips.get(pipPosition).isEmpty()) {
-			return true;
-		}
-		else if(positions.pips.get(pipPosition).size() == 1 && positions.pips.get(pipPosition).get(0).getType() != checkerType) {
-			if(checkerType == 1)
-				positions.pips.get(pipPosition).get(0).setPosition(27);
-			else if(checkerType == 0)
-				positions.pips.get(pipPosition).get(0).setPosition(26);
-			positions.pips.get(pipPosition).remove(0);
-			updateBoard();
-			return true;
+			temp.setValid(true);
+			temp.setType(0);
+			return temp;
 		}
 		else if(positions.pips.get(pipPosition).get(0).getType() == checkerType) {
-			return true;
+			temp.setValid(true);
+			temp.setType(1);
+			return temp;
 		}
-		else
-			return false;
+		else if(positions.pips.get(pipPosition).size() == 1 && positions.pips.get(pipPosition).get(0).getType() != checkerType) {
+			if(!legalListMoves) {
+				if(checkerType == 1)
+					positions.pips.get(pipPosition).get(0).setPosition(27);
+				else if(checkerType == 0)
+					positions.pips.get(pipPosition).get(0).setPosition(26);
+				positions.pips.get(pipPosition).remove(0);
+				updateBoard();
+			}
+			temp.setValid(true);
+			temp.setType(2);
+			return temp;
+		}
+		else {
+			temp.setValid(false);
+			return temp;
+		}
 	}
 	
 	public int gameOver() {
