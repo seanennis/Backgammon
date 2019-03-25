@@ -145,7 +145,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
-	public void roll() throws InterruptedException{
+	public void roll(){
 			
 		p.changePipNums();
 		
@@ -189,12 +189,15 @@ public class CreateBoard extends JFrame implements MouseListener {
 		list = p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		
 		if(list.isEmpty()) {
-			Thread.sleep(3000);
+			//Thread.sleep(3000);
 			roll();
 		}
-
+		int a = 65;
+		char c =(char)a;
 		for(int i = 0;i < list.size();i++) {
-			Area1.append(list.get(i).toString());
+			System.out.println(c);
+			Area1.append(c+" "+list.get(i).toString());
+			c++;
 		}
 				
 	}
