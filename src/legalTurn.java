@@ -62,7 +62,7 @@ public class legalTurn {
 			for(int i = 0;i < 2;i++) {
 				
 				if(i == 1) {				
-					if(move[i].getStart() != -1) {
+					if(move[i].getStart() != -1 && move[i].getfinish() != -1) {
 						if(move[i].getStart() == 27) {
 							buffer += "bar";
 						}
@@ -70,12 +70,13 @@ public class legalTurn {
 							buffer += offset - move[i].getStart();
 						}
 						
-						buffer += "-";
+						buffer = buffer + "-";
 						
 						if(move[i].getfinish() == 24) {
 							buffer += "off\n";
 						}
 						else {
+							System.out.println(move[i].getfinish());
 							buffer += (offset - move[i].getfinish());
 							if(typeOfMove[i] == 2)
 								buffer += "*\n";
@@ -85,7 +86,7 @@ public class legalTurn {
 					}
 				}
 				else {
-					if(move[i].getStart() != -1) {
+					if(move[i].getStart() != -1 && move[i].getfinish() != -1) {
 						if(move[i].getStart() == 27) {
 							buffer += "bar";
 						}
@@ -93,7 +94,7 @@ public class legalTurn {
 							buffer += offset - move[i].getStart();
 						}
 						
-						buffer += "-";
+						buffer = buffer + "-";
 						
 						if(move[i].getfinish() == 24) {
 							buffer += "off\n";
@@ -114,7 +115,7 @@ public class legalTurn {
 			for(int i = 0;i < 2;i++) {
 				
 				if(i == 1) {
-					if(move[i].getStart() != -1) {
+					if(move[i].getStart() != -1 && move[i].getfinish() != -1) {
 						if(move[i].getStart() == 26) {
 							buffer += "bar";
 						}
@@ -137,7 +138,7 @@ public class legalTurn {
 					}
 				}
 				else {
-					if(move[i].getStart() != -1) {
+					if(move[i].getStart() != -1 && move[i].getfinish() != -1) {
 						if(move[i].getStart() == 26) {
 							buffer += "bar";
 						}

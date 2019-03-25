@@ -485,6 +485,86 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		return legalToEnter;
 	}
 	
+	public void selectLegalList(legalTurn choice) {
+		
+		System.out.println(choice.toString());
+		
+		if(playerTurn == 1) {
+			if(choice.getMove(0).getStart() != -1) {
+				deSelectCheckers();
+				deSelectPips();
+				if(choice.getType(0) == 2) {
+					positions.pips.get(choice.getMove(0).getfinish()).get(0).setPosition(26);
+					positions.pips.get(choice.getMove(0).getfinish()).remove(0);
+					updateBoard();
+				}
+				positions.pips.get(choice.getMove(0).getStart()).get(positions.pips.get(choice.getMove(0).getStart()).size() - 1).setSelected(true);
+				clearPips.setSelected(choice.getMove(0).getfinish(), true);
+				updateChecker();
+			}
+			if(choice.getMove(1).getStart() != -1) {
+				deSelectCheckers();
+				deSelectPips();
+				if(choice.getType(1) == 2) {
+					positions.pips.get(choice.getMove(1).getfinish()).get(0).setPosition(26);
+					positions.pips.get(choice.getMove(1).getfinish()).remove(0);
+					updateBoard();
+				}
+				positions.pips.get(choice.getMove(1).getStart()).get(positions.pips.get(choice.getMove(1).getStart()).size() - 1).setSelected(true);
+				clearPips.setSelected(choice.getMove(1).getfinish(), true);
+				updateChecker();
+			}
+		}
+		else if(playerTurn == 2) {
+			if(choice.getMove(0).getStart() != -1) {
+				deSelectCheckers();
+				deSelectPips();
+				if(choice.getType(0) == 2) {
+					positions.pips.get(choice.getMove(0).getfinish()).get(0).setPosition(26);
+					positions.pips.get(choice.getMove(0).getfinish()).remove(0);
+					updateBoard();
+				}
+				positions.pips.get(choice.getMove(0).getStart()).get(positions.pips.get(choice.getMove(0).getStart()).size() - 1).setSelected(true);
+				clearPips.setSelected(choice.getMove(0).getfinish(), true);
+				updateChecker();
+			}
+			if(choice.getMove(1).getStart() != -1) {
+				deSelectCheckers();
+				deSelectPips();
+				if(choice.getType(1) == 2) {
+					positions.pips.get(choice.getMove(1).getfinish()).get(0).setPosition(26);
+					positions.pips.get(choice.getMove(1).getfinish()).remove(0);
+					updateBoard();
+				}
+				positions.pips.get(choice.getMove(1).getStart()).get(positions.pips.get(choice.getMove(1).getStart()).size() - 1).setSelected(true);
+				clearPips.setSelected(choice.getMove(1).getfinish(), true);
+				updateChecker();
+			}
+		}
+	}
+	
+	public boolean allCheckersInHomeBoard() {
+		
+		boolean allCheckersInHomeBoard = true;
+		
+		if(playerTurn == 1) {
+			for(int i = 0;i < numOfCheckers;i++) {
+				if((black_Checker[i].getPosition() <= 17 || black_Checker[i].getPosition() >= 24) && black_Checker[i].getPosition() != 24) {
+					allCheckersInHomeBoard = false;
+				}
+			}
+		}
+		else if(playerTurn == 2) {
+			for(int i = 0;i < numOfCheckers;i++) {
+				if(white_Checker[i].getPosition() >= 6 && white_Checker[i].getPosition() != 25) {
+					allCheckersInHomeBoard = false;
+				}
+			}
+		}
+		
+		return allCheckersInHomeBoard;
+	}
+	
 	public ArrayList<legalTurn> listLegalMoves(int diceValueOne, int diceValueTwo) {
 		
 		Checker tempChecker = new Checker();
@@ -536,8 +616,12 @@ public class LayeredPanel extends JPanel implements MouseListener {
 						if(tempChecker.getType() == 0) { // if pip contains checker that belongs to the current player
 							
 	//						System.out.println("This should print 3 times");
-								
+							
 							tempValidPip = validPip(tempChecker.getPosition() + diceValueOne, 0, true);
+							if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+								System.out.println("Test");
+								tempValidPip.setValid(false);
+							}
 							
 							if(tempValidPip.getValid()) { // if the 
 															
@@ -545,7 +629,11 @@ public class LayeredPanel extends JPanel implements MouseListener {
 								tempLegalTurn.setType(0, tempValidPip.getType());
 								
 								tempValidPip = validPip(tempChecker.getPosition() + diceValueOne + diceValueTwo, 0, true);
+								if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+									tempValidPip.setValid(false);
+								}
 								if(tempValidPip.getValid()) {
+									System.out.println("Temp: " + (tempChecker.getPosition() + diceValueOne + diceValueTwo));
 									
 									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() + diceValueOne, tempChecker.getPosition() + diceValueOne + diceValueTwo));
 									tempLegalTurn.setType(1, tempValidPip.getType());
@@ -559,6 +647,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 											if(nestedTempChecker.getType() == 0) {
 												
 												tempValidPip = validPip(nestedTempChecker.getPosition() + diceValueTwo, 0, true);
+												if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+													System.out.println("Test");
+													tempValidPip.setValid(false);
+												}
 												if(tempValidPip.getValid()) {
 													tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() + diceValueTwo));
 													tempLegalTurn.setType(1, tempValidPip.getType());
@@ -573,13 +665,19 @@ public class LayeredPanel extends JPanel implements MouseListener {
 							// code for second dice value then the first 
 							
 							tempValidPip = validPip(tempChecker.getPosition() + diceValueTwo, 0, true);
-							
+							if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+								tempValidPip.setValid(false);
+							}
 							if(tempValidPip.getValid()) { // if the 
 								
 								tempLegalTurn.setMove(0, new Move(tempChecker.getPosition(), tempChecker.getPosition() + diceValueTwo));
 								tempLegalTurn.setType(0, tempValidPip.getType());
 								
 								tempValidPip = validPip(tempChecker.getPosition() + diceValueTwo + diceValueOne, 0, true);
+								if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+									System.out.println("Test");
+									tempValidPip.setValid(false);
+								}
 								if(tempValidPip.getValid()) {
 									
 									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() + diceValueTwo, tempChecker.getPosition() + diceValueTwo + diceValueOne));
@@ -594,6 +692,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 											if(nestedTempChecker.getType() == 0) {
 												
 												tempValidPip = validPip(nestedTempChecker.getPosition() + diceValueOne, 0, true);
+												
 												if(tempValidPip.getValid()) {
 													tempLegalTurn.setMove(1, new Move(nestedTempChecker.getPosition(), nestedTempChecker.getPosition() + diceValueOne));
 													tempLegalTurn.setType(1, tempValidPip.getType());
@@ -617,6 +716,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 						checkersToEnter = true;
 						if(i == 0) {
 							tempValidPip = validPip(24 - diceValueOne, 1, true);
+							if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+								tempValidPip.setValid(false);
+							}
 							if(tempValidPip.getValid()) {
 								tempLegalTurn.setMove(0, new Move(26, 24- diceValueOne));
 								tempLegalTurn.setType(0, tempValidPip.getType());
@@ -626,6 +728,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 						else if(i == 1) {
 							System.out.println("Test");
 							tempValidPip = validPip(24 - diceValueTwo, 1, true);
+							if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+								tempValidPip.setValid(false);
+							}
 							if(tempValidPip.getValid()) {
 								System.out.println("Test");
 								tempLegalTurn.setMove(1, new Move(26, 24 - diceValueTwo));
@@ -652,7 +757,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 									tempValidPip = validPip(tempChecker.getPosition() - diceValueOne, 1, true);
 								}
 	//							tempValidPip = validPip(tempChecker.getPosition() - diceValueOne, 1);
-								
+								if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+									tempValidPip.setValid(false);
+								}
 								if(tempValidPip.getValid()) { // if the 
 														
 									//case for bearing off
@@ -674,7 +781,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 										tempValidPip = validPip(tempChecker.getPosition() - diceValueOne - diceValueTwo, 1, true);
 									}
 	//								tempValidPip = validPip(tempChecker.getPosition() - diceValueOne - diceValueTwo, 1);
-									
+									if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+										tempValidPip.setValid(false);
+									}
 									if(tempValidPip.getValid()) {
 										
 										//case for bearing off
@@ -704,7 +813,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 														tempValidPip = validPip(nestedTempChecker.getPosition() - diceValueTwo, 1, true);
 													}
 	//												tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo, 1);
-													
+													if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+														tempValidPip.setValid(false);
+													}
 													if(tempValidPip.getValid()) {
 														
 														//case for bearing off
@@ -735,7 +846,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 									tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo, 1, true);
 								}
 	//							tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo, 1);
-								
+								if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+									tempValidPip.setValid(false);
+								}
 								if(tempValidPip.getValid()) { // if the 
 									
 									//case for bearing off
@@ -758,7 +871,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 										tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo - diceValueOne, 1, true);
 									}
 	//								tempValidPip = validPip(tempChecker.getPosition() - diceValueTwo - diceValueOne, 1);
-									
+									if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+										tempValidPip.setValid(false);
+									}
 									if(tempValidPip.getValid()) {
 										
 										//case for bearing off
@@ -788,7 +903,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 														tempValidPip = validPip(nestedTempChecker.getPosition() - diceValueOne, 1, true);
 													}
 	//												tempValidPip = validPip(tempChecker.getPosition() - diceValueOne, 1);
-													
+													if(tempValidPip.getValid() && tempValidPip.getType() == 3 && !allCheckersInHomeBoard()) {
+														tempValidPip.setValid(false);
+													}
 													if(tempValidPip.getValid()) {
 														
 														//case for bearing off
@@ -811,7 +928,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 							}
 						}
 					}
-			}
+				}
 			}
 		
 		return list;
@@ -1000,6 +1117,11 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			black_Checker[i].setSelected(false);
 		}
 	}
+	public void deSelectPips() {
+		for(int i = 0;i < 26;i++) {
+			clearPips.setSelected(i, false);
+		}
+	}
 	
 	public validPip validPip(int pipPosition, int checkerType, boolean legalListMoves) {
 		
@@ -1010,13 +1132,43 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			return temp;
 		}
 		else if(positions.pips.get(pipPosition).isEmpty()) {
-			temp.setValid(true);
-			temp.setType(0);
+			if(pipPosition >=0 && pipPosition <= 23) {
+				temp.setValid(true);
+				temp.setType(0);
+			}
+			else if(pipPosition == 24 && checkerType == 0) {
+				if(allCheckersInHomeBoard()) {
+					temp.setValid(true);
+				}
+				else {
+					temp.setValid(false);
+				}
+				temp.setType(3);
+			}
+			else if(pipPosition == 25 && checkerType == 1) {
+				if(allCheckersInHomeBoard()) {
+					temp.setValid(true);
+				}
+				else {
+					temp.setValid(false); 
+				}
+				temp.setType(3);
+			}
 			return temp;
 		}
 		else if(positions.pips.get(pipPosition).get(0).getType() == checkerType) {
-			temp.setValid(true);
-			temp.setType(1);
+			if(pipPosition >=0 && pipPosition <= 23) {
+				temp.setValid(true);
+				temp.setType(0);
+			}
+			else if(pipPosition == 24 && checkerType == 0) {
+				temp.setValid(true);
+				temp.setType(3);
+			}
+			else if(pipPosition == 25 && checkerType == 1) {
+				temp.setValid(true);
+				temp.setType(3);
+			}
 			return temp;
 		}
 		else if(positions.pips.get(pipPosition).size() == 1 && positions.pips.get(pipPosition).get(0).getType() != checkerType) {

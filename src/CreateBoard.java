@@ -119,8 +119,8 @@ public class CreateBoard extends JFrame implements MouseListener {
 				dice[i].roll();
 		}
 		
-		dice[0].setLastRoll(6);
-		dice[1].setLastRoll(3);
+		/*dice[0].setLastRoll(6);
+		dice[1].setLastRoll(3);*/
 		
 		for(int i = 0;i < 2;i++)
 			Area1.append(player[i].getName() + " : " + dice[i].getLastRoll() + "\n");
@@ -136,6 +136,12 @@ public class CreateBoard extends JFrame implements MouseListener {
 		}
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
+		list = p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
+		
+		for(int i = 0;i < list.size();i++) {
+			Area1.append(list.get(i).toString());
+		}
+		
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
@@ -143,13 +149,13 @@ public class CreateBoard extends JFrame implements MouseListener {
 			
 		p.changePipNums();
 		
-		/*for(int i = 0;i < 2;i++)
-			dice[i].roll();*/
+		for(int i = 0;i < 2;i++)
+			dice[i].roll();
 		
 		
 		// for testing 
-		dice[0].setLastRoll(1);
-		dice[1].setLastRoll(2);
+		/*dice[0].setLastRoll(1);
+		dice[1].setLastRoll(2);*/
 		//end of code for testing 
 		
 		if(player[p.getPlayerTurn()-1].getcheckerID() == 0)
@@ -184,7 +190,6 @@ public class CreateBoard extends JFrame implements MouseListener {
 		
 		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
-//			System.out.println(list.get(i).toString());
 		}
 				
 	}
@@ -239,15 +244,15 @@ public class CreateBoard extends JFrame implements MouseListener {
     				if(inputString.length() == 1) {
     					int firstValue = Character.getNumericValue(inputString.charAt(0)) - 9;
     					
-    					System.out.println(firstValue);
-    					
     					p.selectLegalList(list.get(firstValue - 1));
+    					Fld1.setText("");
     				}
     				else {
     					int firstValue = Character.getNumericValue(inputString.charAt(0)) - 9;
         				int secondValue = Character.getNumericValue(inputString.charAt(1)) - 9;
         				
         				p.selectLegalList(list.get(firstValue * 26 + (secondValue - 1)));
+        				Fld1.setText("");
     				}
     			}
     			else {
