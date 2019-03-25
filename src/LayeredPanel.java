@@ -944,7 +944,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				nestedTemp = list.get(j);
 				
 				if(temp.getMove(0).getStart() == nestedTemp.getMove(0).getStart() && temp.getMove(1).getfinish() == nestedTemp.getMove(1).getfinish()) {
-					list.remove(j);
+					if(temp.getType(i) == 2)
+						list.remove(j);
+					else
+						list.remove(i);
 				}
 			}
 		}
