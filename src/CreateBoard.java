@@ -25,6 +25,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 
 	public Players[] player = new Players[2];
 	public int playerTurn = 1;
+	public ArrayList<legalTurn> list = new ArrayList<legalTurn>();
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -118,10 +119,14 @@ public class CreateBoard extends JFrame implements MouseListener {
 				dice[i].roll();
 		}
 		
+		dice[0].setLastRoll(6);
+		dice[1].setLastRoll(3);
+		
 		for(int i = 0;i < 2;i++)
 			Area1.append(player[i].getName() + " : " + dice[i].getLastRoll() + "\n");
 		
 		if(dice[0].getLastRoll() > dice[1].getLastRoll()) {
+			p.changePipNums();
 			p.setPlayerTurn(1);
 			Area1.append(player[0].getName() + " goes first" + "\n\n"+DateUtils.time("[HH:mm] ")+player[0].getName()+" : Black : " );
 		}
@@ -132,13 +137,21 @@ public class CreateBoard extends JFrame implements MouseListener {
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
-		p.changePipNums();
 	}
 	
 	public void roll() {
 			
-		for(int i = 0;i < 2;i++)
-			dice[i].roll();
+		p.changePipNums();
+		
+		/*for(int i = 0;i < 2;i++)
+			dice[i].roll();*/
+		
+		
+		// for testing 
+		dice[0].setLastRoll(1);
+		dice[1].setLastRoll(2);
+		//end of code for testing 
+		
 		if(player[p.getPlayerTurn()-1].getcheckerID() == 0)
 		{
 			if(dice[0].getLastRoll() == dice[1].getLastRoll())
@@ -153,7 +166,6 @@ public class CreateBoard extends JFrame implements MouseListener {
 			else
 				Area1.append(player[p.getPlayerTurn()- 1].getName() + " : White : " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		}
-//		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		
 		if(p.enterCheckers(-1)) {
 			if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
@@ -166,7 +178,15 @@ public class CreateBoard extends JFrame implements MouseListener {
 				dice[i].setEqualDice();
 		}
 		
-		p.changePipNums();
+		//testing listLegalMoves
+		
+		list = p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
+		
+		for(int i = 0;i < list.size();i++) {
+			Area1.append(list.get(i).toString());
+//			System.out.println(list.get(i).toString());
+		}
+				
 	}
 	
 	private static class DateUtils
@@ -214,34 +234,53 @@ public class CreateBoard extends JFrame implements MouseListener {
     			initialRoll();
     		}
     		else {
-	    		if(inputString.toLowerCase().equals("quit"))
-	    			System.exit(0);
-	    		else if(inputString.toLowerCase().equals("next")) { 
-	    			Area1.append("");
-	    			p.setPlayerTurn(-1 * p.getPlayerTurn() + 3);
-	    			Area1.append(DateUtils.time("[HH:mm] "));
-					Fld1.setText("");
-					roll();
-	    		}
-	    		else if(inputString.toLowerCase().equals("cheat"))
-	    		{
-	    			p.cheatCommand();
-	    			Fld1.setText("");
-	    		}
-	    		else if(inputString.toLowerCase().equals("end game"))
-	    		{
-	    			p.endGameCommand();
-	    			Fld1.setText("");
-	    		}
-	    		else
-	    		{
-	    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
-	    			Fld1.setText("");
-	    		}
+    			if(inputString.length() <= 2) {
+    				
+    				if(inputString.length() == 1) {
+    					int firstValue = Character.getNumericValue(inputString.charAt(0)) - 9;
+    					
+    					System.out.println(firstValue);
+    					
+    					p.selectLegalList(list.get(firstValue - 1));
+    				}
+    				else {
+    					int firstValue = Character.getNumericValue(inputString.charAt(0)) - 9;
+        				int secondValue = Character.getNumericValue(inputString.charAt(1)) - 9;
+        				
+        				p.selectLegalList(list.get(firstValue * 26 + (secondValue - 1)));
+    				}
+    			}
+    			else {
+		    		if(inputString.toLowerCase().equals("quit"))
+		    			System.exit(0);
+		    		else if(inputString.toLowerCase().equals("next")) { 
+		    			Area1.setText("");
+		    			p.setPlayerTurn(-1 * p.getPlayerTurn() + 3);
+		    			Area1.append(DateUtils.time("[HH:mm] "));
+						Fld1.setText("");
+						roll();
+		    		}
+		    		else if(inputString.toLowerCase().equals("cheat"))
+		    		{
+		    			p.cheatCommand();
+		    			Fld1.setText("");
+		    		}
+		    		else if(inputString.toLowerCase().equals("end game"))
+		    		{
+		    			p.endGameCommand();
+		    			Fld1.setText("");
+		    		}
+		    		else
+		    		{
+		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
+		    			Fld1.setText("");
+		    		}
+    			}
     		}
 		}
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 
 		JLabel temp = (JLabel)e.getSource();
@@ -258,6 +297,8 @@ public class CreateBoard extends JFrame implements MouseListener {
     		label_Id = Integer.valueOf(temp.getName());
 
     	if(label_Id < 0) {
+    		
+    		System.out.println("Dice 1: " + dice[0].getLastRoll() + ", Dice 2: " + dice[1].getLastRoll());
 
     		int parsedInt = -1 * (label_Id + 1);
 
@@ -314,13 +355,18 @@ public class CreateBoard extends JFrame implements MouseListener {
     			p.clearPips.setSelected(parsedInt, true);
 
 			//if the above code allows a pip to be selected this code will check if the selected checker and pip make a valid move
-    		if(p.validPip(parsedInt, p.getPlayerTurn() - 1)) {
+    		if(p.validPip(parsedInt, p.getPlayerTurn() - 1, false).getValid()) {
     			for(m = 0;m < p.numOfCheckers;m++) {
         			if(p.white_Checker[m].getSelected() && p.getPlayerTurn() == 2) {
         				if(p.enterCheckers(-1))
         					moveAmount = 24 - parsedInt;
-        				else if(allCheckersInHomeBoard)
-        					moveAmount = p.white_Checker[m].getPosition() + 1;
+        				else if(allCheckersInHomeBoard) {
+        					if(parsedInt == 25)
+        						moveAmount = p.white_Checker[m].getPosition() + 1;
+        					else
+        						moveAmount = p.white_Checker[m].getPosition() - parsedInt;
+        					
+        				}
         				else
         					moveAmount = p.white_Checker[m].getPosition() - parsedInt;
         				
@@ -337,7 +383,7 @@ public class CreateBoard extends JFrame implements MouseListener {
         						moveAmount = -1;
         			}
         		}
-    			
+    
 				if(moveAmount == dice[0].getLastRoll()) {
         			dice[0].setLastRoll(0);
         			p.updateChecker();
@@ -352,7 +398,7 @@ public class CreateBoard extends JFrame implements MouseListener {
         			p.updateChecker();
         		}
         		else if(moveAmount < dice[0].getLastRoll() && moveAmount > 0) {
-        			System.out.println("Bear off dice conditions met");
+//        			System.out.println("Bear off dice conditions met");
         			if(allCheckersInHomeBoard) {
         				if(p.getPlayerTurn() == 1) {
         					int lowestPosition = 24;
