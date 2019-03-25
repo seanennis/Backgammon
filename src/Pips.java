@@ -15,7 +15,7 @@ public class Pips {
 	private Point[] offset;
 	private int xOffset = 80;
 	private int pipWidth = 45;
-	private int pipHeight = 300;
+	private int pipHeight = 322;
 	
 	public Pips() {
 
@@ -28,9 +28,9 @@ public class Pips {
 
 		for(int i = 0; i < numOfPips; i++) {
 			if(i < 6)
-				offset[i] = new Point(1012 - (i*xOffset), 300);
+				offset[i] = new Point(1012 - (i*xOffset), 322);
 			else if(i >= 6 && i < 12)
-				offset[i] = new Point(454 - ((i-6)*xOffset), 300);
+				offset[i] = new Point(454 - ((i-6)*xOffset), 322);
 			else if(i >= 12 && i < 18)
 				offset[i] = new Point(60 + ((i-12)*xOffset), 0);
 			else if(i >= 18 && i < 24)
