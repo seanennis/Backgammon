@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class CreateBoard extends JFrame implements MouseListener {
 	
 	private static int WIDTH = 1500;
-	private static int HEIGHT = 700;
+	private static int HEIGHT = 725;
 
 	private JPanel panel = new JPanel();
 	private JPanel panel_1 = new JPanel();
@@ -26,6 +26,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 	public Players[] player = new Players[2];
 	public int playerTurn = 1;
 	public ArrayList<legalTurn> list = new ArrayList<legalTurn>();
+	public boolean noLegalMovesAllowed = false;
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -137,19 +138,24 @@ public class CreateBoard extends JFrame implements MouseListener {
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
 		list = p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
-		int a = 65;
-		char c =(char)a;
+		
 		for(int i = 0;i < list.size();i++) {
-			Area1.append(c+" "+list.get(i).toString());
-			c++;
+			Area1.append(list.get(i).toString());
 		}
 		
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
-	public void roll(){
+	public void roll() {
 			
+		if(noLegalMovesAllowed) {
+			noLegalMovesAllowed = false;
+			Area1.setText("");
+			Area1.append("No legal move was able to be played so player turn was automatically changed\n\n");
+		}
+		
 		p.changePipNums();
+		
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
 		
@@ -190,15 +196,12 @@ public class CreateBoard extends JFrame implements MouseListener {
 		list = p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 		
 		if(list.isEmpty()) {
-			//Thread.sleep(3000);
+			noLegalMovesAllowed = true;
 			roll();
 		}
-		int a = 65;
-		char c =(char)a;
+
 		for(int i = 0;i < list.size();i++) {
-			System.out.println(c);
-			Area1.append(c+" "+list.get(i).toString());
-			c++;
+			Area1.append(list.get(i).toString());
 		}
 				
 	}
