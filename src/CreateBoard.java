@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import java.util.*;
 import java.text.*;
@@ -6,8 +7,9 @@ import java.awt.event.*;
 
 public class CreateBoard extends JFrame implements MouseListener {
 	
+	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 1500;
-	private static int HEIGHT = 700;
+	private static int HEIGHT = 725;
 
 	private JPanel panel = new JPanel();
 	private JPanel panel_1 = new JPanel();
@@ -137,10 +139,11 @@ public class CreateBoard extends JFrame implements MouseListener {
 		Area1.append(" " + dice[0].getLastRoll() + ", " + dice[1].getLastRoll() + "\n");
 		
 		list = p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
+		
 		int a = 65;
 		char c =(char)a;
 		for(int i = 0;i < list.size();i++) {
-			Area1.append(c+" "+list.get(i).toString());
+			Area1.append(c+" " +list.get(i).toString());
 			c++;
 		}
 		
@@ -150,6 +153,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 	public void roll(){
 			
 		p.changePipNums();
+		
 		for(int i = 0;i < 2;i++)
 			dice[i].roll();
 		
@@ -196,7 +200,6 @@ public class CreateBoard extends JFrame implements MouseListener {
 		int a = 65;
 		char c =(char)a;
 		for(int i = 0;i < list.size();i++) {
-			System.out.println(c);
 			Area1.append(c+" "+list.get(i).toString());
 			c++;
 		}
@@ -268,7 +271,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 		    		if(inputString.toLowerCase().equals("quit"))
 		    			System.exit(0);
 		    		else if(inputString.toLowerCase().equals("next")) { 
-		    			Area1.setText("");
+		    			//Area1.setText("");
 		    			p.setPlayerTurn(-1 * p.getPlayerTurn() + 3);
 		    			Area1.append(DateUtils.time("[HH:mm] "));
 						Fld1.setText("");
@@ -312,7 +315,7 @@ public class CreateBoard extends JFrame implements MouseListener {
 
     	if(label_Id < 0) {
     		
-    		System.out.println("Dice 1: " + dice[0].getLastRoll() + ", Dice 2: " + dice[1].getLastRoll());
+    		//System.out.println("Dice 1: " + dice[0].getLastRoll() + ", Dice 2: " + dice[1].getLastRoll());
 
     		int parsedInt = -1 * (label_Id + 1);
 
@@ -326,7 +329,7 @@ public class CreateBoard extends JFrame implements MouseListener {
     		// checks if player has to enter checkers from bar
 			if(p.enterCheckers(-1)) {
 				if(!p.legalToEnter(dice[0].getLastRoll(), dice[1].getLastRoll())) {
-					System.out.println("dice 1: " + dice[0].getLastRoll() + ", dice 2: " + dice[1].getLastRoll());
+					//System.out.println("dice 1: " + dice[0].getLastRoll() + ", dice 2: " + dice[1].getLastRoll());
 					Area1.append("\nUnable to enter checker! Please enter next\n");
 				}
 				else {
@@ -447,7 +450,7 @@ public class CreateBoard extends JFrame implements MouseListener {
         			}
         		}
         		else if(moveAmount < dice[1].getLastRoll() && moveAmount > 0) {
-        			System.out.println("Bear off dice conditions met");
+        			//System.out.println("Bear off dice conditions met");
         			if(allCheckersInHomeBoard) {
         				if(p.getPlayerTurn() == 1) {
         					int lowestPosition = 24;

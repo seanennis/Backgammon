@@ -18,6 +18,7 @@ import javax.imageio.*;
 
 public class LayeredPanel extends JPanel implements MouseListener {
 
+	private static final long serialVersionUID = 1L;
 	public JLayeredPane lp;
 	public CheckerLayout positions;
 	public Pips clearPips;
@@ -487,7 +488,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	
 	public void selectLegalList(legalTurn choice) {
 		
-		System.out.println(choice.toString());
+		//System.out.println(choice.toString());
 		
 		if(playerTurn == 1) {
 			if(choice.getMove(0).getStart() != -1) {
@@ -633,7 +634,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 									tempValidPip.setValid(false);
 								}
 								if(tempValidPip.getValid()) {
-									System.out.println("Temp: " + (tempChecker.getPosition() + diceValueOne + diceValueTwo));
+									//System.out.println("Temp: " + (tempChecker.getPosition() + diceValueOne + diceValueTwo));
 									
 									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() + diceValueOne, tempChecker.getPosition() + diceValueOne + diceValueTwo));
 									tempLegalTurn.setType(1, tempValidPip.getType());
@@ -944,10 +945,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 				nestedTemp = list.get(j);
 				
 				if(temp.getMove(0).getStart() == nestedTemp.getMove(0).getStart() && temp.getMove(1).getfinish() == nestedTemp.getMove(1).getfinish()) {
-					if(temp.getType(i) == 2)
-						list.remove(j);
-					else
-						list.remove(i);
+					list.remove(j);
 				}
 			}
 		}

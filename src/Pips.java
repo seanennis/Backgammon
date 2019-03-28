@@ -4,7 +4,6 @@
 *	Sean - 17469914
 */
 
-import java.awt.Color;
 import java.awt.Point;
 import javax.swing.*;
 

@@ -76,7 +76,7 @@ public class legalTurn {
 							buffer += "off\n";
 						}
 						else {
-							System.out.println(move[i].getfinish());
+							//System.out.println(move[i].getfinish());
 							buffer += (offset - move[i].getfinish());
 							if(typeOfMove[i] == 2)
 								buffer += "*\n";
