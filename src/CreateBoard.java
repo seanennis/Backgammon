@@ -287,6 +287,19 @@ public class CreateBoard extends JFrame implements MouseListener {
 		    			p.endGameCommand();
 		    			Fld1.setText("");
 		    		}
+		    		else if(inputString.toLowerCase().equals("double"))
+		    		{
+		    			Fld1.setText("");
+		    			Area1.append("\nAccept: Y/N");
+		    			if(inputString.toLowerCase().equals("y"))
+		    			{
+		    				
+		    			}
+		    			else if(inputString.toLowerCase().equals("n"))
+		    			{
+		    				
+		    			}
+		    		}
 		    		else
 		    		{
 		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");

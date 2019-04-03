@@ -28,7 +28,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public BufferedImage BOARD;
 	public BufferedImage whiteChecker;
 	public BufferedImage blackChecker;
+	public BufferedImage[] diceSide;
 	public JLabel BOARD_LABEL;
+	private JLabel[] diceLabel;
 	public int numOfPips = 28;
 	public int checkerWidth = 50;
 	public int checkerHeight = 50;
@@ -46,14 +48,36 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		lp.setPreferredSize(new Dimension(1236, 645));
 		lp.setMinimumSize(new Dimension(1236, 645));
 		lp.setMaximumSize(new Dimension(1236, 645));
+		
+		diceSide = new BufferedImage[12];
+		diceLabel = new JLabel[12];
 
 		try {
 			BOARD = ImageIO.read(getClass().getResource("board.png"));
 			whiteChecker = ImageIO.read(getClass().getResource("WhiteChecker.png"));
 			blackChecker = ImageIO.read(getClass().getResource("BlackChecker.png"));
+			diceSide[0] = ImageIO.read(getClass().getResource("Dice1.png"));
+			diceSide[1] = ImageIO.read(getClass().getResource("Dice1.png"));
+			diceSide[2] = ImageIO.read(getClass().getResource("Dice2.png"));
+			diceSide[3] = ImageIO.read(getClass().getResource("Dice2.png"));
+			diceSide[4] = ImageIO.read(getClass().getResource("Dice3.png"));
+			diceSide[5] = ImageIO.read(getClass().getResource("Dice3.png"));
+			diceSide[6] = ImageIO.read(getClass().getResource("Dice4.png"));
+			diceSide[7] = ImageIO.read(getClass().getResource("Dice4.png"));
+			diceSide[8] = ImageIO.read(getClass().getResource("Dice5.png"));
+			diceSide[9] = ImageIO.read(getClass().getResource("Dice5.png"));
+			diceSide[10] = ImageIO.read(getClass().getResource("Dice6.png"));
+			diceSide[11] = ImageIO.read(getClass().getResource("Dice6.png"));
 
 			BOARD_LABEL = new JLabel(new ImageIcon(BOARD));
 			BOARD_LABEL.setBounds(0, 0, 1236, 645);
+			
+		
+			
+		for(int i = 0;i < 12;i++) 
+		{
+			diceLabel[i] = new JLabel(new ImageIcon(diceSide[i]));
+		}
 			
 			/*
 			Creating the labels that will be the checkers 
@@ -1036,6 +1060,12 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
 			positions.pips.get(black_Checker[i].getPosition()).add(black_Checker[i]);
 		}
+	
+				diceLabel[0].setBounds(521,325,65,65);
+				diceLabel[1].setBounds(521,260,65,65);
+				lp.add(diceLabel[0],(Integer) 2);
+				lp.add(diceLabel[1],(Integer) 2);
+		
 
 	}
 	public void updateChecker() {
