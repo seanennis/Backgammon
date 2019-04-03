@@ -18,6 +18,7 @@ import javax.imageio.*;
 
 public class LayeredPanel extends JPanel implements MouseListener {
 
+	private static final long serialVersionUID = 1L;
 	public JLayeredPane lp;
 	public CheckerLayout positions;
 	public Pips clearPips;
@@ -27,7 +28,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public BufferedImage BOARD;
 	public BufferedImage whiteChecker;
 	public BufferedImage blackChecker;
+	public BufferedImage[] diceSide;
 	public JLabel BOARD_LABEL;
+	private JLabel[] diceLabel;
 	public int numOfPips = 28;
 	public int checkerWidth = 50;
 	public int checkerHeight = 50;
@@ -45,14 +48,36 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		lp.setPreferredSize(new Dimension(1236, 645));
 		lp.setMinimumSize(new Dimension(1236, 645));
 		lp.setMaximumSize(new Dimension(1236, 645));
+		
+		diceSide = new BufferedImage[12];
+		diceLabel = new JLabel[12];
 
 		try {
 			BOARD = ImageIO.read(getClass().getResource("board.png"));
 			whiteChecker = ImageIO.read(getClass().getResource("WhiteChecker.png"));
 			blackChecker = ImageIO.read(getClass().getResource("BlackChecker.png"));
+			diceSide[0] = ImageIO.read(getClass().getResource("Dice1.png"));
+			diceSide[1] = ImageIO.read(getClass().getResource("Dice1.png"));
+			diceSide[2] = ImageIO.read(getClass().getResource("Dice2.png"));
+			diceSide[3] = ImageIO.read(getClass().getResource("Dice2.png"));
+			diceSide[4] = ImageIO.read(getClass().getResource("Dice3.png"));
+			diceSide[5] = ImageIO.read(getClass().getResource("Dice3.png"));
+			diceSide[6] = ImageIO.read(getClass().getResource("Dice4.png"));
+			diceSide[7] = ImageIO.read(getClass().getResource("Dice4.png"));
+			diceSide[8] = ImageIO.read(getClass().getResource("Dice5.png"));
+			diceSide[9] = ImageIO.read(getClass().getResource("Dice5.png"));
+			diceSide[10] = ImageIO.read(getClass().getResource("Dice6.png"));
+			diceSide[11] = ImageIO.read(getClass().getResource("Dice6.png"));
 
 			BOARD_LABEL = new JLabel(new ImageIcon(BOARD));
 			BOARD_LABEL.setBounds(0, 0, 1236, 645);
+			
+		
+			
+		for(int i = 0;i < 12;i++) 
+		{
+			diceLabel[i] = new JLabel(new ImageIcon(diceSide[i]));
+		}
 			
 			/*
 			Creating the labels that will be the checkers 
@@ -257,6 +282,74 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
 			white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + additionalOffset, checkerWidth, checkerHeight);
 			
+		}
+		
+	}
+	
+	public void updateDice(int d1,int d2)
+	{
+		for(int i = 0;i < 12;i++) {
+			//code to clear dice objects
+		}
+		if(d1 == 1)
+		{
+			diceLabel[0].setBounds(520,258,67,67);
+			lp.add(diceLabel[0],(Integer) 2);			
+		}
+		else if (d2 == 1)
+		{
+			diceLabel[1].setBounds(520,325,67,67);
+			lp.add(diceLabel[1],(Integer) 2);
+		}
+		else if(d1== 2)
+		{
+			diceLabel[2].setBounds(520,258,67,67);
+			lp.add(diceLabel[2],(Integer) 2);
+		}
+		else if(d2 == 2 )
+		{
+			diceLabel[3].setBounds(520,325,67,67);
+			lp.add(diceLabel[3],(Integer) 2);
+		}
+		else if(d1 == 3)
+		{
+			diceLabel[4].setBounds(520,258,67,67);
+			lp.add(diceLabel[4],(Integer) 2);
+		}
+		else if(d2 == 3)
+		{
+			diceLabel[5].setBounds(520,325,67,67);
+			lp.add(diceLabel[5],(Integer) 2);
+		}
+		else if(d1 == 4)
+		{
+			diceLabel[6].setBounds(520,258,67,67);
+			lp.add(diceLabel[6],(Integer) 2);
+		}
+		else if(d2 == 4)
+		{
+			diceLabel[7].setBounds(520,325,67,67);
+			lp.add(diceLabel[7],(Integer) 2);
+		}
+		else if(d1 == 5)
+		{
+			diceLabel[8].setBounds(520,258,67,67);
+			lp.add(diceLabel[8],(Integer) 2);
+		}
+		else if(d2 == 5)
+		{
+			diceLabel[9].setBounds(520,325,67,67);
+			lp.add(diceLabel[9],(Integer) 2);
+		}
+		else if(d1 == 6)
+		{
+			diceLabel[10].setBounds(520,258,67,67);
+			lp.add(diceLabel[10],(Integer) 2);
+		}
+		else if(d2 == 6)
+		{
+			diceLabel[11].setBounds(520,325,67,67);
+			lp.add(diceLabel[11],(Integer) 2);
 		}
 	}
 	
@@ -487,7 +580,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	
 	public void selectLegalList(legalTurn choice) {
 		
-		System.out.println(choice.toString());
+		//System.out.println(choice.toString());
 		
 		if(playerTurn == 1) {
 			if(choice.getMove(0).getStart() != -1) {
@@ -633,7 +726,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 									tempValidPip.setValid(false);
 								}
 								if(tempValidPip.getValid()) {
-									System.out.println("Temp: " + (tempChecker.getPosition() + diceValueOne + diceValueTwo));
+									//System.out.println("Temp: " + (tempChecker.getPosition() + diceValueOne + diceValueTwo));
 									
 									tempLegalTurn.setMove(1, new Move(tempChecker.getPosition() + diceValueOne, tempChecker.getPosition() + diceValueOne + diceValueTwo));
 									tempLegalTurn.setType(1, tempValidPip.getType());
@@ -1035,6 +1128,12 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			positions.pips.get(white_Checker[i].getPosition()).add(white_Checker[i]);
 			positions.pips.get(black_Checker[i].getPosition()).add(black_Checker[i]);
 		}
+	
+				diceLabel[10].setBounds(520,325,67,67);
+				diceLabel[11].setBounds(520,258,67,67);
+				lp.add(diceLabel[10],(Integer) 2);
+				lp.add(diceLabel[11],(Integer) 2);
+		
 
 	}
 	public void updateChecker() {
