@@ -8,10 +8,12 @@ public class Players
 {
 	String name;
 	int checkerID;
+	int points;
 	
 	public Players() {
 		this.name = null;
 		this.checkerID = 0;
+		this.points = 0;
 	}
 	
 	public Players(String name) {
@@ -41,6 +43,16 @@ public class Players
 	public int getcheckerID()
 	{
 		return checkerID;
+	}
+	
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	public void updatePoints(int points) {
+		this.points += points;
+	}
+	public int getPoints() {
+		return this.points;
 	}
 	
 }
