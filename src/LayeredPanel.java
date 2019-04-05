@@ -251,6 +251,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			}
 			positions.pips.get(black_Checker[i].getPosition()).add(black_Checker[i]);
 			black_Checker[i].label.setBounds((int) positions.getInitialOffset()[black_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[black_Checker[i].getPosition()].getY() + additionalOffset, checkerWidth, checkerHeight);
+		
 		}
 		
 		for(int i = 0;i < numOfCheckers;i++) {
@@ -283,68 +284,68 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			white_Checker[i].label.setBounds((int) positions.getInitialOffset()[white_Checker[i].getPosition()].getX(), (int) positions.getInitialOffset()[white_Checker[i].getPosition()].getY() + additionalOffset, checkerWidth, checkerHeight);
 			
 		}
-		
+
 	}
 	
 	public void updateDice(int d1,int d2)
 	{
-		for(int i = 0;i < 12;i++) {
-			//code to clear dice objects
-		}
+		System.out.println("FUUUUUUUUUCCCCCCCCCCCCCCCCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+	
 		if(d1 == 1)
 		{
 			diceLabel[0].setBounds(520,258,67,67);
 			lp.add(diceLabel[0],(Integer) 2);			
 		}
-		else if (d2 == 1)
-		{
-			diceLabel[1].setBounds(520,325,67,67);
-			lp.add(diceLabel[1],(Integer) 2);
-		}
-		else if(d1== 2)
+		else if (d1 == 2)
 		{
 			diceLabel[2].setBounds(520,258,67,67);
 			lp.add(diceLabel[2],(Integer) 2);
 		}
-		else if(d2 == 2 )
-		{
-			diceLabel[3].setBounds(520,325,67,67);
-			lp.add(diceLabel[3],(Integer) 2);
-		}
-		else if(d1 == 3)
+		else if(d1== 3)
 		{
 			diceLabel[4].setBounds(520,258,67,67);
 			lp.add(diceLabel[4],(Integer) 2);
 		}
-		else if(d2 == 3)
-		{
-			diceLabel[5].setBounds(520,325,67,67);
-			lp.add(diceLabel[5],(Integer) 2);
-		}
-		else if(d1 == 4)
+		else if(d1 == 4 )
 		{
 			diceLabel[6].setBounds(520,258,67,67);
 			lp.add(diceLabel[6],(Integer) 2);
-		}
-		else if(d2 == 4)
-		{
-			diceLabel[7].setBounds(520,325,67,67);
-			lp.add(diceLabel[7],(Integer) 2);
 		}
 		else if(d1 == 5)
 		{
 			diceLabel[8].setBounds(520,258,67,67);
 			lp.add(diceLabel[8],(Integer) 2);
 		}
-		else if(d2 == 5)
-		{
-			diceLabel[9].setBounds(520,325,67,67);
-			lp.add(diceLabel[9],(Integer) 2);
-		}
 		else if(d1 == 6)
 		{
 			diceLabel[10].setBounds(520,258,67,67);
 			lp.add(diceLabel[10],(Integer) 2);
+		}
+		
+		if(d2 == 1)
+		{
+			diceLabel[1].setBounds(520,325,67,67);
+			lp.add(diceLabel[1],(Integer) 2);
+		}
+		else if(d2 == 2)
+		{
+			diceLabel[3].setBounds(520,325,67,67);
+			lp.add(diceLabel[3],(Integer) 2);
+		}
+		else if(d2 == 3)
+		{
+			diceLabel[5].setBounds(520,325,67,67);
+			lp.add(diceLabel[5],(Integer) 2);
+		}
+		else if(d2 == 4)
+		{
+			diceLabel[7].setBounds(520,325,67,67);
+			lp.add(diceLabel[7],(Integer) 2);
+		}
+		else if(d2 == 5)
+		{
+			diceLabel[9].setBounds(520,325,67,67);
+			lp.add(diceLabel[9],(Integer) 2);
 		}
 		else if(d2 == 6)
 		{
@@ -416,7 +417,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 					black_Checker[i].setPosition(23);
 					break;
 				case 9:		
-				case 10:
+				case 10:	
 				case 11:
 					black_Checker[i].setPosition(24);
 					break;
@@ -1129,10 +1130,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			positions.pips.get(black_Checker[i].getPosition()).add(black_Checker[i]);
 		}
 	
-				diceLabel[10].setBounds(520,325,67,67);
-				diceLabel[11].setBounds(520,258,67,67);
-				lp.add(diceLabel[10],(Integer) 2);
-				lp.add(diceLabel[11],(Integer) 2);
+			/*	diceLabel[0].setBounds(520,325,65,65);
+				diceLabel[1].setBounds(520,258,65,65);
+				lp.add(diceLabel[0],(Integer) 2);
+				lp.add(diceLabel[1],(Integer) 2); */
 		
 
 	}
@@ -1307,7 +1308,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		}
 	}
 	
-	public int gameOver() {
+	public boolean gameOver() {
 		
 		boolean allCheckersOnBearOff = true;
 		
@@ -1315,22 +1316,17 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			if(black_Checker[i].getPosition() != 24)
 				allCheckersOnBearOff = false;
 		}
-		
-		if(allCheckersOnBearOff)
-			return 1;
-		
+				
 		allCheckersOnBearOff = true;
 		
 		for(int i = 0;i < numOfCheckers;i++) {
 			if(white_Checker[i].getPosition() != 25)
 				allCheckersOnBearOff = false;
 		}
-		
-		if(allCheckersOnBearOff)
-			return 1;
-		
-		return 0;
+		return allCheckersOnBearOff;
 	}
+		
+	
 	
 	public void mouseMoved(MouseEvent e){}
     public void mouseDragged(MouseEvent e){} 
