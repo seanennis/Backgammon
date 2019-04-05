@@ -231,6 +231,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		} 
 				
 	}
+	
 	public boolean BackGammonConditionBlack()
 	{
 		
@@ -429,7 +430,8 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    			Area1.append("\nAccept: Y/N\n");
 		    			if(inputString.toLowerCase().equals("y"))
 		    			{
-		    				
+		    				player[0].doublePoints();
+		    				player[1].doublePoints();
 		    			}
 		    			else if(inputString.toLowerCase().equals("n"))
 		    			{

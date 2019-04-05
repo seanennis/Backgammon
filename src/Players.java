@@ -51,6 +51,10 @@ public class Players
 	public void updatePoints(int points) {
 		this.points += points;
 	}
+	public void doublePoints()
+	{
+		this.points *= 2;
+	}
 	public int getPoints() {
 		return this.points;
 	}
