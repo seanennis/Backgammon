@@ -332,6 +332,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	{
 		int pN = 0; 
 		String inputString;
+		String inputString2;
 		
         public void actionPerformed(ActionEvent event)
         {
@@ -341,13 +342,13 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
         	inputString = Fld1.getText();
 
         	if(optionalNewMatch) {
-    			if(inputString.toLowerCase().equals("yes")) {
+    			if(inputString.toLowerCase().equals("yeah")) {
     				pN = 0;
     				for(int i = 0;i < 2;i++)
             			player[i].setPoints(0);
     				Area1.setText("Please enter player names: ");
     			}
-    			else if(inputString.toLowerCase().equals("no")) {
+    			else if(inputString.toLowerCase().equals("nay")) {
     				matchOver = true;
     			}
     			else {
@@ -386,7 +387,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			initialRoll();
     		}
     		else {
-    			if(inputString.length() <= 2) {
+    			if(inputString.length() <= 2 && inputString !="no") {
     				
     				if(inputString.length() == 1) {
     					int firstValue = Character.getNumericValue(inputString.charAt(0)) - 9;
@@ -427,17 +428,34 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    		else if(inputString.toLowerCase().equals("double"))
 		    		{
 		    			Fld1.setText("");
-		    			Area1.append("\nAccept: Y/N\n");
-		    			if(inputString.toLowerCase().equals("y"))
+		    			Area1.append("\nAccept: Yes/No\n");
+		    			if(inputString.toLowerCase().equals("yes"))
 		    			{
-		    				player[0].doublePoints();
-		    				player[1].doublePoints();
+		    				int c = 0;
+		    				if(c%2 == 0 && p.getPlayerTurn() == 1)
+		    				{
+		    					player[0].doublePoints();
+		    					player[1].doublePoints();
+		    					c++;
+		    				}
+		    				else if(c%2 == 1 && p.getPlayerTurn() == 2)
+		    				{
+		    					player[0].doublePoints();
+		    					player[1].doublePoints();
+		    					c++;
+		    				}
 		    			}
-		    			else if(inputString.toLowerCase().equals("n"))
+		    			else if(inputString.toLowerCase().equals("no"))
 		    			{
-		    				
+		    	    		//code to update match score
+		    	    		/*matchScore[0] += player[0].getPoints();
+		    	    		matchScore[1] += player[1].getPoints();*/    			
+		    	    		Area1.append("\nPress any key to start next game\n");
+		    	    		startNextGame = true;
+		    	    		
 		    			}
 		    		}
+		    		
 		    		else
 		    		{
 		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
@@ -447,6 +465,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     		}
 		}
 	}
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
