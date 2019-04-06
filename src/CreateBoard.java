@@ -226,9 +226,9 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			Area1.append(c+" "+list.get(i).toString());
 			c++;
 		} 
-		for(int i = 0;i < list.size();i++) {
+/*		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
-		} 
+		} */
 				
 	}
 	
@@ -445,6 +445,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     		{
     			int c = 0;
     			Fld1.setText("");
+    			inputString = Fld1.getText();
     			Area1.append("\nAccept: Yes/No\n");
     			if(inputString.toLowerCase().equals("yes"))
     			{
