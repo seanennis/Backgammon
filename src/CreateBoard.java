@@ -9,7 +9,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	
 	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 1500;
-	private static int HEIGHT = 725;
+	private static int HEIGHT = 790;
 
 	private JPanel panel = new JPanel();
 	private JPanel panel_1 = new JPanel();
@@ -118,6 +118,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	private void initialRoll() {
 		Area1.append("Players will roll to see who goes first:\n");
 		
+		p.editScoreboard(pointGoal, player[0], player[1], 0);
 		for(int i = 0;i < 2;i++) {
 			dice[i] = new Dice();
 		}
