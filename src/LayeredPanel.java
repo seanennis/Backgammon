@@ -294,9 +294,9 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			lp.add(diceLabel[i]);
 			
 			if(i == 0)
-				diceLabel[i].setBounds(520,258,67,67);
+				diceLabel[i].setBounds(1125, 260, 67, 67);
 			else
-				diceLabel[i].setBounds(520,325,67,67);
+				diceLabel[i].setBounds(1185, 330, 67, 67);
 		}
 	}
 	
@@ -1047,7 +1047,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		
 		doublingDiceLabel2 = new JLabel();
 		lp.add(doublingDiceLabel2);
-		doublingDiceLabel2.setBounds(940, 647, 55, 55);
+		doublingDiceLabel2.setBounds(935, 647, 55, 55);
 	}
 	
 	public void editScoreboard(int pointGoal, Players p1, Players p2, int doublingDice) {
