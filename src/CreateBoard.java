@@ -9,7 +9,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	
 	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 1500;
-	private static int HEIGHT = 790;
+	private static int HEIGHT = 725;
 
 	private JPanel panel = new JPanel();
 	private JPanel panel_1 = new JPanel();
@@ -34,7 +34,6 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean matchOver = false;
 	public int pointGoal = 0;
 	public int doubleDiceValue = 1;
-	private int count = 0;
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -157,11 +156,9 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		{
 			Area1.append(c+" " +list.get(i).toString());
 			c++;
-		}
+		} 
 		
-		// called at the beginning of each game to edit score TODO call again after doubling dice changes hands
-		p.editScoreboard(pointGoal, player[0], player[1], 0);
-		
+	
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
@@ -229,19 +226,10 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			Area1.append(c+" "+list.get(i).toString());
 			c++;
 		} 
-		
-		// TODO
-		if(count%2 == 0) {
-			p.editScoreboard(pointGoal, player[0], player[1], 1);
-			count++;
-		}
-		else {
-			p.editScoreboard(pointGoal, player[0], player[1], 2);
-			count++;
-		}
 /*		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
 		} */
+				
 	}
 	
 	public boolean BackGammonConditionBlack()
@@ -343,7 +331,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	private class TextListener implements ActionListener 
 	{
 		int pN = 0; 
-		String inputString;
+		String inputString,inputString2;
 		boolean doubleEntered=false;
 		
         public void actionPerformed(ActionEvent event)
@@ -451,15 +439,16 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    		}
 		    		
 		    		
+		    		
     			}
     		}
     		if(doubleEntered == true)
     		{
     			int c = 0;
     			Fld1.setText("");
-    			inputString = Fld1.getText();
+    			inputString2 = Fld1.getText();
     			Area1.append("\nAccept: Yes/No\n");
-    			if(inputString.toLowerCase().equals("yes"))
+    			if(inputString2.toLowerCase().equals("yes"))
     			{
     				
     				if(c%2 == 0 && p.getPlayerTurn() == 1)
@@ -467,17 +456,15 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					player[0].doublePoints();
     					player[1].doublePoints();
     					c++;
-    					p.editScoreboard(pointGoal, player[0], player[1], 1);
     				}
     				else if(c%2 == 1 && p.getPlayerTurn() == 2)
     				{
     					player[0].doublePoints();
     					player[1].doublePoints();
     					c++;
-    					p.editScoreboard(pointGoal, player[0], player[1], 2);
     				}
     			}
-    			else if(inputString.toLowerCase().equals("no"))
+    			else if(inputString2.toLowerCase().equals("no"))
     			{
     				if(c%2 == 0)
     				{
