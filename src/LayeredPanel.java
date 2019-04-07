@@ -40,14 +40,18 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public JPanel numPanel;
 	public int xOffset = 80;
 	private int playerTurn;
+	public JLabel pointGoalLabel;
+	public JLabel p1PointsLabel;
+	public JLabel p2PointsLabel;
+	public JLabel doublingDiceLabel;
 
 	public LayeredPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		lp = new JLayeredPane();
-		lp.setPreferredSize(new Dimension(1236, 645));
-		lp.setMinimumSize(new Dimension(1236, 645));
-		lp.setMaximumSize(new Dimension(1236, 645));
+		lp.setPreferredSize(new Dimension(1237, 705));
+		lp.setMinimumSize(new Dimension(1237, 705));
+		lp.setMaximumSize(new Dimension(1237, 705));
 		
 		diceSide = new BufferedImage[12];
 		diceLabel = new JLabel[12];
@@ -70,7 +74,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			diceSide[11] = ImageIO.read(getClass().getResource("Dice6.png"));
 
 			BOARD_LABEL = new JLabel(new ImageIcon(BOARD));
-			BOARD_LABEL.setBounds(0, 0, 1236, 645);
+			BOARD_LABEL.setBounds(0, 0, 1237, 705);
 			
 		
 			
@@ -1082,6 +1086,36 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	// called when a pip is a legal moving position to highlight pip
 	public void changePipColour(int pip) {
 		pipNum[pip].setForeground(Color.red);
+	}
+	
+	public void setScoreboard(int pointGoal, Players p1, Players p2, int doublingDice) {
+		System.out.println(pointGoal + " " + p1.getPoints() + " " + p2.getPoints() + " " + doublingDice);
+		pointGoalLabel = new JLabel(String.valueOf(pointGoal));
+		lp.add(pointGoalLabel);
+		pointGoalLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+		pointGoalLabel.setForeground(Color.white);
+		pointGoalLabel.setBounds(598, 654, 40, 40);
+		
+		p1PointsLabel = new JLabel(String.valueOf(p1.getName()) + ": " + String.valueOf(p1.getPoints()));
+		lp.add(p1PointsLabel);
+		p1PointsLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+		p1PointsLabel.setForeground(Color.white);
+		p1PointsLabel.setBounds(60, 654, 40, 40);
+		
+		p2PointsLabel = new JLabel(String.valueOf(p2.getName()) + ": " + String.valueOf(p2.getPoints()));
+		lp.add(p2PointsLabel);
+		p1PointsLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+		p1PointsLabel.setForeground(Color.white);
+		p1PointsLabel.setBounds(1000, 654, 40, 40);
+		
+		if(doublingDice == 1) {
+			doublingDiceLabel = new JLabel();
+			lp.add(doublingDiceLabel);
+		}
+		else if(doublingDice == 2) {
+			doublingDiceLabel = new JLabel();
+			lp.add(doublingDiceLabel);
+		}
 	}
 	
 	public void setPlayerTurn(int playerTurn) {

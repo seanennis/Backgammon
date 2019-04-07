@@ -9,7 +9,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	
 	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 1500;
-	private static int HEIGHT = 725;
+	private static int HEIGHT = 790;
 
 	private JPanel panel = new JPanel();
 	private JPanel panel_1 = new JPanel();
@@ -156,9 +156,10 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		{
 			Area1.append(c+" " +list.get(i).toString());
 			c++;
-		} 
+		}
 		
-	
+		p.setScoreboard(pointGoal, player[0], player[1], 0);
+		
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
@@ -229,7 +230,6 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 /*		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
 		} */
-				
 	}
 	
 	public boolean BackGammonConditionBlack()
