@@ -36,14 +36,15 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	public int checkerHeight = 50;
 	public int whiteCheckerOffset;
 	public int blackCheckerOffset;
-	public JLabel[] pipNum;
+	private JLabel[] pipNum;
 	public JPanel numPanel;
 	public int xOffset = 80;
 	private int playerTurn;
-	public JLabel pointGoalLabel;
-	public JLabel p1PointsLabel;
-	public JLabel p2PointsLabel;
-	public JLabel doublingDiceLabel;
+	private JLabel pointGoalLabel;
+	private JLabel p1PointsLabel;
+	private JLabel p2PointsLabel;
+	private JLabel doublingDiceLabel1;
+	private JLabel doublingDiceLabel2;
 
 	public LayeredPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -374,28 +375,17 @@ public class LayeredPanel extends JPanel implements MouseListener {
 					break;
 				case 2:
 				case 3:
-					white_Checker[i].setPosition(1);
-					break;
 				case 4:
 				case 5:
-					white_Checker[i].setPosition(2);
-					break;
 				case 6:
 				case 7:
-					white_Checker[i].setPosition(3);
-					break;
 				case 8:
 				case 9:
-					white_Checker[i].setPosition(4);
-					break;
 				case 10:
-				case 11:
-					white_Checker[i].setPosition(25);
-					break;
 				case 12:
 				case 13:
 				case 14:
-					white_Checker[i].setPosition(26);
+					white_Checker[i].setPosition(25);
 					break;
 				default:
 					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached: white_Checker");
@@ -407,28 +397,22 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			switch(i) {
 				case 0:
 				case 1:
-				case 2:
-					black_Checker[i].setPosition(20);
+					black_Checker[i].setPosition(23);
 					break;
+				case 2:
 				case 3:
 				case 4:
 				case 5:
-					black_Checker[i].setPosition(21);
-					break;
 				case 6:				
 				case 7:
 				case 8:
-					black_Checker[i].setPosition(23);
-					break;
 				case 9:		
 				case 10:	
 				case 11:
-					black_Checker[i].setPosition(24);
-					break;
 				case 12:
 				case 13:
 				case 14:
-					black_Checker[i].setPosition(27);
+					black_Checker[i].setPosition(24);
 					break;
 				default:
 					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached: black_Checker: " + i);
@@ -1088,33 +1072,50 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		pipNum[pip].setForeground(Color.red);
 	}
 	
-	public void setScoreboard(int pointGoal, Players p1, Players p2, int doublingDice) {
-		System.out.println(pointGoal + " " + p1.getPoints() + " " + p2.getPoints() + " " + doublingDice);
-		pointGoalLabel = new JLabel(String.valueOf(pointGoal));
+	public void setScoreboard() {
+		//System.out.println(pointGoal + " " + p1.getPoints() + " " + p2.getPoints() + " " + doublingDice);
+		pointGoalLabel = new JLabel();
 		lp.add(pointGoalLabel);
-		pointGoalLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+		pointGoalLabel.setFont(new Font("Serif", Font.BOLD, 30));
 		pointGoalLabel.setForeground(Color.white);
-		pointGoalLabel.setBounds(598, 654, 40, 40);
+		pointGoalLabel.setBounds(550, 644, 60, 60);
 		
-		p1PointsLabel = new JLabel(String.valueOf(p1.getName()) + ": " + String.valueOf(p1.getPoints()));
+		p1PointsLabel = new JLabel();
 		lp.add(p1PointsLabel);
-		p1PointsLabel.setFont(new Font("Serif", Font.PLAIN, 20));
+		p1PointsLabel.setFont(new Font("Serif", Font.BOLD, 30));
 		p1PointsLabel.setForeground(Color.white);
-		p1PointsLabel.setBounds(60, 654, 40, 40);
+		p1PointsLabel.setBounds(60, 644, 300, 60);
 		
-		p2PointsLabel = new JLabel(String.valueOf(p2.getName()) + ": " + String.valueOf(p2.getPoints()));
+		p2PointsLabel = new JLabel();
 		lp.add(p2PointsLabel);
-		p1PointsLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-		p1PointsLabel.setForeground(Color.white);
-		p1PointsLabel.setBounds(1000, 654, 40, 40);
+		p2PointsLabel.setFont(new Font("Serif", Font.BOLD, 30));
+		p2PointsLabel.setForeground(Color.white);
+		p2PointsLabel.setBounds(1000, 644, 300, 60);
+
+		doublingDiceLabel1 = new JLabel();
+		lp.add(doublingDiceLabel1);
+		doublingDiceLabel1.setFont(new Font("Serif", Font.BOLD, 30));
+		doublingDiceLabel1.setForeground(Color.white);
+		doublingDiceLabel1.setBounds(10, 644, 40, 40);
 		
+		doublingDiceLabel2 = new JLabel();
+		lp.add(doublingDiceLabel2);
+		doublingDiceLabel2.setFont(new Font("Serif", Font.BOLD, 30));
+		doublingDiceLabel2.setForeground(Color.white);
+		doublingDiceLabel2.setBounds(960, 644, 40, 40);
+	}
+	
+	public void editScoreboard(int pointGoal, Players p1, Players p2, int doublingDice) {
+		pointGoalLabel.setText(String.valueOf(pointGoal));
+		p1PointsLabel.setText(String.valueOf(p1.getName()) + ": " + String.valueOf(p1.getPoints()));
+		p2PointsLabel.setText(String.valueOf(p2.getName()) + ": " + String.valueOf(p2.getPoints()));
 		if(doublingDice == 1) {
-			doublingDiceLabel = new JLabel();
-			lp.add(doublingDiceLabel);
+			doublingDiceLabel2.setText("");
+			doublingDiceLabel1.setText("x2");
 		}
 		else if(doublingDice == 2) {
-			doublingDiceLabel = new JLabel();
-			lp.add(doublingDiceLabel);
+			doublingDiceLabel1.setText("");
+			doublingDiceLabel2.setText("x2");
 		}
 	}
 	
@@ -1131,6 +1132,8 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		positions = new CheckerLayout();
 		clearPips = new Pips();
 		addPipNums();
+		
+		setScoreboard();
 
 		/*for(int i = 0;i < numOfPips;i++) {
 			clearPips.label[i].addMouseListener(this);

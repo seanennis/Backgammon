@@ -34,6 +34,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean matchOver = false;
 	public int pointGoal = 0;
 	public int doubleDiceValue = 1;
+	private int count = 0;
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -158,7 +159,8 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			c++;
 		}
 		
-		p.setScoreboard(pointGoal, player[0], player[1], 0);
+		// called at the beginning of each game to edit score TODO call again after doubling dice changes hands
+		p.editScoreboard(pointGoal, player[0], player[1], 0);
 		
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
@@ -227,6 +229,16 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			Area1.append(c+" "+list.get(i).toString());
 			c++;
 		} 
+		
+		// TODO
+		if(count%2 == 0) {
+			p.editScoreboard(pointGoal, player[0], player[1], 1);
+			count++;
+		}
+		else {
+			p.editScoreboard(pointGoal, player[0], player[1], 2);
+			count++;
+		}
 /*		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
 		} */
@@ -455,12 +467,14 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					player[0].doublePoints();
     					player[1].doublePoints();
     					c++;
+    					p.editScoreboard(pointGoal, player[0], player[1], 1);
     				}
     				else if(c%2 == 1 && p.getPlayerTurn() == 2)
     				{
     					player[0].doublePoints();
     					player[1].doublePoints();
     					c++;
+    					p.editScoreboard(pointGoal, player[0], player[1], 2);
     				}
     			}
     			else if(inputString.toLowerCase().equals("no"))
