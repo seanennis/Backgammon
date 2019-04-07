@@ -9,7 +9,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	
 	private static final long serialVersionUID = 1L;
 	private static int WIDTH = 1500;
-	private static int HEIGHT = 725;
+	private static int HEIGHT = 790;
 
 	private JPanel panel = new JPanel();
 	private JPanel panel_1 = new JPanel();
@@ -34,6 +34,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean matchOver = false;
 	public int pointGoal = 0;
 	public int doubleDiceValue = 1;
+	private int count = 0;
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -156,9 +157,11 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		{
 			Area1.append(c+" " +list.get(i).toString());
 			c++;
-		} 
+		}
 		
-	
+		// called at the beginning of each game to edit score TODO call again after doubling dice changes hands
+		p.editScoreboard(pointGoal, player[0], player[1], 0);
+		
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
@@ -226,10 +229,19 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			Area1.append(c+" "+list.get(i).toString());
 			c++;
 		} 
+		
+		// TODO
+		if(count%2 == 0) {
+			p.editScoreboard(pointGoal, player[0], player[1], 1);
+			count++;
+		}
+		else {
+			p.editScoreboard(pointGoal, player[0], player[1], 2);
+			count++;
+		}
 /*		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
 		} */
-				
 	}
 	
 	public boolean BackGammonConditionBlack()
@@ -331,16 +343,88 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	private class TextListener implements ActionListener 
 	{
 		int pN = 0; 
-		String inputString,inputString2;
+		String inputString;
 		boolean doubleEntered=false;
 		
         public void actionPerformed(ActionEvent event)
         {
         	if(matchOver)
+        	{
     			return;
+        	}
 
         	inputString = Fld1.getText();
+        	
+        	if(doubleEntered == true)
+    		{
+    			int c = 0;
+    			Fld1.setText("");
+    			//inputString2 = Fld1.getText();
+    			Area1.append("\nAccept: Yes/No\n");
+    			if(inputString.toLowerCase().equals("yes"))
+    			{
+    				Area1.append("HI");
+    				if(c%2 == 0 && p.getPlayerTurn() == 1)
+    				{
+    					player[0].doublePoints();
+    					player[1].doublePoints();
+    					c++;
+    				}
+    				else if(c%2 == 1 && p.getPlayerTurn() == 2)
+    				{
+    					player[0].doublePoints();
+    					player[1].doublePoints();
+    					c++;
+    				}
+    				else
+    				{
+    					
+    				}
+    			}
+    			else if(inputString.toLowerCase().equals("no"))
+    			{
+    				if(c%2 == 0)
+    				{
+    					int tmp = player[1].points;
+    					player[1].points -= tmp;
+    					if(p.gameOver()==true)
+    					{
+    						tmp = 0;
+    					}
+    					c++;
+    				}
+    				else if(c%2 == 1)
+    				{
 
+    					int tmp = player[0].points;
+    					player[0].points -= tmp;
+    					if(p.gameOver()==true)
+    					{
+    						tmp = 0;
+    					}
+    					c++;
+    				}
+    	    		if(pointGoal <= player[0].points)
+    	    		{
+    	    			Area1.setText("");
+        				Area1.setText("Congratulations " + player[0].getName() + " you won!!!!!");
+    	    		}
+    	    		else if(pointGoal <= player[1].points)
+    	    		{
+
+    	    			Area1.setText("");
+        				Area1.setText("Congratulations " + player[1].getName() + " you won!!!!!");
+    	    		}
+    	    		else
+    	    		{
+    	    		Area1.append("\nPress any key to start next game\n");
+    	    		startNextGame = true;
+    	    		}
+    	    		
+    			}
+    			doubleEntered = false;
+    		}
+        	
         	if(optionalNewMatch) {
     			if(inputString.toLowerCase().equals("yeah")) {
     				pN = 0;
@@ -388,7 +472,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			initialRoll();
     		}
     		else {
-    			if(inputString.length() <= 2 && inputString !="no") {
+    			if(inputString.length() <= 2 && inputString.toLowerCase() !="no" ) {
     				
     				if(inputString.length() == 1) {
     					int firstValue = Character.getNumericValue(inputString.charAt(0)) - 9;
@@ -432,80 +516,16 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    			doubleEntered =true;
 		    		}
 		    		
-		    		else
+		    		else if((doubleEntered == false || doubleEntered == true) && inputString.toLowerCase() != "end game" && inputString.toLowerCase() != "cheat" && inputString.toLowerCase() != "next" && inputString.toLowerCase() != "quit") 
 		    		{
 		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 		    			Fld1.setText("");
 		    		}
 		    		
 		    		
-		    		
     			}
     		}
-    		if(doubleEntered == true)
-    		{
-    			int c = 0;
-    			Fld1.setText("");
-    			inputString2 = Fld1.getText();
-    			Area1.append("\nAccept: Yes/No\n");
-    			if(inputString2.toLowerCase().equals("yes"))
-    			{
-    				
-    				if(c%2 == 0 && p.getPlayerTurn() == 1)
-    				{
-    					player[0].doublePoints();
-    					player[1].doublePoints();
-    					c++;
-    				}
-    				else if(c%2 == 1 && p.getPlayerTurn() == 2)
-    				{
-    					player[0].doublePoints();
-    					player[1].doublePoints();
-    					c++;
-    				}
-    			}
-    			else if(inputString2.toLowerCase().equals("no"))
-    			{
-    				if(c%2 == 0)
-    				{
-    					int tmp = player[1].points;
-    					player[1].points -= tmp;
-    					if(p.gameOver()==true)
-    					{
-    						tmp = 0;
-    					}
-    					c++;
-    				}
-    				else if(c%2 == 1)
-    				{
-
-    					int tmp = player[0].points;
-    					player[0].points -= tmp;
-    					if(p.gameOver()==true)
-    					{
-    						tmp = 0;
-    					}
-    					c++;
-    				}
-    	    		if(pointGoal <= player[0].points)
-    	    		{
-    	    			Area1.setText("");
-        				Area1.setText("Congratulations " + player[0].getName() + " you won!!!!!");
-    	    		}
-    	    		else if(pointGoal <= player[1].points)
-    	    		{
-
-    	    			Area1.setText("");
-        				Area1.setText("Congratulations " + player[1].getName() + " you won!!!!!");
-    	    		}
-    	    		else
-    	    		{
-    	    		Area1.append("\nPress any key to start next game\n");
-    	    		startNextGame = true;
-    	    		}
-    	    		
-    			}
-    		}
+    		
 		}
 	}
 	
