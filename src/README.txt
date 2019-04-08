@@ -1,2 +1,4 @@
-Our game now utilises both text input and mouse clicking to play the game.
-Both are optional and both have full functionality with the ability to use one or the other at any point in the game
+- Our game now utilises both text input and mouse clicking to play the game.
+- Both are optional and both have full functionality with the ability to use one or the other at any point in the game
+- When typing in "double" command, click the "click to continue" button twice
+- Match length displayed in centre of the scoreboard with player scores either side
