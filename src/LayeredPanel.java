@@ -72,10 +72,10 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			diceSide[4] = ImageIO.read(getClass().getResource("Dice5.png"));
 			diceSide[5] = ImageIO.read(getClass().getResource("Dice6.png"));
 			doubleDiceSide[0] = ImageIO.read(getClass().getResource("doubleDice2.png"));
-			doubleDiceSide[1] = ImageIO.read(getClass().getResource("doubleDice4.png"));
+			doubleDiceSide[1] = ImageIO.read(getClass().getResource("doubleDIce4.png"));
 			doubleDiceSide[2] = ImageIO.read(getClass().getResource("doubleDice8.png"));
 			doubleDiceSide[3] = ImageIO.read(getClass().getResource("doubleDice16.png"));
-			doubleDiceSide[4] = ImageIO.read(getClass().getResource("doubleDice32.png"));
+			doubleDiceSide[4] = ImageIO.read(getClass().getResource("doubleDIce32.png"));
 			doubleDiceSide[5] = ImageIO.read(getClass().getResource("doubleDice64.png"));
 
 			BOARD_LABEL = new JLabel(new ImageIcon(BOARD));

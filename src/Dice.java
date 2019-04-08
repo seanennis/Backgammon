@@ -1,8 +1,4 @@
 import java.util.Random;
-import java.awt.image.BufferedImage;
-import javax.imageio.*;
-import javax.swing.* ;
-import java.io.*;
 
 public class Dice {
 	private Random random = new Random();
