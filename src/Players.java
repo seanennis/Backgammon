@@ -59,8 +59,8 @@ public class Players
 	public int getPoints() {
 		return this.points;
 	}
-	public void setDoubleDice() {
-		this.hasDoubleDice = true;
+	public void setDoubleDice(boolean hasDoubleDice) {
+		this.hasDoubleDice = hasDoubleDice;
 	}
 	public boolean getDoubleDice() {
 		return this.hasDoubleDice;
