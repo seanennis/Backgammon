@@ -357,7 +357,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     		{
     			Fld1.setText("");
     			//inputString2 = Fld1.getText();
-    			Area1.append("\nAccept: Yes/No\n");
+    			Area1.append("\nAccept: Yes/Nah\n");
     			if(inputString.toLowerCase().equals("yes"))
     			{
     				if(player[0].getDoubleDice() == true && p.getPlayerTurn() == 1)
