@@ -98,6 +98,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		Lbl1 = new JLabel("Enter Commands:");
 
 	    Fld1 = new JTextField(40);
+	    Fld1.addKeyListener(this);
 	    Fld1.setText("");
 	 
 	}
@@ -227,6 +228,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			//Thread.sleep(3000);
 			noLegalMovesAllowed = true;
 			Area1.append("hi");
+			p.setPlayerTurn(-1 * p.getPlayerTurn() + 3);
 			
 			roll();
 		}
@@ -247,7 +249,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		
 		boolean BackGammonBlack = false;
 		
-		for(int i=0;i<=p.numOfCheckers;i++)
+		for(int i=0;i<p.numOfCheckers;i++)
 		{
 			
 			if(playerTurn == 1 && p.black_Checker[i].getPosition()== 24 && p.white_Checker[i].getPosition()<18) //BackGammon black
@@ -262,7 +264,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean BackGammonConditionWhite()
 	{
 		boolean BackGammonWhite = false;
-		for(int i=0;i<=p.numOfCheckers;i++)
+		for(int i=0;i<p.numOfCheckers;i++)
 		{
 			if(playerTurn == 2 && p.white_Checker[i].getPosition()== 25 && p.black_Checker[i].getPosition()>5) // Backgammon white
 			{
@@ -276,7 +278,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	{
 		boolean GammonBlack = false;
 		
-		for(int i=0;i<=p.numOfCheckers;i++)
+		for(int i=0;i<p.numOfCheckers;i++)
 		{
 			if(playerTurn == 1 && p.black_Checker[i].getPosition() == 24 && p.white_Checker[i].getPosition() != 25) // Gammon black
 			{
@@ -290,7 +292,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean GammonConditionWhite()
 	{
 		boolean GammonWhite = false;
-		for(int i=0;i<=p.numOfCheckers;i++)
+		for(int i=0;i<p.numOfCheckers;i++)
 		{
 			if(playerTurn == 1 && p.white_Checker[i].getPosition() == 25 && p.black_Checker[i].getPosition() != 24) // Gammon white
 			{
@@ -304,7 +306,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	{
 		boolean WinBlack = false;
 		
-		for(int i=0;i<=p.numOfCheckers;i++)
+		for(int i=0;i<p.numOfCheckers;i++)
 		{
 			if(p.black_Checker[i].getPosition() == 24 )
 			{
@@ -318,7 +320,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean WinConditionWhite()
 	{
 		boolean WinWhite = false;
-		for(int i=0;i<=p.numOfCheckers;i++)
+		for(int i=0;i<p.numOfCheckers;i++)
 		{
 			if(p.white_Checker[i].getPosition() == 25)
 			{
@@ -444,6 +446,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
         	
         	if(optionalNewMatch) {
     			if(inputString.toLowerCase().equals("yeah")) {
+    				optionalNewMatch = false;
     				pN = 0;
     				for(int i = 0;i < 2;i++)
             			player[i].setPoints(0);
@@ -456,7 +459,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     				Area1.append("Invalid option, try again");
     			}
     		}
-    		if(pN == 0)
+        	else if(pN == 0)
     		{
     			player[pN] = new Players(inputString, pN);
     			if(inputString.toLowerCase().equals("quit"))
@@ -525,6 +528,11 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    		else if(inputString.toLowerCase().equals("end game"))
 		    		{
 		    			p.endGameCommand();
+		    			Fld1.setText("");
+		    		}
+		    		else if(inputString.toLowerCase().equals("end game 2"))
+		    		{
+		    			p.endGame2Command();
 		    			Fld1.setText("");
 		    		}
 		    		
@@ -798,7 +806,8 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			System.out.println("Test6"+ player[0].points+player[1].points);
     		}
     		int winningPlayer = 0;
-    		if( player[p.getPlayerTurn()].getPoints() >= pointGoal) {
+    		if( player[p.getPlayerTurn() - 1].getPoints() >= pointGoal) {
+    			winningPlayer = p.getPlayerTurn();
     			switch(winningPlayer) {
     			case 1:
     				Area1.setText("");
@@ -812,7 +821,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     				System.out.println("ERROR default case reached in end of game switch statement");
     				break;
     			}
-    			Area1.append("\nWould you like to start a new  Match?\n");
+    			Area1.append("\nWould you like to start a new  Match?(yeah/nah)\n");
     			optionalNewMatch = true;
     		}
     		else if(p.gameOver() == true) {
@@ -852,6 +861,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public void mouseReleased(MouseEvent arg0) {}
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+		System.out.println("Key pressed");
 		if(startNextGame) {
 			p.initialiseBoard();
 		}

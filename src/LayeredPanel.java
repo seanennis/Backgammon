@@ -455,6 +455,81 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		updateBoard();
 	}
 	
+	public void endGame2Command()
+	{
+		for(int i = 0;i < numOfCheckers;i++) {
+			positions.pips.get(white_Checker[i].getPosition()).remove(white_Checker[i]);
+			positions.pips.get(black_Checker[i].getPosition()).remove(black_Checker[i]);
+		}
+		
+		for(int i = 0;i < white_Checker.length;i++) {
+	
+			switch(i) {
+				case 0:
+				case 1:
+					white_Checker[i].setPosition(0);
+					break;
+				case 2:
+				case 3:
+					white_Checker[i].setPosition(1);
+					break;
+				case 4:
+				case 5:
+					white_Checker[i].setPosition(2);
+					break;
+				case 6:
+				case 7:
+					white_Checker[i].setPosition(3);
+					break;
+				case 8:
+				case 9:
+					white_Checker[i].setPosition(4);
+					break;
+				case 10:
+				case 11:
+					white_Checker[i].setPosition(25);
+					break;
+				case 12:
+				case 13:
+				case 14:
+					white_Checker[i].setPosition(0);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached: white_Checker");
+					break;
+			}
+			
+		}
+		for(int i = 0;i < black_Checker.length;i++) {
+			switch(i) {
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:				
+				case 7:
+				case 8:
+				case 9:		
+				case 10:
+				case 11:
+				case 12:
+					black_Checker[i].setPosition(24);
+					break;
+				case 13:
+				case 14:
+					black_Checker[i].setPosition(23);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached: black_Checker: " + i);
+					break;
+			}	
+		}
+		
+		updateBoard();
+	}
+	
 	public boolean enterCheckers(int selectedCheckerId) {
 		
 		boolean checkerOnBar = false;
@@ -1098,6 +1173,73 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		sets the positions of the checkers on the Board using the coordinates stored in the CheckerLayout class;
 		*/
 
+		for(int i = 0; i < numOfPips;i++) {
+			while(!positions.pips.get(i).isEmpty()) {
+				positions.pips.get(i).remove(0);
+			}
+		}
+		
+		
+		for(int i = 0;i < white_Checker.length;i++) {
+			switch(i) {
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					white_Checker[i].setPosition(5);
+					break;
+				case 5:
+				case 6:
+				case 7:
+					white_Checker[i].setPosition(7);
+					break;
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+				case 12:
+					white_Checker[i].setPosition(12);
+					break;
+				case 13:
+				case 14:
+					white_Checker[i].setPosition(23);
+					break;
+				default:
+					System.out.println("LayeredPanel.java: LayeredPanel(): switch(): ERROR default case reached");
+					break;
+			}
+		}
+		for(int i = 0;i < black_Checker.length;i++) {
+			switch(i) {
+				case 0:
+				case 1:
+					black_Checker[i].setPosition(0);
+					break;
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+					black_Checker[i].setPosition(11);
+					break;
+				case 7:
+				case 8:
+				case 9:
+					black_Checker[i].setPosition(16);
+					break;
+				case 10:
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+					black_Checker[i].setPosition(18);
+				default:
+					break;
+			}
+		}
+		
+		
 		for(int i = 0;i < numOfCheckers;i++) {
 
 			if(i < 5)
