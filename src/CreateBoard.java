@@ -864,7 +864,24 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		System.out.println("Key pressed");
 		if(startNextGame) {
 			p.initialiseBoard();
-		}
+			
+			switch(p.getPlayerTurn()) {
+			case 1:
+				Area1.setText("");
+				Area1.setText("Congratulations " + player[p.getPlayerTurn() - 1].getName() + " you won!!!!!");
+				break;
+			case 2:
+				Area1.setText("");
+				Area1.setText("Congratulations " + player[p.getPlayerTurn() - 1].getName() + " you won!!!!!");
+				break;
+			default:
+				System.out.println("ERROR default case reached in end of game switch statement");
+				break;
+			}
+			
+			initialRoll();
+			startNextGame = false;
+		}	
 	}
 	public void keyReleased(KeyEvent arg0) {}
 	public void keyTyped(KeyEvent arg0) {}
