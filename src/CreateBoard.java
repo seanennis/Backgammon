@@ -389,7 +389,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     				}
     				
     			}
-    			else if(inputString.toLowerCase().equals("no"))
+    			else if(inputString.toLowerCase().equals("nah"))
     			{
     				if(c%2 == 0)
     				{
