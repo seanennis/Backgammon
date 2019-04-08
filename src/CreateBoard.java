@@ -357,7 +357,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     		{
     			Fld1.setText("");
     			//inputString2 = Fld1.getText();
-    			Area1.append("\nAccept: Yes/Nah\n");
+    			
     			if(inputString.toLowerCase().equals("yes"))
     			{
     				if(player[0].getDoubleDice() == true && p.getPlayerTurn() == 1)
@@ -529,15 +529,21 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    		else if(inputString.toLowerCase().equals("double"))
 		    		{
 		    			doubleEntered =true;
+		    			Area1.append("\nAccept: Yes/Nah\n");
+		    			Fld1.setText("");
 		    		}
 		    		
-		    		else if((doubleEntered == false || doubleEntered == true) && inputString.toLowerCase() != "end game" && inputString.toLowerCase() != "cheat" && inputString.toLowerCase() != "next" && inputString.toLowerCase() != "quit") 
+		    		else if(doubleEntered == false ) 
 		    		{
 		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 		    			Fld1.setText("");
 		    		}
 		    		
-		    		
+		    		else 
+		    		{
+		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
+		    			Fld1.setText("");
+		    		}
     			}
     		}
     		
