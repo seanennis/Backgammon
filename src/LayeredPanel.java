@@ -46,6 +46,8 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	private JLabel doublingDiceLabel1;
 	private JLabel doublingDiceLabel2;
 	private BufferedImage[] doubleDiceSide;
+	private int count = 0; // used to keep track of double dice
+	private boolean countBool = false; // used for initialisation of double dice
 
 	public LayeredPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -1056,11 +1058,19 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		p2PointsLabel.setText(String.valueOf(p2.getName()) + ": " + String.valueOf(p2.getPoints()));
 		if(doublingDice == 1) {
 			doublingDiceLabel2.setIcon(null);
-			doublingDiceLabel1.setIcon(new ImageIcon(doubleDiceSide[0]));
+			doublingDiceLabel1.setIcon(new ImageIcon(doubleDiceSide[count]));
+			if(countBool == true)
+				count++;
+			
+			countBool = true;
 		}
 		else if(doublingDice == 2) {
 			doublingDiceLabel1.setIcon(null);
-			doublingDiceLabel2.setIcon(new ImageIcon(doubleDiceSide[0]));
+			doublingDiceLabel2.setIcon(new ImageIcon(doubleDiceSide[count]));
+			if(countBool == true)
+				count++;
+			
+			countBool = true;
 		}
 	}
 	

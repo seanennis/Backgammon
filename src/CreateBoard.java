@@ -34,7 +34,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public boolean matchOver = false;
 	public int pointGoal = 0;
 	public int doubleDiceValue = 1;
-	private int count = 0;
+	private boolean initialDouble = true; // keeps track of who starts with double dice
 
 	public CreateBoard (){
 		setSize(WIDTH,HEIGHT);
@@ -159,7 +159,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 			c++;
 		}
 		
-		// called at the beginning of each game to edit score TODO call again after doubling dice changes hands
+		// called at the beginning of each game to edit score
 		p.editScoreboard(pointGoal, player[0], player[1], 0);
 		player[0].setDoubleDice(true);
 
@@ -167,6 +167,12 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	}
 	
 	public void roll(){
+		
+		if(initialDouble == true) {
+			player[0].setDoubleDice(true);
+			p.editScoreboard(pointGoal, player[0], player[1], 1);
+			initialDouble = false;
+		}
 		
 		if(noLegalMovesAllowed) {
 			noLegalMovesAllowed = false;
@@ -229,17 +235,8 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		for(int i = 0;i < list.size();i++) {
 			Area1.append(c+" "+list.get(i).toString());
 			c++;
-		} 
+		}
 		
-		// TODO
-		if(count%2 == 0) {
-			p.editScoreboard(pointGoal, player[0], player[1], 1);
-			count++;
-		}
-		else {
-			p.editScoreboard(pointGoal, player[0], player[1], 2);
-			count++;
-		}
 /*		for(int i = 0;i < list.size();i++) {
 			Area1.append(list.get(i).toString());
 		} */
@@ -370,7 +367,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					player[1].doublePoints();
     					player[0].setDoubleDice(false);
     					player[1].setDoubleDice(true);
-    					
+    					p.editScoreboard(pointGoal, player[0], player[1], 2);
     				}
     				else if(player[1].getDoubleDice()==true && p.getPlayerTurn() == 2)
     				{
@@ -378,6 +375,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					player[1].doublePoints();
     					player[1].setDoubleDice(false);
     					player[0].setDoubleDice(true);
+    					p.editScoreboard(pointGoal, player[0], player[1], 1);
     				}
     				else if(p.getPlayerTurn() == 0)
     				{
