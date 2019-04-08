@@ -1302,19 +1302,23 @@ public class LayeredPanel extends JPanel implements MouseListener {
 	
 	public boolean gameOver() {
 		
-		boolean allCheckersOnBearOff = true;
+		boolean allCheckersOnBearOff = false;
+		boolean temp1 = true;
+		boolean temp2 = true;
 		
 		for(int i = 0;i < numOfCheckers;i++) {
 			if(black_Checker[i].getPosition() != 24)
-				allCheckersOnBearOff = false;
+				temp1 = false;
 		}
-				
-		allCheckersOnBearOff = true;
 		
 		for(int i = 0;i < numOfCheckers;i++) {
 			if(white_Checker[i].getPosition() != 25)
-				allCheckersOnBearOff = false;
+				temp2 = false;
 		}
+		
+		if(temp1 == true || temp2 == true)
+			allCheckersOnBearOff = true;
+		
 		return allCheckersOnBearOff;
 	}
 		
