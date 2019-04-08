@@ -389,7 +389,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			}
     			else if(inputString.toLowerCase().equals("nah"))
     			{
-    				if(c%2 == 0)
+    				if(player[0].getDoubleDice() == true)
     				{
     					int tmp = player[1].points;
     					player[1].points -= tmp;
@@ -397,9 +397,10 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					{
     						tmp = 0;
     					}
-    					c++;
+    					player[0].setDoubleDice(false);
+    					player[1].setDoubleDice(true);
     				}
-    				else if(c%2 == 1)
+    				else if(player[1].getDoubleDice() == true)
     				{
 
     					int tmp = player[0].points;
@@ -408,7 +409,8 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					{
     						tmp = 0;
     					}
-    					c++;
+    					player[1].setDoubleDice(false);
+    					player[0].setDoubleDice(true);
     				}
     				else if(p.getPlayerTurn() == 0)
     				{
