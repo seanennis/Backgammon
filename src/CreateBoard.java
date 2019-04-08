@@ -362,6 +362,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			{
     				if(player[0].getDoubleDice() == true && p.getPlayerTurn() == 1)
     				{
+    					Area1.append("Stakes Doubled\n");
     					player[0].doublePoints();
     					player[1].doublePoints();
     					player[0].setDoubleDice(false);
@@ -370,6 +371,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     				}
     				else if(player[1].getDoubleDice()==true && p.getPlayerTurn() == 2)
     				{
+    					Area1.append("Stakes Doubled\n");
     					player[0].doublePoints();
     					player[1].doublePoints();
     					player[1].setDoubleDice(false);
@@ -378,11 +380,11 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     				}
     				else if(p.getPlayerTurn() == 0)
     				{
-    					Area1.append("ERROR: ILLEGAL");
+    					Area1.append("ERROR: ILLEGAL\n");
     				}
     				else 
     				{
-    					Area1.append("ERROR: ILLEGAL");
+    					Area1.append("ERROR: ILLEGAL\n");
     				}
     				
     			}
@@ -413,11 +415,11 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     				}
     				else if(p.getPlayerTurn() == 0)
     				{
-    					Area1.append("ERROR: ILLEGAL");
+    					Area1.append("ERROR: ILLEGAL\n");
     				}
     				else 
     				{
-    					Area1.append("ERROR: ILLEGAL");
+    					Area1.append("ERROR: ILLEGAL\n");
     				}
     	    		if(pointGoal <= player[0].points)
     	    		{
@@ -528,22 +530,21 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		    		
 		    		else if(inputString.toLowerCase().equals("double"))
 		    		{
-		    			doubleEntered =true;
+		    			doubleEntered = true;
 		    			Area1.append("\nAccept: Yes/Nah\n");
 		    			Fld1.setText("");
 		    		}
-		    		
-		    		else if(doubleEntered == false ) 
+		    		else
 		    		{
-		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 		    			Fld1.setText("");
 		    		}
 		    		
-		    		else 
+		   
+		    	/*	else 
 		    		{
 		    			Area1.append(DateUtils.time("\n[HH:mm]")+" Not a valid command\n\n");
 		    			Fld1.setText("");
-		    		}
+		    		} */
     			}
     		}
     		
