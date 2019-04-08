@@ -482,7 +482,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			Area1.append("How many points would you like to play to?\n");
     			
     		}
-    		else if(pN++ == 2) {
+    		else if((pN+1) == 2) {
     			pointGoal = Integer.parseInt(inputString);
     			Fld1.setText("");
     			initialRoll();
