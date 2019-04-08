@@ -9,6 +9,7 @@ public class Players
 	String name;
 	int checkerID;
 	int points;
+	boolean hasDoubleDice;
 	
 	public Players() {
 		this.name = null;
@@ -58,5 +59,10 @@ public class Players
 	public int getPoints() {
 		return this.points;
 	}
-	
+	public void setDoubleDice() {
+		this.hasDoubleDice = true;
+	}
+	public boolean getDoubleDice() {
+		return this.hasDoubleDice;
+	}
 }
