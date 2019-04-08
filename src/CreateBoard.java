@@ -161,7 +161,8 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 		
 		// called at the beginning of each game to edit score TODO call again after doubling dice changes hands
 		p.editScoreboard(pointGoal, player[0], player[1], 0);
-		
+		player[0].setDoubleDice(true);
+
 //		p.listLegalMoves(dice[0].getLastRoll(), dice[1].getLastRoll());
 	}
 	
@@ -363,23 +364,30 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			Area1.append("\nAccept: Yes/No\n");
     			if(inputString.toLowerCase().equals("yes"))
     			{
-    				Area1.append("HI");
-    				if(c%2 == 0 && p.getPlayerTurn() == 1)
+    				if(player[0].getDoubleDice() == true && p.getPlayerTurn() == 1)
     				{
     					player[0].doublePoints();
     					player[1].doublePoints();
-    					c++;
-    				}
-    				else if(c%2 == 1 && p.getPlayerTurn() == 2)
-    				{
-    					player[0].doublePoints();
-    					player[1].doublePoints();
-    					c++;
-    				}
-    				else
-    				{
+    					player[0].setDoubleDice(false);
+    					player[1].setDoubleDice(true);
     					
     				}
+    				else if(player[1].getDoubleDice()==true && p.getPlayerTurn() == 2)
+    				{
+    					player[0].doublePoints();
+    					player[1].doublePoints();
+    					player[1].setDoubleDice(false);
+    					player[0].setDoubleDice(true);
+    				}
+    				else if(p.getPlayerTurn() == 0)
+    				{
+    					Area1.append("ERROR: ILLEGAL");
+    				}
+    				else 
+    				{
+    					Area1.append("ERROR: ILLEGAL");
+    				}
+    				
     			}
     			else if(inputString.toLowerCase().equals("no"))
     			{
@@ -403,6 +411,14 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     						tmp = 0;
     					}
     					c++;
+    				}
+    				else if(p.getPlayerTurn() == 0)
+    				{
+    					Area1.append("ERROR: ILLEGAL");
+    				}
+    				else 
+    				{
+    					Area1.append("ERROR: ILLEGAL");
     				}
     	    		if(pointGoal <= player[0].points)
     	    		{
