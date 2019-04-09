@@ -170,9 +170,11 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public void roll(){
 		
 		if(initialDouble == true) {
+			if(p.getPlayerTurn() != 1) {
 			player[0].setDoubleDice(true);
 			p.editScoreboard(pointGoal, player[0], player[1], 1);
 			initialDouble = false;
+			}
 		}
 		
 		if(noLegalMovesAllowed) {
@@ -362,7 +364,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			
     			if(inputString.toLowerCase().equals("yes"))
     			{
-    				if(player[0].getDoubleDice() == true && p.getPlayerTurn() == 1)
+    				if(player[0].getDoubleDice() == true && p.getPlayerTurn() == 1 && pointGoal > p.getStakes()*2)
     				{
     					Area1.append("Stakes Doubled\n");
     					player[0].doublePoints();
@@ -371,7 +373,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					player[1].setDoubleDice(true);
     					p.editScoreboard(pointGoal, player[0], player[1], 2);
     				}
-    				else if(player[1].getDoubleDice()==true && p.getPlayerTurn() == 2)
+    				else if(player[1].getDoubleDice()==true && p.getPlayerTurn() == 2 && pointGoal > p.getStakes()*2)
     				{
     					Area1.append("Stakes Doubled\n");
     					player[0].doublePoints();
@@ -392,7 +394,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     			}
     			else if(inputString.toLowerCase().equals("nah"))
     			{
-    				if(player[0].getDoubleDice() == true)
+    				if(player[0].getDoubleDice() == true && pointGoal > p.getStakes()*2)
     				{
     					int tmp = player[1].points;
     					player[1].points -= tmp;
@@ -403,7 +405,7 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
     					player[0].setDoubleDice(false);
     					player[1].setDoubleDice(true);
     				}
-    				else if(player[1].getDoubleDice() == true)
+    				else if(player[1].getDoubleDice() == true && pointGoal > p.getStakes()*2)
     				{
 
     					int tmp = player[0].points;
@@ -863,22 +865,25 @@ public class CreateBoard extends JFrame implements MouseListener,KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 		System.out.println("Key pressed");
 		if(startNextGame) {
-			p.initialiseBoard();
-			
 			switch(p.getPlayerTurn()) {
 			case 1:
 				Area1.setText("");
 				Area1.setText("Congratulations " + player[p.getPlayerTurn() - 1].getName() + " you won!!!!!");
+				player[0].setPoints((player[0].getPoints()+1)*p.getStakes());
+				p.editScoreboard(pointGoal, player[0], player[1], 0);
 				break;
 			case 2:
 				Area1.setText("");
 				Area1.setText("Congratulations " + player[p.getPlayerTurn() - 1].getName() + " you won!!!!!");
+				player[1].setPoints((player[1].getPoints()+1)*p.getStakes());
+				p.editScoreboard(pointGoal, player[0], player[1], 0);
 				break;
 			default:
 				System.out.println("ERROR default case reached in end of game switch statement");
 				break;
 			}
 			
+			p.initialiseBoard();
 			initialRoll();
 			startNextGame = false;
 		}	

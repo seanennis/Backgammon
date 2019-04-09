@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import  java.lang.Math.*;
 
 //import java.util.*;
 import javax.imageio.*;
@@ -1131,6 +1132,7 @@ public class LayeredPanel extends JPanel implements MouseListener {
 		pointGoalLabel.setText(String.valueOf(pointGoal));
 		p1PointsLabel.setText(String.valueOf(p1.getName()) + ": " + String.valueOf(p1.getPoints()));
 		p2PointsLabel.setText(String.valueOf(p2.getName()) + ": " + String.valueOf(p2.getPoints()));
+		System.out.println(count);
 		if(doublingDice == 1) {
 			doublingDiceLabel2.setIcon(null);
 			doublingDiceLabel1.setIcon(new ImageIcon(doubleDiceSide[count]));
@@ -1147,6 +1149,11 @@ public class LayeredPanel extends JPanel implements MouseListener {
 			
 			countBool = true;
 		}
+	}
+	
+	// returns the current match stakes caculated by the doubling dice
+	public int getStakes() {
+		return (int) java.lang.Math.pow(2, count);
 	}
 	
 	public void setPlayerTurn(int playerTurn) {
