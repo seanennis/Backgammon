@@ -31,8 +31,19 @@ public class Bot0 implements BotAPI {
         return "1";
     }
 
-    public String getDoubleDecision() {
+    public String getDoubleDecision()
+    {
+    	String playDouble;
+    	
+    	if(cube.getOwnerId() == me.getId() && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2))
+    	{
+    		playDouble = "y";
+    	}
+    	else
+    	{
+    		playDouble = "n";
+    	}
         // Add your code here
-        return "n";
+        return playDouble;
     }
 }
