@@ -69,15 +69,29 @@ public class Bot0 implements BotAPI {
     		if(board.getNumCheckers(me.getId(), i) >= 2)
     			homeBlocks += i;
     	}
-    	
+    
     	return homeBlocks;
+    }
+    
+    public int getNumHomeCheckers()
+    {
+    	int homeCheckers = 0;
+    	for(int i = 1; i <= 6; i++) 
+    	{
+    		if(board.getNumCheckers(me.getId(),i)>= 1)
+    		{
+    			homeCheckers += board.getNumCheckers(me.getId(),i);
+    		}
+    	}
+    	
+    	return homeCheckers;
     }
 
     public String getDoubleDecision()
     {
     	String playDouble;
     	
-    	if(cube.getOwnerId() == me.getId() && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2))
+    	if(cube.getOwnerId() == me.getId() && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2)) 
     	{
     		playDouble = "y";
     	}
