@@ -76,6 +76,15 @@ public class Bot0 implements BotAPI {
     	return homeBlocks;
     }
     
+    public int getEscapedCheckers()
+    {
+    	int escapedCheckers = 0;
+    	
+    
+    	
+    	return escapedCheckers;
+    }
+    
     public int getNumHomeCheckers()
     {
     	int homeCheckers = 0;
