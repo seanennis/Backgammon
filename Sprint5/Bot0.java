@@ -28,7 +28,49 @@ public class Bot0 implements BotAPI {
 
     public String getCommand(Plays possiblePlays) {
         // Add your code here
+    	System.out.println("Pip Dif: " + getPipCountDifference());
+    	System.out.println("Block Blot Dif: " + getBlockBlotDifference());
+    	System.out.println("Home Board Blocks: " + getNumHomeBoardBlocks());
+    	
         return "1";
+    }
+    
+    //TODO test
+    public int getPipCountDifference() {
+    	int pipCountP0 = 0;
+    	int pipCountP1 = 1;
+    	for(int i = 1; i <= 25; i++) {
+    		pipCountP0 += board.getNumCheckers(me.getId(), i) * i;
+    		pipCountP1 += board.getNumCheckers(opponent.getId(), i) * i;
+    	}
+    	
+    	return pipCountP0 - pipCountP1;
+    }
+    
+    //TODO test
+    public int getBlockBlotDifference() {
+    	int block = 0;
+    	int blot = 1;
+    	for(int i = 1; i < 25; i++) {
+    		if(board.getNumCheckers(me.getId(), i) >= 2)
+    			block ++;
+    		else if(board.getNumCheckers(opponent.getId(), i) == 1)
+    			blot++;
+    	}
+    	
+    	return block - blot;
+    }
+    
+    //TODO test
+    // weights added, most important points in descending order: 6, 5, 4, 3, 2, 1
+    public int getNumHomeBoardBlocks() {
+    	int homeBlocks = 0;
+    	for(int i = 1; i <= 6; i++) {
+    		if(board.getNumCheckers(me.getId(), i) >= 2)
+    			homeBlocks += i;
+    	}
+    	
+    	return homeBlocks;
     }
 
     public String getDoubleDecision()
