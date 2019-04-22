@@ -23,7 +23,7 @@ public class Bot0 implements BotAPI {
     }
 
     public String getName() {
-        return "Bot0"; // must match the class name
+        return "Dave"; // must match the class name
     }
 
     public String getCommand(Plays possiblePlays) {
@@ -31,6 +31,9 @@ public class Bot0 implements BotAPI {
     	System.out.println("Pip Dif: " + getPipCountDifference());
     	System.out.println("Block Blot Dif: " + getBlockBlotDifference());
     	System.out.println("Home Board Blocks: " + getNumHomeBoardBlocks());
+    	System.out.println("Home Board Checkers:" + getNumHomeCheckers());
+    	System.out.println("Bear Off Checkers:" + getNumCheckersBearOff());
+    	System.out.println("Bar Off Checkers:" + getNumCheckersBarOff());
     	
         return "1";
     }
@@ -85,6 +88,30 @@ public class Bot0 implements BotAPI {
     	}
     	
     	return homeCheckers;
+    }
+    
+    public int getNumCheckersBearOff()
+    {
+    	int checkersBearOff = 0;
+    	
+    	if(board.getNumCheckers(me.getId(),0)>= 1)
+		{
+			checkersBearOff += board.getNumCheckers(me.getId(),0);
+		}
+    	
+    	return checkersBearOff;
+    }
+    
+    public int getNumCheckersBarOff()
+    {
+    	int checkersBarOff = 0;
+    	
+    	if(board.getNumCheckers(me.getId(),25)>= 1)
+		{
+			checkersBarOff += board.getNumCheckers(me.getId(),25);
+		}
+    	
+    	return checkersBarOff;
     }
 
     public String getDoubleDecision()
