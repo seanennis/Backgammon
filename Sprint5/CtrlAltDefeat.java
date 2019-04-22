@@ -178,8 +178,11 @@ public class CtrlAltDefeat implements BotAPI {
                     primeCounter++;
                 }
                 else {
-                    primeScore += primeCounter;
+                    if(primeCounter != 1) {
+                        primeScore += primeCounter;
+                    }
                     primeCounter = 0;
+                    previousHadBlock = false;
                 }
             }
             else {
