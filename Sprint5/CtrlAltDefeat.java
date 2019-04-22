@@ -109,6 +109,17 @@ public class CtrlAltDefeat implements BotAPI {
     	return homeCheckers;
     }
     
+    // weighted by how advanced the anchors are on the board
+    public int getNumAnchors() {
+    	int numAnchors = 0;
+    	for(int i = 19; i <= 24; i++) {
+    		if(board.getNumCheckers(me.getId(),i) >= 2)
+    			numAnchors += 25 - i;
+    	}
+    	
+    	return numAnchors;
+    }
+    
     public int getNumCheckersBearOff()
     {
     	int checkersBearOff = 0;
