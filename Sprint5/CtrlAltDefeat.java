@@ -29,6 +29,7 @@ public class CtrlAltDefeat implements BotAPI {
 
     public String getCommand(Plays possiblePlays) {
         // Add your code here
+    	/*
     	System.out.println("Pip Dif: " + getPipCountDifference());
     	System.out.println("Block Blot Dif: " + getBlockBlotDifference());
     	System.out.println("Home Board Blocks: " + getNumHomeBoardBlocks());
@@ -36,6 +37,7 @@ public class CtrlAltDefeat implements BotAPI {
     	System.out.println("Bear Off Checkers:" + getNumCheckersBearOff());
     	System.out.println("Anchors:" + getNumAnchors());
     	System.out.println("Escaped checkers:" + getEscapedCheckers());
+    	*/
         
         int[][] currentCheckerLayout = board.get();
         int[][] checkerLayoutAfterMove = new int[2][26];
@@ -54,9 +56,9 @@ public class CtrlAltDefeat implements BotAPI {
                     checkerLayoutAfterMove[1][currentMove.getToPip()]--;
                 }
             }
-            // some sort of maths that adds all the probabilitys and weigths together for each play;
-            // function calls to features should be made here
-            probability.add(1.0);
+            
+            // finds value of each move and adds to the array probability
+            probability.add(getEvaluation(checkerLayoutAfterMove,1,1,1,1,1,1,1,1));  // weights can be altered here
         }
         
         int choice = 0;
@@ -74,26 +76,37 @@ public class CtrlAltDefeat implements BotAPI {
 //        return "1";
     }
     
+    // Im so sorry
+    public double getEvaluation(int[][] boardLayout, int pipCountDifferenceWeight, int blockBlotDifferenceWeight, int numHomeBoardBlocksWeight,
+    		int escapedCheckersWeight, int numHomeCheckersWeight, int numAnchorsWieght, int numCheckersBearOffWeight, int primeFeatureWeight) {
+    	
+    	int Evaluation = pipCountDifferenceWeight*getPipCountDifference(boardLayout) + blockBlotDifferenceWeight*getBlockBlotDifference(boardLayout) + 
+    			numHomeBoardBlocksWeight*getNumHomeBoardBlocks(boardLayout) + escapedCheckersWeight*getEscapedCheckers(boardLayout) + numHomeCheckersWeight*getNumHomeCheckers(boardLayout) + 
+    			numAnchorsWieght*getNumAnchors(boardLayout) + numCheckersBearOffWeight*getNumCheckersBearOff(boardLayout) + primeFeatureWeight*primeFeature(boardLayout);
+    	
+    	return Evaluation;
+    }
+    
     //TODO test
-    public int getPipCountDifference() {
+    public int getPipCountDifference(int[][] boardLayout) {
     	int pipCountP0 = 0;
     	int pipCountP1 = 1;
     	for(int i = 1; i <= 25; i++) {
-    		pipCountP0 += board.getNumCheckers(me.getId(), i) * i;
-    		pipCountP1 += board.getNumCheckers(opponent.getId(), i) * i;
+    		pipCountP0 += boardLayout[0][i] * i;
+    		pipCountP1 += boardLayout[1][i] * i;
     	}
     	
     	return pipCountP0 - pipCountP1;
     }
     
     //TODO test
-    public int getBlockBlotDifference() {
+    public int getBlockBlotDifference(int[][] boardLayout) {
     	int block = 0;
     	int blot = 1;
     	for(int i = 1; i < 25; i++) {
-    		if(board.getNumCheckers(me.getId(), i) >= 2)
+    		if(boardLayout[0][i] >= 2)
     			block ++;
-    		else if(board.getNumCheckers(opponent.getId(), i) == 1) // should be me.getId ?
+    		else if(boardLayout[0][i] == 1)
     			blot++;
     	}
     	
@@ -102,29 +115,29 @@ public class CtrlAltDefeat implements BotAPI {
     
     //TODO test
     // weights added, most important points in descending order: 6, 5, 4, 3, 2, 1
-    public int getNumHomeBoardBlocks() {
+    public int getNumHomeBoardBlocks(int[][] boardLayout) {
     	int homeBlocks = 0;
     	for(int i = 1; i <= 6; i++) {
-    		if(board.getNumCheckers(me.getId(), i) >= 2)
+    		if(boardLayout[0][i] >= 2)
     			homeBlocks += i;
     	}
     
     	return homeBlocks;
     }
     
-    public int getEscapedCheckers() {
+    public int getEscapedCheckers(int[][] boardLayout) {
     	int escapedCheckers = 0;
-    	for(int i = getLastOpponentChecker(); i > 0; i--) {
-    		escapedCheckers += board.getNumCheckers(me.getId(), i);
+    	for(int i = getLastOpponentChecker(boardLayout); i > 0; i--) {
+    		escapedCheckers += boardLayout[0][i];
     	}
     	
     	return escapedCheckers;
     }
     
-    public int getLastOpponentChecker() {
+    public int getLastOpponentChecker(int[][] boardLayout) {
     	int pip = 0;
     	for(int i = 0; i < 25; i++) {
-    		if(board.getNumCheckers(opponent.getId(), i) >= 1)
+    		if(boardLayout[1][i] >= 1)
     			pip = i;
     	}
     	pip = 25 - pip;
@@ -132,14 +145,14 @@ public class CtrlAltDefeat implements BotAPI {
     	return pip;
     }
     
-    public int getNumHomeCheckers()
+    public int getNumHomeCheckers(int[][] boardLayout)
     {
     	int homeCheckers = 0;
     	for(int i = 1; i <= 6; i++) 
     	{
-    		if(board.getNumCheckers(me.getId(),i)>= 1)
+    		if(boardLayout[0][i] >= 1)
     		{
-    			homeCheckers += board.getNumCheckers(me.getId(),i);
+    			homeCheckers += boardLayout[0][i];
     		}
     	}
     	
@@ -147,23 +160,23 @@ public class CtrlAltDefeat implements BotAPI {
     }
     
     // weighted by how advanced the anchors are on the board
-    public int getNumAnchors() {
+    public int getNumAnchors(int[][] boardLayout) {
     	int numAnchors = 0;
     	for(int i = 19; i <= 24; i++) {
-    		if(board.getNumCheckers(me.getId(),i) >= 2)
+    		if(boardLayout[0][i] >= 2)
     			numAnchors += 25 - i;
     	}
     	
     	return numAnchors;
     }
     
-    public int getNumCheckersBearOff()
+    public int getNumCheckersBearOff(int[][] boardLayout)
     {
     	int checkersBearOff = 0;
     	
-    	if(board.getNumCheckers(me.getId(),0)>= 1)
+    	if(boardLayout[0][0] >= 1)
 		{
-			checkersBearOff += board.getNumCheckers(me.getId(),0);
+			checkersBearOff += boardLayout[0][0];
 		}
     	
     	return checkersBearOff;
