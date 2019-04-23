@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class CtrlAltDefeat implements BotAPI {
 
@@ -28,8 +29,49 @@ public class CtrlAltDefeat implements BotAPI {
 
     public String getCommand(Plays possiblePlays) {
         // Add your code here
-    	
-        return "1";
+    	System.out.println("Pip Dif: " + getPipCountDifference());
+    	System.out.println("Block Blot Dif: " + getBlockBlotDifference());
+    	System.out.println("Home Board Blocks: " + getNumHomeBoardBlocks());
+    	System.out.println("Home Board Checkers:" + getNumHomeCheckers());
+    	System.out.println("Bear Off Checkers:" + getNumCheckersBearOff());
+    	System.out.println("Anchors:" + getNumAnchors());
+    	System.out.println("Escaped checkers:" + getEscapedCheckers());
+        
+        int[][] currentCheckerLayout = board.get();
+        int[][] checkerLayoutAfterMove = new int[2][26];
+        
+        ArrayList<Double> probability = new ArrayList<>();
+        
+        //iterate through all the possible plays
+        for(int i = 0;i < possiblePlays.number();i++) {
+            checkerLayoutAfterMove = board.get();
+            Play currentPlay = possiblePlays.get(i);
+            for(int j = 0;j < currentPlay.numberOfMoves();j++) {
+                Move currentMove = currentPlay.getMove(j);
+                checkerLayoutAfterMove[0][currentMove.getFromPip()]--;
+                checkerLayoutAfterMove[0][currentMove.getToPip()]++;
+                if(currentMove.isHit()) {
+                    checkerLayoutAfterMove[1][currentMove.getToPip()]--;
+                }
+            }
+            // some sort of maths that adds all the probabilitys and weigths together for each play;
+            // function calls to features should be made here
+            probability.add(1.0);
+        }
+        
+        int choice = 0;
+        Double highestProbability = 0.0;
+        
+        for(int i = 0;i < probability.size();i++)
+            if(probability.get(i) > highestProbability) {
+                highestProbability = probability.get(i);
+                choice = i + 1;
+            }
+            
+        // Add your code here
+        return "" + choice + "";
+
+//        return "1";
     }
     
     //TODO test
@@ -125,6 +167,35 @@ public class CtrlAltDefeat implements BotAPI {
 		}
     	
     	return checkersBearOff;
+    }
+
+    public int primeFeature(int[][] boardLayout) {
+
+        int primeCounter = 0,primeScore = 0;
+        boolean previousHadBlock = false;
+        
+        
+        for(int i = 1;i < 25;i++) {
+            if(previousHadBlock) {
+                if(boardLayout[0][i] >= 2) {
+                    primeCounter++;
+                }
+                else {
+                    if(primeCounter != 1) {
+                        primeScore += primeCounter;
+                    }
+                    primeCounter = 0;
+                    previousHadBlock = false;
+                }
+            }
+            else {
+                if(boardLayout[0][i] >= 2) {
+                    primeCounter = 1;
+                    previousHadBlock = true;
+                }
+            }
+        }
+        return primeScore;
     }
 
     public String getDoubleDecision()

@@ -97,16 +97,6 @@ public class UI {
         } while (!command.isValid());
         return command;
     }
-    
-    public void botTest() {
-    	System.out.println("Pip Dif: " + bots[0].getPipCountDifference());
-    	System.out.println("Block Blot Dif: " + bots[0].getBlockBlotDifference());
-    	System.out.println("Home Board Blocks: " + bots[0].getNumHomeBoardBlocks());
-    	System.out.println("Home Board Checkers:" + bots[0].getNumHomeCheckers());
-    	System.out.println("Bear Off Checkers:" + bots[0].getNumCheckersBearOff());
-    	System.out.println("Anchor in opponents home:" + bots[0].getNumAnchors());
-    	System.out.println("Num of escaped checkers:" + bots[0].getEscapedCheckers());
-    }
 
     public void displayPlays(Player player, Plays plays) {
         displayString(player + " (" + player.getColorName() + ") available moves...");
