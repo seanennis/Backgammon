@@ -69,9 +69,16 @@ public class CtrlAltDefeat implements BotAPI {
                 highestProbability = probability.get(i);
                 choice = i + 1;
             }
-            
+            if(cube.getOwnerId() == me.getId() && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2) && (highestProbability >= 0.66))
+            {
+            	return "double";
+            }
+            else
+            {
+            	 return "" + choice + "";
+            }
         // Add your code here
-        return "" + choice + "";
+       
 
 //        return "1";
     }
