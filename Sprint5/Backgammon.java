@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,7 +12,7 @@ public class Backgammon {
 
     public static final int NUM_PLAYERS = 2;
     public static final boolean CHEAT_ALLOWED = false;
-    private static final int DELAY = 3000;  // in milliseconds
+    private static final int DELAY = 30;  // in milliseconds
     private static final String[] ALL_BOT_NAMES = {"CtrlAltDefeat","Bot1"};
 
     private final Cube cube = new Cube();
@@ -175,7 +178,9 @@ public class Backgammon {
         }
     }
 
-    private void playAMatch() throws InterruptedException {
+    private void playAMatch() throws InterruptedException, IOException {
+    	  FileWriter f0 = new FileWriter("output.txt");
+          String newLine = System.getProperty("line.separator");
         ui.displayStartOfGame();
         getPlayerNames();
         ui.displayString("Match length is " + match.getLength());
@@ -191,15 +196,27 @@ public class Backgammon {
         } while (!quitGame && !match.isOver());
         if (match.isOver()) {
             ui.displayMatchWinner(match.getWinner());
+            f0.append("Result:"+ match.getWinner() + newLine);
+            f0.close();
+            match.reset();
+          
         }
         pause();
         pause();
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         Backgammon game = new Backgammon();
+        
+       for(int i = 0; i<3;i++)
+       {
         game.setupBots(args);
         game.playAMatch();
+       }
+        
+       
+
+      
 //        System.exit(0);
     }
 }
