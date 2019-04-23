@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class CtrlAltDefeat implements BotAPI {
 
@@ -33,6 +34,8 @@ public class CtrlAltDefeat implements BotAPI {
     	System.out.println("Home Board Blocks: " + getNumHomeBoardBlocks());
     	System.out.println("Home Board Checkers:" + getNumHomeCheckers());
     	System.out.println("Bear Off Checkers:" + getNumCheckersBearOff());
+    	System.out.println("Anchors:" + getNumAnchors());
+    	System.out.println("Escaped checkers:" + getEscapedCheckers());
         
         int[][] currentCheckerLayout = board.get();
         int[][] checkerLayoutAfterMove = new int[2][26];

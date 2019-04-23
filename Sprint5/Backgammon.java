@@ -10,7 +10,7 @@ public class Backgammon {
     public static final int NUM_PLAYERS = 2;
     public static final boolean CHEAT_ALLOWED = false;
     private static final int DELAY = 3000;  // in milliseconds
-    private static final String[] ALL_BOT_NAMES = {"Bot0","Bot1"};
+    private static final String[] ALL_BOT_NAMES = {"CtrlAltDefeat","Bot1"};
 
     private final Cube cube = new Cube();
     private final Players players = new Players();
@@ -24,7 +24,7 @@ public class Backgammon {
 
     private void setupBots (String[] args) {
         if (args.length < NUM_PLAYERS) {
-            botNames[0] = "Bot0";
+            botNames[0] = "CtrlAltDefeat";
             botNames[1] = "Bot1";
         } else {
             for (int i = 0; i < NUM_PLAYERS; i++) {
