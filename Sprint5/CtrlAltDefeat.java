@@ -110,6 +110,76 @@ public class CtrlAltDefeat implements BotAPI {
     	return pipCountP0 - pipCountP1;
     }
     
+    public int unopposedBearOff(Plays possiblePlays)
+    {
+    	int[][] checkerLayoutAfterMove = new int[2][26];
+        
+        ArrayList<Double> probability = new ArrayList<>();
+        
+        //iterate through all the possible plays
+        for(int i = 0;i < possiblePlays.number();i++) {
+            checkerLayoutAfterMove = board.get();
+            Play currentPlay = possiblePlays.get(i);
+            for(int j = 0;j < currentPlay.numberOfMoves();j++) {
+                Move currentMove = currentPlay.getMove(j);
+                checkerLayoutAfterMove[0][currentMove.getFromPip()]--;
+                checkerLayoutAfterMove[0][currentMove.getToPip()]++;
+                if(currentMove.isHit()) {
+                    checkerLayoutAfterMove[1][currentMove.getToPip()]--;
+                }
+            }
+            
+            // finds value of each move and adds to the array probability
+            probability.add(getEvaluation(checkerLayoutAfterMove, 0,0,0,0,0,0,1,0));  // weights can be altered here
+        }
+        
+        int choice = 0;
+        Double highestProbability = probability.get(0);
+        
+        for(int i = 0;i < probability.size();i++)
+            if(probability.get(i) >= highestProbability) {
+                highestProbability = probability.get(i);
+                choice = i + 1;
+            }
+        
+    	return choice;
+    }
+    
+    public int opposedBearOff(Plays possiblePlays)
+    {
+    	int[][] checkerLayoutAfterMove = new int[2][26];
+        
+        ArrayList<Double> probability = new ArrayList<>();
+        
+        //iterate through all the possible plays
+        for(int i = 0;i < possiblePlays.number();i++) {
+            checkerLayoutAfterMove = board.get();
+            Play currentPlay = possiblePlays.get(i);
+            for(int j = 0;j < currentPlay.numberOfMoves();j++) {
+                Move currentMove = currentPlay.getMove(j);
+                checkerLayoutAfterMove[0][currentMove.getFromPip()]--;
+                checkerLayoutAfterMove[0][currentMove.getToPip()]++;
+                if(currentMove.isHit()) {
+                    checkerLayoutAfterMove[1][currentMove.getToPip()]--;
+                }
+            }
+            
+            // finds value of each move and adds to the array probability
+            probability.add(getEvaluation(checkerLayoutAfterMove,0,10,0,0,0,0,1,0));  // weights can be altered here
+        }
+        
+        int choice = 0;
+        Double highestProbability = probability.get(0);
+        
+        for(int i = 0;i < probability.size();i++)
+            if(probability.get(i) >= highestProbability) {
+                highestProbability = probability.get(i);
+                choice = i + 1;
+            }
+        
+    	return choice;
+    }
+    
     public boolean checkIfOpponentCheckersInHome() {
     	boolean checker = false;
     	
