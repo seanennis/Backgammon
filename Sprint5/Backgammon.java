@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,8 +12,8 @@ public class Backgammon {
 
     public static final int NUM_PLAYERS = 2;
     public static final boolean CHEAT_ALLOWED = false;
-    private static final int DELAY = 3000;  // in milliseconds
-    private static final String[] ALL_BOT_NAMES = {"Bot0","Bot1"};
+    private static final int DELAY = 30;  // in milliseconds
+    private static final String[] ALL_BOT_NAMES = {"CtrlAltDefeat","Bot1"};
 
     private final Cube cube = new Cube();
     private final Players players = new Players();
@@ -24,7 +27,7 @@ public class Backgammon {
 
     private void setupBots (String[] args) {
         if (args.length < NUM_PLAYERS) {
-            botNames[0] = "Bot0";
+            botNames[0] = "CtrlAltDefeat";
             botNames[1] = "Bot1";
         } else {
             for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -42,7 +45,7 @@ public class Backgammon {
             }
         }
         if (args.length < NUM_PLAYERS + 1) {
-            match.setLength(3);
+            match.setLength(5);
         } else {
             match.setLength(Integer.parseInt(args[2]));
         }
@@ -108,7 +111,9 @@ public class Backgammon {
         pause();
     }
 
-    private void playAGame() throws InterruptedException {
+    private void playAGame() throws InterruptedException, IOException {
+    	FileWriter f0 = new FileWriter("output.txt",true);
+        String newLine = System.getProperty("line.separator");
         Command command = new Command();
         boolean firstMove = true;
         game.reset();
@@ -172,10 +177,13 @@ public class Backgammon {
         } while (!quitGame && !game.isOver());
         if (game.isOver()) {
             ui.displayGameWinner(game.getWinner());
+            f0.append("Result:"+ game.getWinner() + newLine);
+            f0.close();
         }
     }
 
-    private void playAMatch() throws InterruptedException {
+    private void playAMatch() throws InterruptedException, IOException {
+    	
         ui.displayStartOfGame();
         getPlayerNames();
         ui.displayString("Match length is " + match.getLength());
@@ -191,15 +199,20 @@ public class Backgammon {
         } while (!quitGame && !match.isOver());
         if (match.isOver()) {
             ui.displayMatchWinner(match.getWinner());
+           // match.reset();
+          
         }
         pause();
         pause();
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         Backgammon game = new Backgammon();
+          
         game.setupBots(args);
         game.playAMatch();
+      
+             
 //        System.exit(0);
     }
 }
