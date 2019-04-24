@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class CtrlAltDefeat implements BotAPI {
 
@@ -34,14 +35,21 @@ public class CtrlAltDefeat implements BotAPI {
 
     public String getCommand(Plays possiblePlays) {
     	String cmd;
-    	
+    	/*
     	if(getEvaluation(board.get(),1,1,1,1,1,1,1,1) >= 0 && match.canDouble(me.getId())) {
     		cmd = "double";
+    	}
+    	else { */
+    	if(canBearOff()) {
+    		if(checkIfOpponentCheckersInHome())
+    			cmd = String.valueOf(opposedBearOff(possiblePlays));
+    		else
+    			cmd = String.valueOf(unopposedBearOff(possiblePlays));
     	}
     	else {
     		cmd = String.valueOf(getMove(possiblePlays));
     	}
-    	
+    	//}
     	return cmd;
     }
     
@@ -65,7 +73,7 @@ public class CtrlAltDefeat implements BotAPI {
             }
             
             // finds value of each move and adds to the array probability
-            probability.add(getEvaluation(checkerLayoutAfterMove,1,1,1,1,1,1,1,1));  // weights can be altered here
+            probability.add(getEvaluation(checkerLayoutAfterMove, weights[0], weights[1], weights[2], weights[3], weights[4], weights[5], weights[6], weights[7]));  // weights can be altered here
         }
         
         int choice = 0;
@@ -100,6 +108,26 @@ public class CtrlAltDefeat implements BotAPI {
     	}
     	
     	return pipCountP0 - pipCountP1;
+    }
+    
+    public boolean checkIfOpponentCheckersInHome() {
+    	boolean checker = false;
+    	
+    	for(int i = 19; i <= 24; i++) {
+    		board.getNumCheckers(opponent.getId(), i);
+    	}
+    	
+    	return checker;
+    }
+    
+    public boolean canBearOff() {
+    	boolean bearOff = true;
+    	for(int i = 7; i <= 25; i++) {
+    		if(board.getNumCheckers(me.getId(), i) > 0)
+    			bearOff = false;
+    	}
+    	
+    	return bearOff;
     }
     
     //TODO test
