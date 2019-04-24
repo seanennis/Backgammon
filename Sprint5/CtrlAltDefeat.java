@@ -69,7 +69,8 @@ public class CtrlAltDefeat implements BotAPI {
                 highestProbability = probability.get(i);
                 choice = i + 1;
             }
-            if(cube.getOwnerId() == me.getId() && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2) && (highestProbability >= 0.66))
+        	
+            if((cube.getOwnerId() == me.getId()) && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2) && (highestProbability >= 0.66))
             {
             	return "double";
             }
@@ -221,8 +222,9 @@ public class CtrlAltDefeat implements BotAPI {
     public String getDoubleDecision()
     {
     	String playDouble;
+    	double probability = getEvaluation(board.get(),1,1,1,1,1,1,1,1);
     	
-    	if(cube.getOwnerId() == me.getId() && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2)) 
+    	if(probability >= 0) 
     	{
     		playDouble = "y";
     	}
