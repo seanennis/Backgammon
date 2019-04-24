@@ -28,18 +28,14 @@ public class CtrlAltDefeat implements BotAPI {
     }
 
     public String getCommand(Plays possiblePlays) {
-        // Add your code here
-    	/*
-    	System.out.println("Pip Dif: " + getPipCountDifference());
-    	System.out.println("Block Blot Dif: " + getBlockBlotDifference());
-    	System.out.println("Home Board Blocks: " + getNumHomeBoardBlocks());
-    	System.out.println("Home Board Checkers:" + getNumHomeCheckers());
-    	System.out.println("Bear Off Checkers:" + getNumCheckersBearOff());
-    	System.out.println("Anchors:" + getNumAnchors());
-    	System.out.println("Escaped checkers:" + getEscapedCheckers());
-    	*/
-        
-        int[][] currentCheckerLayout = board.get();
+    	
+    	String move = String.valueOf(getMove(possiblePlays));
+    	
+    	return move;
+    }
+    
+    public int getMove(Plays possiblePlays) {
+
         int[][] checkerLayoutAfterMove = new int[2][26];
         
         ArrayList<Double> probability = new ArrayList<>();
@@ -62,29 +58,17 @@ public class CtrlAltDefeat implements BotAPI {
         }
         
         int choice = 0;
-        Double highestProbability = 0.0;
+        Double highestProbability = probability.get(0);
         
         for(int i = 0;i < probability.size();i++)
-            if(probability.get(i) > highestProbability) {
+            if(probability.get(i) >= highestProbability) {
                 highestProbability = probability.get(i);
                 choice = i + 1;
             }
-        	
-            if((cube.getOwnerId() == me.getId()) && (match.getLength() - me.getScore() <= 2 && match.getLength() - opponent.getScore() <= 2) && (highestProbability >= 0.66))
-            {
-            	return "double";
-            }
-            else
-            {
-            	 return "" + choice + "";
-            }
-        // Add your code here
-       
-
-//        return "1";
+        
+    	return choice;
     }
     
-    // Im so sorry
     public double getEvaluation(int[][] boardLayout, int pipCountDifferenceWeight, int blockBlotDifferenceWeight, int numHomeBoardBlocksWeight,
     		int escapedCheckersWeight, int numHomeCheckersWeight, int numAnchorsWieght, int numCheckersBearOffWeight, int primeFeatureWeight) {
     	
@@ -224,7 +208,7 @@ public class CtrlAltDefeat implements BotAPI {
     	String playDouble;
     	double probability = getEvaluation(board.get(),1,1,1,1,1,1,1,1);
     	
-    	if(probability >= 0) 
+    	if(probability >= 0)
     	{
     		playDouble = "y";
     	}
