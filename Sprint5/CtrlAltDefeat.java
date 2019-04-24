@@ -13,6 +13,7 @@ public class CtrlAltDefeat implements BotAPI {
     private CubeAPI cube;
     private MatchAPI match;
     private InfoPanelAPI info;
+    private int[] weights = new int[8];
 
     CtrlAltDefeat(PlayerAPI me, PlayerAPI opponent, BoardAPI board, CubeAPI cube, MatchAPI match, InfoPanelAPI info) {
         this.me = me;
@@ -25,6 +26,10 @@ public class CtrlAltDefeat implements BotAPI {
 
     public String getName() {
         return "CtrlAltDefeat"; // must match the class name
+    }
+    
+    public void setWeights(int[] weights) {
+    	this.weights = weights;
     }
 
     public String getCommand(Plays possiblePlays) {

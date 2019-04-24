@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 public class Backgammon {
     // This is the main class for the Backgammon game. It orchestrates the running of the game.
@@ -24,6 +25,7 @@ public class Backgammon {
     private final UI ui = new UI(board,players,cube,match,bots);
     private String[] botNames = new String[NUM_PLAYERS];
     private boolean quitGame = false;
+    private int count = 0;
 
     private void setupBots (String[] args) {
         if (args.length < NUM_PLAYERS) {
@@ -45,7 +47,7 @@ public class Backgammon {
             }
         }
         if (args.length < NUM_PLAYERS + 1) {
-            match.setLength(5);
+            match.setLength(100);
         } else {
             match.setLength(Integer.parseInt(args[2]));
         }
@@ -111,7 +113,8 @@ public class Backgammon {
         pause();
     }
 
-    private void playAGame() throws InterruptedException, IOException {
+    @SuppressWarnings("null")
+	private void playAGame() throws InterruptedException, IOException {
     	FileWriter f0 = new FileWriter("output.txt",true);
         String newLine = System.getProperty("line.separator");
         Command command = new Command();
@@ -178,6 +181,17 @@ public class Backgammon {
         if (game.isOver()) {
             ui.displayGameWinner(game.getWinner());
             f0.append("Result:"+ game.getWinner() + newLine);
+            count++;
+            if(count%10 == 0) {
+            	Random rand = new Random();
+            	int[] weights = new int[8];
+            	for(int i = 0; i < 8; i++) {
+            		weights[i] = rand.nextInt(20);
+            		f0.append("Weight" + i + ": " + weights[i] + "   ");
+            	}
+            	f0.append(newLine);
+            	ui.sendWeights(weights);
+            }
             f0.close();
         }
     }

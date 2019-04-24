@@ -27,6 +27,15 @@ public class UI {
         frame.setVisible(true);
         this.bots = bots;
     }
+    
+    public void sendWeights(int[] weights) {
+    	if(bots[0].getName() == "CtrlAltDefeat") {
+    		bots[0].setWeights(weights);
+    	}
+    	else if(bots[1].getName() == "CtrlAltDefeat") {
+    		bots[1].setWeights(weights);
+    	}
+    }
 
     public InfoPanel getInfoPanel() {
         return infoPanel;
