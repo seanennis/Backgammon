@@ -6,13 +6,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 public class Backgammon {
     // This is the main class for the Backgammon game. It orchestrates the running of the game.
 
     public static final int NUM_PLAYERS = 2;
     public static final boolean CHEAT_ALLOWED = false;
-    private static final int DELAY = 30;  // in milliseconds
+    private static final int DELAY = 700;  // in milliseconds
     private static final String[] ALL_BOT_NAMES = {"CtrlAltDefeat","Bot1"};
 
     private final Cube cube = new Cube();
@@ -24,6 +25,8 @@ public class Backgammon {
     private final UI ui = new UI(board,players,cube,match,bots);
     private String[] botNames = new String[NUM_PLAYERS];
     private boolean quitGame = false;
+    private int count = 0;
+    private int winner = 0;
 
     private void setupBots (String[] args) {
         if (args.length < NUM_PLAYERS) {
@@ -45,7 +48,7 @@ public class Backgammon {
             }
         }
         if (args.length < NUM_PLAYERS + 1) {
-            match.setLength(3);
+            match.setLength(1000);
         } else {
             match.setLength(Integer.parseInt(args[2]));
         }
@@ -111,7 +114,10 @@ public class Backgammon {
         pause();
     }
 
-    private void playAGame() throws InterruptedException {
+    @SuppressWarnings("null")
+	private void playAGame() throws InterruptedException, IOException {
+    	FileWriter f0 = new FileWriter("output.txt",true);
+        String newLine = System.getProperty("line.separator");
         Command command = new Command();
         boolean firstMove = true;
         game.reset();
@@ -175,12 +181,29 @@ public class Backgammon {
         } while (!quitGame && !game.isOver());
         if (game.isOver()) {
             ui.displayGameWinner(game.getWinner());
+            int id = game.getWinner().getId();
+            if(ui.getPlayerName(id) == "CtrlAltDefeat") {
+            	winner++;
+            }
+            count++;
+            if(count%5 == 0) {
+            	Random rand = new Random();
+            	int[] weights = new int[8];
+            	for(int i = 0; i < 8; i++) {
+            		weights[i] = rand.nextInt(20);
+            		f0.append("Weight" + i + ": " + weights[i] + "   ");
+            	}
+            	f0.append(newLine);
+            	ui.sendWeights(weights);
+                f0.append("Result: "+ winner + newLine);
+                winner = 0;
+            }
+            f0.close();
         }
     }
 
     private void playAMatch() throws InterruptedException, IOException {
-    	  FileWriter f0 = new FileWriter("output.txt");
-          String newLine = System.getProperty("line.separator");
+    	
         ui.displayStartOfGame();
         getPlayerNames();
         ui.displayString("Match length is " + match.getLength());
@@ -196,9 +219,7 @@ public class Backgammon {
         } while (!quitGame && !match.isOver());
         if (match.isOver()) {
             ui.displayMatchWinner(match.getWinner());
-            f0.append("Result:"+ match.getWinner() + newLine);
-            f0.close();
-            match.reset();
+           // match.reset();
           
         }
         pause();
@@ -207,16 +228,11 @@ public class Backgammon {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         Backgammon game = new Backgammon();
-        
-       for(int i = 0; i<3;i++)
-       {
+          
         game.setupBots(args);
         game.playAMatch();
-       }
-        
-       
-
       
+             
 //        System.exit(0);
     }
 }
