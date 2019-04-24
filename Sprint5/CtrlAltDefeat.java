@@ -28,10 +28,16 @@ public class CtrlAltDefeat implements BotAPI {
     }
 
     public String getCommand(Plays possiblePlays) {
+    	String cmd;
     	
-    	String move = String.valueOf(getMove(possiblePlays));
+    	if(getEvaluation(board.get(),1,1,1,1,1,1,1,1) >= 0 && match.canDouble(me.getId())) {
+    		cmd = "double";
+    	}
+    	else {
+    		cmd = String.valueOf(getMove(possiblePlays));
+    	}
     	
-    	return move;
+    	return cmd;
     }
     
     public int getMove(Plays possiblePlays) {
